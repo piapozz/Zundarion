@@ -48,7 +48,6 @@ public class PlayerAttack : MonoBehaviour
         _comboCount = 0;
     }
 
-    // Update is called once per frame
     /// <summary>
     /// アニメーションを攻撃に更新して、当たり判定を生成する
     /// </summary>
@@ -68,7 +67,6 @@ public class PlayerAttack : MonoBehaviour
 
     }
 
-    // Update is called once per frame
     /// <summary>
     /// 現在のアニメーションが攻撃可能な状態なのか調べる
     /// </summary>
