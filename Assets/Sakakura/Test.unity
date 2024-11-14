@@ -184,6 +184,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerModel:
   - {fileID: 919132148288480452}
+  - {fileID: 546058997}
   _stateCam: {fileID: 1761899079}
   _capsuleCollider: {fileID: 0}
 --- !u!1 &198513983
@@ -280,6 +281,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1 &546058997 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5192641542776290001, guid: 0757510f077421249baea0f6b3df8b37, type: 3}
+  m_PrefabInstance: {fileID: 4958074140480140919}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &572827301
 GameObject:
   m_ObjectHideFlags: 3
@@ -1455,15 +1461,15 @@ MonoBehaviour:
     m_VirtualCamera: {fileID: 572924970}
     m_ActivateAfter: 0
     m_MinDuration: 0
-  - m_FullHash: 1191531679
+  - m_FullHash: -1150098905
     m_VirtualCamera: {fileID: 1298574169}
     m_ActivateAfter: 0
     m_MinDuration: 0
-  - m_FullHash: -569637595
+  - m_FullHash: 578532253
     m_VirtualCamera: {fileID: 1298574169}
     m_ActivateAfter: 0
     m_MinDuration: 0
-  - m_FullHash: -1458883149
+  - m_FullHash: 1434223371
     m_VirtualCamera: {fileID: 1298574169}
     m_ActivateAfter: 0
     m_MinDuration: 0

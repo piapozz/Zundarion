@@ -68,9 +68,10 @@ public class Player : MonoBehaviour
 
     void AttachPlayer(int playerNum)
     {
+        _animator = _playerModel[nowCharaNum].transform.GetComponent<Animator>();
         _stateCam.Follow = _playerModel[playerNum].transform;
         _stateCam.LookAt = _playerModel[playerNum].transform;
-        _animator = _playerModel[nowCharaNum].transform.GetComponent<Animator>();
+        _stateCam.m_AnimatedTarget = _animator;
         //_capsuleCollider.transform.parent = _playerModel[nowCharaNum].transform;
     }
 }
