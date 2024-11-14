@@ -10,9 +10,23 @@ using UnityEditor;
 
 public class EnemyBear : EnemyBase
 {
+    public enum State
+    {
+        ENEMY_IDLE = 0,               // ‘Ò‹@ó‘Ô
+        ENEMY_FOUND,                  // Œ©‚Â‚¯‚½‚Æ‚«
+        ENEMY_TRACKING,               // ‹——£‚ª—£‚ê‚½‚Æ‚«
+        ENEMY_TURN,                   // ‹——£‚Í‹ß‚¢‚ªUŒ‚”ÍˆÍ‚©‚çŠO‚ê‚½‚Æ‚«
+        ENEMY_ATTACK,                 // ’ÊíUŒ‚
+        ENEMY_ATTACK_UNIQUE,          // “Á’è‚ÌğŒ‰º‚Å‚·‚éUŒ‚
+        ENEMY_DEAD,                   // “|‚³‚ê‚½‚Æ‚«
+
+        MAX
+    }
+
+
     // “G‚Ìs“®
     protected override void UpdateEnemy()
     {
-
+        
     }
 }
