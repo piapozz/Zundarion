@@ -20,7 +20,11 @@ MonoBehaviour:
   parryPram:
   - Parry
   statePram:
-  - FrontLine
-  - Duplicate
+  - TransFrontLine
+  - TransDuplicate
   - Die
-  - Enhanced
+  - TransEnhanced
+  InterruptPram:
+  - Impact
+  - Victory
+  - Finish

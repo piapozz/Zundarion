@@ -24,6 +24,12 @@ public abstract class BasePlayer : MonoBehaviour
     /// <summary>アニメーションの再生速度</summary>
     public float selfAnimationSpeed { get; protected set; }
 
+    /// <summary>アニメーションのパラメーター情報</summary>
+    public PlayerAnimation selfAnimationData { get; protected set; }
+
+    /// <summary>アニメーションのパラメーター情報</summary>
+    public float selfFrontAngle { get; set; }
+
     // protected //////////////////////////////////////////////////////////////////
 
     /// <summary>毎フレーム呼ばれるAIによる操作</summary>
@@ -86,6 +92,8 @@ public abstract class BasePlayer : MonoBehaviour
         UpdateAI();
 
         // 出力の調整
+        Quaternion q = Quaternion.AngleAxis(selfFrontAngle, Vector3.up);
+        this.transform.rotation = Quaternion.RotateTowards(this.transform.rotation, this.transform.rotation * q, 1);
 
         // 次フレームのために情報を残す
     }
