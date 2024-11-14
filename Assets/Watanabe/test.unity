@@ -348,7 +348,7 @@ PrefabInstance:
     - target: {fileID: 2210953316331691877, guid: fe635ee943dab7c41be1cb4667a5f398, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: 32bbd94693c0d7b46b951e718ed5df22, type: 2}
+      objectReference: {fileID: 9100000, guid: ab64acdbfc98da64a878f39fa09153de, type: 2}
     - target: {fileID: 4829299348227596197, guid: fe635ee943dab7c41be1cb4667a5f398, type: 3}
       propertyPath: m_Name
       value: Warrok W Kurniawan

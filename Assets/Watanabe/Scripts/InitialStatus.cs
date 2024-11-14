@@ -5,11 +5,11 @@ using UnityEngine;
 // Editorã‚©‚çì¬‚·‚é‚½‚ß‚Ì‹Lq
 [CreateAssetMenu(menuName = "ScriptableObjects/Enemy/EnemyStatusObject")]
 
-public class EnemyStatus : ScriptableObject
+public class InitialStatus : ScriptableObject
 {
     public string aiName;
 
     public int health;
     public int speed;
-    public int strength;
+    public int power;
 }
