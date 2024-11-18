@@ -9,7 +9,7 @@ public class Player : MonoBehaviour
 
     [SerializeField] private GameObject[] _playerModel;
     [SerializeField] CinemachineStateDrivenCamera _stateCam;
-    [SerializeField] private CapsuleCollider _capsuleCollider;
+    CinemachineFreeLook _freeLookCam;
 
     private Animator _animator;
 
@@ -25,6 +25,8 @@ public class Player : MonoBehaviour
             else
                 _playerModel[i].gameObject.SetActive(false);
         }
+
+        _freeLookCam = _stateCam.GetComponentInChildren<CinemachineFreeLook>();
     }
 
     void Update()
@@ -32,25 +34,32 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Q))
         {
             // キャラチェンジ
-            CharaChange(-1);
+            CharaChange(-1, -_playerModel[nowCharaNum].transform.forward * 2.0f);
         }
 
         if (Input.GetKeyDown(KeyCode.E))
         {
             // キャラチェンジ
-            CharaChange(1);
+            CharaChange(1, -_playerModel[nowCharaNum].transform.forward * 2.0f);
         }
 
-        if (Input.GetKey(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
+            // キャラチェンジ
+            CharaChange(1, Vector3.zero);
             _animator.SetTrigger("Parry");
             // 通常カメラをリセット
-            
+            _freeLookCam.m_XAxis.Value = _playerModel[nowCharaNum].transform.eulerAngles.y;
+            _freeLookCam.m_YAxis.Value = 0.5f;
         }
     }
 
-    void CharaChange(int charaDir)
+    void CharaChange(int charaDir, Vector3 entryOffset)
     {
+        // 次の登場位置を決める
+        Vector3 playerPos = _playerModel[nowCharaNum].transform.position;
+        Vector3 rotate = _playerModel[nowCharaNum].transform.localEulerAngles;
+
         // 今のキャラを消す
         _playerModel[nowCharaNum].SetActive(false);
 
@@ -63,7 +72,10 @@ public class Player : MonoBehaviour
 
         // 新しいキャラに切り替える
         _playerModel[nowCharaNum].SetActive(true);
+        _playerModel[nowCharaNum].transform.position = playerPos + entryOffset;
+        _playerModel[nowCharaNum].transform.localEulerAngles = rotate;
         AttachPlayer(nowCharaNum);
+        _animator.SetTrigger("TransFrontline");
     }
 
     void AttachPlayer(int playerNum)
@@ -72,6 +84,5 @@ public class Player : MonoBehaviour
         _stateCam.Follow = _playerModel[playerNum].transform;
         _stateCam.LookAt = _playerModel[playerNum].transform;
         _stateCam.m_AnimatedTarget = _animator;
-        //_capsuleCollider.transform.parent = _playerModel[nowCharaNum].transform;
     }
 }

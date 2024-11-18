@@ -9,6 +9,7 @@ public class PlayerAnimation : ScriptableObject
     {
         IDLE = 0,
         WALK,
+        AVOIDANCE,
         RUN,
         ATTACK,
         PARRY,
