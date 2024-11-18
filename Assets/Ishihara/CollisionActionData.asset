@@ -12,5 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba16780144fed7f408422db2ee8a9258, type: 3}
   m_Name: CollisionActionData
   m_EditorClassIdentifier: 
-  collisionTags: []
-  collisionLayers: []
+  collisionTags:
+  - AttackNomal
+  - AttackPassable
+  - AttackDangerous
+  - Avoidance
+  collisionLayers:
+  - PlayerAttack
+  - PlayerSurvive
+  - EnemyAttack
+  - EnemySurvive

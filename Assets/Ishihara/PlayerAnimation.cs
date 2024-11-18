@@ -5,16 +5,34 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "ScriptableObjects/Player/PlayerAnimation")]
 public class PlayerAnimation : ScriptableObject
 {
-    enum Animation
+    public enum MoveAnimation
     {
         IDLE = 0,
         WALK,
         AVOIDANCE,
         RUN,
+
+        MAX
+    }
+
+    public enum AttackAnimation
+    {
         ATTACK,
+
+        MAX
+    }
+
+    public enum ChangeAnimation
+    {
         PARRY,
         TRANS_FRONTLINE,
         TRANS_DUPLICATE,
+
+        MAX
+    }
+
+    public enum InterruqtAnimation
+    {
         TRANS_ENHANCED,
         IMPACT,
         VICTORY,
