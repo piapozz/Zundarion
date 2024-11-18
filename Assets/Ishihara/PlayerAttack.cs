@@ -13,14 +13,13 @@ public class PlayerAttack : MonoBehaviour
     private BasePlayer _palyer = null;
 
     /// <summary>当たり判定生成コンポーネント</summary>
-    //private TankMovement selfTankMovement = null;
+    private CreateCollision _createCollision = null;
 
     /// <summary>現在のコンボ数</summary>
     private int _comboCount = 0;
 
     /// <summary>プレイヤーのアニメータートリガー</summary>
     private List<string> _triggers;
-
 
     // Start is called before the first frame update
     /// <summary>

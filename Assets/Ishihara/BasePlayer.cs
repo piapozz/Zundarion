@@ -18,6 +18,9 @@ public abstract class BasePlayer : MonoBehaviour
     /// <summary>攻撃コンボの最大数</summary>
     public float selfComboCount { get; protected set; }
 
+    /// <summary>現在の移動ステート</summary>
+    public PlayerMove.MoveState selfMoveState { get; set; }
+
     /// <summary>プレイヤーの移動速度</summary>
     public float selfMoveSpeed { get; protected set; }
 
@@ -27,8 +30,8 @@ public abstract class BasePlayer : MonoBehaviour
     /// <summary>アニメーションのパラメーター情報</summary>
     public PlayerAnimation selfAnimationData { get; protected set; }
 
-    /// <summary>アニメーションのパラメーター情報</summary>
-    public float selfFrontAngle { get; set; }
+    /// <summary>自身の前方アングル</summary>
+    public float selfFrontAngleZ { get; set; }
 
     // protected //////////////////////////////////////////////////////////////////
 
@@ -40,11 +43,11 @@ public abstract class BasePlayer : MonoBehaviour
 
     // private //////////////////////////////////////////////////////////////////
 
-    /// <summary>アニメーターコンポーネント(戦車以外はnull)</summary>
+    /// <summary>アニメーターコンポーネント</summary>
     private Animator _selfAnimator = null;
 
-    /// <summary>自身が戦車だった場合のTankHealthコンポーネント(戦車以外はnull)</summary>
-    //private TankHealth selfTankHealth = null;
+    /// <summary>プレイヤーの移動コンポーネント</summary>
+    private PlayerMove selfMove = null;
 
     /// <summary>戦車の移動コンポーネント</summary>
     //private TankMovement selfTankMovement = null;
@@ -77,6 +80,7 @@ public abstract class BasePlayer : MonoBehaviour
     {
         obstacleLayerMask = LayerMask.GetMask("FieldObject");
         _selfAnimator = GetComponent<Animator>();
+        selfMove = GetComponent<PlayerMove>();
     }
 
 
@@ -92,8 +96,10 @@ public abstract class BasePlayer : MonoBehaviour
         UpdateAI();
 
         // 出力の調整
-        Quaternion q = Quaternion.AngleAxis(selfFrontAngle, Vector3.up);
+        Quaternion q = Quaternion.AngleAxis(selfFrontAngleZ, Vector3.up);
         this.transform.rotation = Quaternion.RotateTowards(this.transform.rotation, this.transform.rotation * q, 1);
+
+        // selfMove.Move( , );
 
         // 次フレームのために情報を残す
     }
