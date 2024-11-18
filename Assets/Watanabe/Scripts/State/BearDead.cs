@@ -2,19 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// 見つけた状態の処理
-
-public class BearFound : IEnemyState
+public class BearDead : IEnemyState
 {
     float animCount;
-
     public void Action(EnemyBase.EnemyStatus enemyStatus)
     {
+        // アニメーションを再生
+        enemyStatus.m_animator.SetBool("Dead", true);
+
         // アニメーションが再生されていなかったら
-        if (enemyStatus.m_animator.GetBool("Found") == false)
+        if (enemyStatus.m_animator.GetBool("Dead") == false)
         {
             // アニメーションを再生
-            enemyStatus.m_animator.SetBool("Found", true);
+            enemyStatus.m_animator.SetBool("Dead", true);
             // カウントを初期化
             animCount = 0.0f;
         }
@@ -22,11 +22,11 @@ public class BearFound : IEnemyState
         // アニメーションの現在時間を計算
         animCount += enemyStatus.m_animatorState.speed * Time.deltaTime;
 
-        // アニメーションの再生が終了したら
+        // アニメーションの再生が終了したら消滅
         if (enemyStatus.m_animatorState.length < animCount)
         {
-            // ステートを切り替える
-            enemyStatus.m_state = new BearTracking();
+            // 死亡フラグをtrueに設定
+            enemyStatus.m_dead = true;
         }
     }
 }
