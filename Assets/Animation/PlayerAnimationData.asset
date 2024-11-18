@@ -13,18 +13,18 @@ MonoBehaviour:
   m_Name: PlayerAnimationData
   m_EditorClassIdentifier: 
   movePram:
+  - Idle
   - Walk
+  - Avoidance
   - Run
   attackPram:
   - Attack
-  parryPram:
+  changePram:
   - Parry
-  statePram:
-  - TransFrontLine
+  - TransFrontline
   - TransDuplicate
-  - Die
+  interruptPram:
   - TransEnhanced
-  InterruptPram:
   - Impact
   - Victory
-  - Finish
+  - Die
