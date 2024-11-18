@@ -148,7 +148,7 @@ public class CreateCollision : MonoBehaviour
     {
         // からのゲームオブジェクトを親のオブジェクト直下に生成する
         GameObject attack = Instantiate(
-            new GameObject(parent.name + "Attack"),
+            new GameObject(parent.name + attackData.tagname),
             attackData.position,
             parent.transform.rotation,
             parent.transform
@@ -169,5 +169,8 @@ public class CreateCollision : MonoBehaviour
 
         // ゲームオブジェクトに時間制限スクリプトをアタッチして時間を設定
         attack.AddComponent<LimitTime>().SetPeriod(attackData.time);
+
+        // コリジョンチェックをアタッチ
+        attack.AddComponent<CheckCollision>();
     }
 }

@@ -1457,6 +1457,70 @@ MonoBehaviour:
     m_VirtualCamera: {fileID: 1298574169}
     m_ActivateAfter: 0
     m_MinDuration: 0
+  - m_FullHash: -1130755777
+    m_VirtualCamera: {fileID: 1298574169}
+    m_ActivateAfter: 0
+    m_MinDuration: 0
+  - m_FullHash: -604752631
+    m_VirtualCamera: {fileID: 1298574169}
+    m_ActivateAfter: 0
+    m_MinDuration: 0
+  - m_FullHash: 1130333774
+    m_VirtualCamera: {fileID: 1298574169}
+    m_ActivateAfter: 0
+    m_MinDuration: 0
+  - m_FullHash: 155712631
+    m_VirtualCamera: {fileID: 1298574169}
+    m_ActivateAfter: 0
+    m_MinDuration: 0
+  - m_FullHash: -1657379778
+    m_VirtualCamera: {fileID: 1298574169}
+    m_ActivateAfter: 0
+    m_MinDuration: 0
+  - m_FullHash: 1718862356
+    m_VirtualCamera: {fileID: 1298574169}
+    m_ActivateAfter: 0
+    m_MinDuration: 0
+  - m_FullHash: 457199773
+    m_VirtualCamera: {fileID: 1298574169}
+    m_ActivateAfter: 0
+    m_MinDuration: 0
+  - m_FullHash: -1744805400
+    m_VirtualCamera: {fileID: 1298574169}
+    m_ActivateAfter: 0
+    m_MinDuration: 0
+  - m_FullHash: -278308518
+    m_VirtualCamera: {fileID: 1298574169}
+    m_ActivateAfter: 0
+    m_MinDuration: 0
+  - m_FullHash: 1625538346
+    m_VirtualCamera: {fileID: 1298574169}
+    m_ActivateAfter: 0
+    m_MinDuration: 0
+  - m_FullHash: -1498329036
+    m_VirtualCamera: {fileID: 1298574169}
+    m_ActivateAfter: 0
+    m_MinDuration: 0
+  - m_FullHash: 484251139
+    m_VirtualCamera: {fileID: 1298574169}
+    m_ActivateAfter: 0
+    m_MinDuration: 0
+  - m_FullHash: -1852808940
+    m_VirtualCamera: {fileID: 1298574169}
+    m_ActivateAfter: 0
+    m_MinDuration: 0
+  - m_FullHash: 441364566
+    m_VirtualCamera: {fileID: 1298574169}
+    m_ActivateAfter: 0
+    m_MinDuration: 0
+  - m_FullHash: -1404840944
+    m_VirtualCamera: {fileID: 1298574169}
+    m_ActivateAfter: 0
+    m_MinDuration: 0
+  - m_FullHash: -2003858617
+    m_VirtualCamera: {fileID: 1298574169}
+    m_ActivateAfter: 0
+    m_MinDuration: 0
   m_DefaultBlend:
     m_Style: 1
     m_Time: 0.2
