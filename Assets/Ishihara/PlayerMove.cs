@@ -4,6 +4,7 @@ using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 using UnityEditor.Animations;
 using UnityEngine.InputSystem;
+using Unity.VisualScripting;
 
 public class PlayerMove : MonoBehaviour
 {
@@ -13,7 +14,7 @@ public class PlayerMove : MonoBehaviour
     private Animator _animator = null;
 
     /// <summary>プレイヤーの親コンボーネント</summary>
-    private BasePlayer _palyer = null;
+    private BasePlayer _player = null;
 
     /// <summary>アニメーションパラメーターの情報</summary>
     private PlayerAnimation _animationPram = null;
@@ -31,10 +32,10 @@ public class PlayerMove : MonoBehaviour
     /// </summary>
     void Start()
     {
-        _animator = GetComponent<Animator>();       // アニメーター取得
-        _palyer = GetComponent<BasePlayer>();       // プレイヤー取得
-        _animationPram = _palyer.selfAnimationData; // アニメーションデータ取得
-        _collisionPram = _palyer.selfCollisionData; // コリジョンデータ取得
+        _player = GetComponent<BasePlayer>();       // プレイヤー取得
+        _animator = _player.selfAnimator;       // アニメーター取得
+        _animationPram = _player.selfAnimationData; // アニメーションデータ取得
+        _collisionPram = _player.selfCollisionData; // コリジョンデータ取得
 
         AnimatorController controller = _animator.runtimeAnimatorController as AnimatorController;
         if (controller == null) return;
@@ -59,23 +60,28 @@ public class PlayerMove : MonoBehaviour
     /// <summary>
     /// ゲームループで（1秒間に何回も）呼ばれる
     /// </summary>
-    void FixedUpdate()
+    void Update()
     {
+        //if(_animationPram == null)return;
+
         // 0 レイヤーの再生されているアニメーション情報を呼び出す
         AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
 
         // 回避になったら走りに遷移させる
         if (stateInfo.IsName(_animationPram.movePram[(int)PlayerAnimation.MoveAnimation.AVOIDANCE]) &&
-            _palyer.selfMoveState != PlayerAnimation.MoveAnimation.RUN)
-            _palyer.selfMoveState = PlayerAnimation.MoveAnimation.RUN;
+            _player.selfMoveState != PlayerAnimation.MoveAnimation.RUN)
+            _player.selfMoveState = PlayerAnimation.MoveAnimation.RUN;
            
     }
 
     /// <summary>
     /// 入力に応じて角度の変更とアニメーションの再生をする
     /// </summary>
-    public void Move(Vector3 moveVec, PlayerAnimation.MoveAnimation moveState)
+    public void Move(Vector2 moveVec, PlayerAnimation.MoveAnimation moveState)
     {
+        //if (_animationPram == null) return;
+
+                    Debug.Log(moveState);
         // 移動できるアニメーション状況なら
         if (!CheckAssailable()) return;
 
@@ -85,9 +91,9 @@ public class PlayerMove : MonoBehaviour
         // 向きを入力の方向に向く
         float temp;
 
-        temp = Mathf.Atan2(moveVec.z, moveVec.x);
+        temp = Mathf.Atan2(moveVec.y, moveVec.x);
 
-        _palyer.selfFrontAngleZ = temp * Mathf.Rad2Deg;
+        _player.selfFrontAngleZ = (temp * Mathf.Rad2Deg);
     }
 
     /// <summary>
@@ -105,7 +111,6 @@ public class PlayerMove : MonoBehaviour
         result = stateInfo.IsName(_animationPram.movePram[(int)PlayerAnimation.MoveAnimation.IDLE]) || 
             stateInfo.IsName(_animationPram.movePram[(int)PlayerAnimation.MoveAnimation.WALK]) || 
             stateInfo.IsName(_animationPram.movePram[(int)PlayerAnimation.MoveAnimation.AVOIDANCE]) || 
-            stateInfo.IsName(_animationPram.movePram[(int)PlayerAnimation.MoveAnimation.AVOIDANCE]) || 
             stateInfo.IsName(_animationPram.movePram[(int)PlayerAnimation.MoveAnimation.RUN]);
 
         return result;
@@ -118,13 +123,13 @@ public class PlayerMove : MonoBehaviour
     bool CheckChangeMoveState(PlayerAnimation.MoveAnimation state)
     {
         // 結果
-        bool result = false;
+        bool result = true;
 
-        // 0 レイヤーの再生されているアニメーション情報を呼び出す
-        AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
+        //// 0 レイヤーの再生されているアニメーション情報を呼び出す
+        //AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
 
-        // 現在のステートとアニメーションが違っていたら
-        result = stateInfo.IsName(_animationPram.movePram[(int)state]);
+        //// 現在のステートとアニメーションが違っていたら
+        //result = stateInfo.IsName(_animationPram.movePram[(int)state]);
 
         return result; 
     }
@@ -155,14 +160,14 @@ public class PlayerMove : MonoBehaviour
                     // パラメーターを準備
                     CreateCollision.AttackData data = new CreateCollision.AttackData().zero();
 
-                    data.position = _palyer.transform.position;
+                    data.position = _player.transform.position;
                     data.radius = 2;
                     data.layer = _collisionPram.collisionLayers[(int)CollisionAction.CollisionLayer.PLAYER_SURVIVE];
                     data.tagname = _collisionPram.collisionTags[(int)CollisionAction.CollisionTag.AVOIDANCE];
                     data.time = _avoidanceTime;
 
                     // 生成
-                    CreateCollision.instance.CreateCollisionSphere(_palyer.gameObject, data);
+                    //CreateCollision.instance.CreateCollisionSphere(_player.gameObject, data);
 
                 break;
             }

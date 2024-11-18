@@ -869,7 +869,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Actions: {fileID: -944628639613478452, guid: 5748849e55f667d42869ea65e09ad9b4, type: 3}
-  m_NotificationBehavior: 0
+  m_NotificationBehavior: 2
   m_UIInputModule: {fileID: 0}
   m_DeviceLostEvent:
     m_PersistentCalls:
@@ -880,7 +880,43 @@ MonoBehaviour:
   m_ControlsChangedEvent:
     m_PersistentCalls:
       m_Calls: []
-  m_ActionEvents: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 0fcbc45e-32b4-4dd8-beed-0bcd807771ec
+    m_ActionName: Player/Look[/Mouse/delta]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1845350343}
+        m_TargetAssemblyTypeName: Zunda, Assembly-CSharp
+        m_MethodName: OnMove
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 38268f0e-4696-4181-a98f-530853dd74af
+    m_ActionName: Player/Move[/XInputControllerWindows/leftStick,/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1845350343}
+        m_TargetAssemblyTypeName: Zunda, Assembly-CSharp
+        m_MethodName: OnRun
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 9a3bbe0d-bcb0-49c3-ad41-54357b79b906
+    m_ActionName: Player/Run[/Keyboard/shift,/XInputControllerWindows/buttonSouth]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -898,8 +934,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec5093543b35da84cb277f180bb73504, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selfAnimator: {fileID: 1845350344}
   playerAnimation: {fileID: 11400000, guid: f7c2d37f1ed27d946baa0f8d2390fafa, type: 2}
   collisionAction: {fileID: 11400000, guid: ee9c9448eb08cf449b03ba2affff0bb5, type: 2}
+--- !u!95 &1845350344 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5763272221447493137, guid: 59827da187accf94584def2cedf901fe, type: 3}
+  m_PrefabInstance: {fileID: 1994833378}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1994833378
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -955,5 +997,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5763272221447493137, guid: 59827da187accf94584def2cedf901fe, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 22100000, guid: 40d49a3b482dada4992461333fa1db54, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 59827da187accf94584def2cedf901fe, type: 3}

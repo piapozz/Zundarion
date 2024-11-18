@@ -14,6 +14,9 @@ public abstract class BasePlayer : MonoBehaviour
        
     }
 
+    /// <summary>アニメーターコンポーネント</summary>
+    public Animator selfAnimator = null;
+
     /// <summary>自身の現在の体力</summary>
     //public float selfCurrentHealth { get => selfTankHealth?.CurrentHealth ?? 0.0f; }
 
@@ -21,7 +24,7 @@ public abstract class BasePlayer : MonoBehaviour
     public float selfComboCount { get; protected set; }
 
     /// <summary>現在の移動ステート</summary>
-    public PlayerAnimation.MoveAnimation selfMoveState { get; set; }
+    public PlayerAnimation.MoveAnimation selfMoveState  { get; set; }
 
     /// <summary>プレイヤーの移動速度</summary>
     public float selfMoveSpeed { get; protected set; }
@@ -49,25 +52,25 @@ public abstract class BasePlayer : MonoBehaviour
     /// <summary>障害物のレイヤーマスク</summary>
     protected LayerMask obstacleLayerMask { get; private set; }
 
+    /// <summary>プレイヤーの入力方向</summary>
+    protected Vector2 inputMove = Vector3.zero;
+
+    /// <summary>戦車の移動コンポーネント</summary>
+    protected bool inputRun = false;
+
     // private //////////////////////////////////////////////////////////////////
 
-    /// <summary>アニメーターコンポーネント</summary>
-    private Animator _selfAnimator = null;
-
     /// <summary>プレイヤーの移動コンポーネント</summary>
-    private PlayerMove _selfMove = null;
+    private PlayerMove _selfMove ;
 
     /// <summary>プレイヤーの入力</summary>
-    private PlayerInput _playerInput = null;
+    private PlayerInput _playerInput ;
 
     /// <summary>プレイヤーの移動入力状態</summary>
     private InputAction _inputAction;
 
-    /// <summary>プレイヤーの入力方向</summary>
-    private Vector3 _inputMove = Vector3.zero;
-
-    /// <summary>戦車の移動コンポーネント</summary>
-    private bool _inputRun = false;
+    /// <summary>長押しを受け取る対象のAction</summary>
+    private InputActionReference hold;
 
     /// <summary>戦車の砲弾発射コンポーネント</summary>
     //private TankShooting selfTankShooting = null;
@@ -75,33 +78,29 @@ public abstract class BasePlayer : MonoBehaviour
     /// <summary>ターゲットの前フレームでの座標</summary>
     private Vector3 _oldPosition = Vector3.zero;
 
-    /// <summary>ターゲットの前フレームでの発射準備状態</summary>
-    //private bool oldLaunchPrepare = false;
-
-    /// <summary>
-    /// OnEnable()より前に1度だけ呼ばれる
-    /// </summary>
-    private void Awake()
-    {
-
-#if GUI_OUTPUT
-        gui_instanceNum = BasePlayer.gui_instanceTotalNum++;
-#endif
-    }
-
     // Start is called before the first frame update
     /// <summary>
     /// 開始時に１度呼ばれる
     /// </summary>
-    void Start()
+    void Awake()
     {
         obstacleLayerMask = LayerMask.GetMask("FieldObject");
-        _selfAnimator = GetComponent<Animator>();
-        _selfMove = GetComponent<PlayerMove>();
         _playerInput = GetComponent<PlayerInput>();
         _inputAction = _playerInput.actions["Move"];
+        _selfMove = GetComponent<PlayerMove>();
+        selfMoveState = PlayerAnimation.MoveAnimation.IDLE;
 
         Init();
+
+        if (hold == null) return;
+
+        // InputActionReferenceのholdにハンドラを登録する
+        hold.action.performed += OnRun;
+
+        // 入力を受け取るために有効化
+        hold.action.Enable();
+
+
     }
 
 
@@ -114,19 +113,22 @@ public abstract class BasePlayer : MonoBehaviour
         // ターゲットの情報収集
 
 
-        if(_inputRun) selfMoveState = PlayerAnimation.MoveAnimation.AVOIDANCE;
+        if(inputRun) selfMoveState = PlayerAnimation.MoveAnimation.AVOIDANCE;
         else selfMoveState = PlayerAnimation.MoveAnimation.WALK;
 
-        if(!_inputAction.inProgress) selfMoveState = PlayerAnimation.MoveAnimation.IDLE;
+        if(inputMove == Vector2.zero) selfMoveState = PlayerAnimation.MoveAnimation.IDLE;
 
         // AIの更新
         // UpdateAI();
 
-        // 出力の調整
-        Quaternion q = Quaternion.AngleAxis(selfFrontAngleZ, Vector3.up);
-        this.transform.rotation = Quaternion.RotateTowards(this.transform.rotation, this.transform.rotation * q, 1);
+        _selfMove.Move(inputMove, selfMoveState);
 
-        _selfMove.Move( _inputMove, selfMoveState);
+        if (inputMove == Vector2.zero) return;
+
+        // 出力の調整
+        Quaternion q = Quaternion.AngleAxis(selfFrontAngleZ - 90, Vector3.down);
+        this.transform.rotation = Quaternion.RotateTowards(this.transform.rotation,  q, 5);
+
 
         // 次フレームのために情報を残す
 
@@ -135,14 +137,16 @@ public abstract class BasePlayer : MonoBehaviour
     // アクションマップのMoveに登録されているキーが押されたときに入力値を取得
     public void OnMove(InputAction.CallbackContext context)
     {
-        _inputMove = context.ReadValue<Vector2>();
+        inputMove = context.ReadValue<Vector2>();
     }
 
     // ActionsのRunに割り当てられている入力があったなら実行
     public void OnRun(InputAction.CallbackContext context)
     {
-        if (context.ReadValue<bool>()) _inputRun = !_inputRun;
+        if (context.ReadValue<float>() != 0) inputRun = true;
+        else inputRun = false;
     }
+
 
 #if GUI_OUTPUT
 
@@ -207,11 +211,12 @@ public abstract class BasePlayer : MonoBehaviour
 #endif  // GUI_OUTPUT
 
     /// <summary>GUIに自身の情報を出力</summary>
-    virtual protected void GUIOutputSelfInfo()
+    protected void GUIOutputSelfInfo()
     {
 #if GUI_OUTPUT
         GUILayout.Label("SelfPosition: " + transform.position);
         GUILayout.Label("SelfYRotation: " + transform.rotation.eulerAngles.y);
+        GUILayout.Label("input.x: " + _inputMove.z "input.y" + _inputMove.y);
 #endif  // GUI_OUTPUT
     }
 }
