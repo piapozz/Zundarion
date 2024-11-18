@@ -3,21 +3,10 @@ using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 using UnityEditor.Animations;
+using UnityEngine.InputSystem;
 
 public class PlayerMove : MonoBehaviour
 {
-    // public //////////////////////////////////////////////////////////////////
-
-    public enum MoveState
-    {
-        IDLE,
-        WALK,
-        AVOIDANCE,
-        RUN,
-
-        MAX
-    }
-
     // private //////////////////////////////////////////////////////////////////
 
     /// <summary>プレイヤーのアニメーター</summary>
@@ -27,7 +16,10 @@ public class PlayerMove : MonoBehaviour
     private BasePlayer _palyer = null;
 
     /// <summary>アニメーションパラメーターの情報</summary>
-    private PlayerAnimation _animationPram;
+    private PlayerAnimation _animationPram = null;
+
+    /// <summary>アニメーションパラメーターの情報</summary>
+    private CollisionAction _collisionPram;
 
     /// <summary>回避の再生時間</summary>
     private float _avoidanceTime = 0f;
@@ -42,6 +34,7 @@ public class PlayerMove : MonoBehaviour
         _animator = GetComponent<Animator>();       // アニメーター取得
         _palyer = GetComponent<BasePlayer>();       // プレイヤー取得
         _animationPram = _palyer.selfAnimationData; // アニメーションデータ取得
+        _collisionPram = _palyer.selfCollisionData; // コリジョンデータ取得
 
         AnimatorController controller = _animator.runtimeAnimatorController as AnimatorController;
         if (controller == null) return;
@@ -50,7 +43,7 @@ public class PlayerMove : MonoBehaviour
         {
             foreach (var state in layer.stateMachine.states)
             {
-                if (state.state.name == _animationPram.movePram[(int)MoveState.AVOIDANCE])
+                if (state.state.name == _animationPram.movePram[(int)PlayerAnimation.MoveAnimation.AVOIDANCE])
                 {
                     Motion motion = state.state.motion;
                     if (motion is AnimationClip clip)
@@ -72,16 +65,16 @@ public class PlayerMove : MonoBehaviour
         AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
 
         // 回避になったら走りに遷移させる
-        if (stateInfo.IsName(_animationPram.movePram[(int)MoveState.AVOIDANCE]) &&
-            _palyer.selfMoveState !=　MoveState.RUN)
-            _palyer.selfMoveState = MoveState.RUN;
+        if (stateInfo.IsName(_animationPram.movePram[(int)PlayerAnimation.MoveAnimation.AVOIDANCE]) &&
+            _palyer.selfMoveState != PlayerAnimation.MoveAnimation.RUN)
+            _palyer.selfMoveState = PlayerAnimation.MoveAnimation.RUN;
            
     }
 
     /// <summary>
     /// 入力に応じて角度の変更とアニメーションの再生をする
     /// </summary>
-    public void Move(Vector3 moveVec, MoveState moveState)
+    public void Move(Vector3 moveVec, PlayerAnimation.MoveAnimation moveState)
     {
         // 移動できるアニメーション状況なら
         if (!CheckAssailable()) return;
@@ -109,10 +102,11 @@ public class PlayerMove : MonoBehaviour
         AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
 
         // 現在のアニメーションがIdle,Move,Run,Avoidならtrue
-        result = stateInfo.IsName(_animationPram.movePram[(int)MoveState.IDLE]) || 
-            stateInfo.IsName(_animationPram.movePram[(int)MoveState.WALK]) || 
-            stateInfo.IsName(_animationPram.movePram[(int)MoveState.AVOIDANCE]) || 
-            stateInfo.IsName(_animationPram.movePram[(int)MoveState.RUN]);
+        result = stateInfo.IsName(_animationPram.movePram[(int)PlayerAnimation.MoveAnimation.IDLE]) || 
+            stateInfo.IsName(_animationPram.movePram[(int)PlayerAnimation.MoveAnimation.WALK]) || 
+            stateInfo.IsName(_animationPram.movePram[(int)PlayerAnimation.MoveAnimation.AVOIDANCE]) || 
+            stateInfo.IsName(_animationPram.movePram[(int)PlayerAnimation.MoveAnimation.AVOIDANCE]) || 
+            stateInfo.IsName(_animationPram.movePram[(int)PlayerAnimation.MoveAnimation.RUN]);
 
         return result;
     }
@@ -121,7 +115,7 @@ public class PlayerMove : MonoBehaviour
     /// 現在の移動ステートが変わっているか調べる
     /// trueなら変わっている
     /// </summary>
-    bool CheckChangeMoveState(MoveState state)
+    bool CheckChangeMoveState(PlayerAnimation.MoveAnimation state)
     {
         // 結果
         bool result = false;
@@ -132,27 +126,27 @@ public class PlayerMove : MonoBehaviour
         // 現在のステートとアニメーションが違っていたら
         result = stateInfo.IsName(_animationPram.movePram[(int)state]);
 
-        return result;
+        return result; 
     }
 
     /// <summary>
     /// アニメーションIndexに切り替えとそれに伴う処理をする
     /// </summary>
-    void ChangeMoveState(MoveState state)
+    void ChangeMoveState(PlayerAnimation.MoveAnimation state)
     {
         // MoveIndexを変更
         switch (state)
         {
-            case MoveState.IDLE:
-            case MoveState.WALK:
-            case MoveState.RUN:
+            case PlayerAnimation.MoveAnimation.IDLE:
+            case PlayerAnimation.MoveAnimation.WALK:
+            case PlayerAnimation.MoveAnimation.RUN:
             {
                 _animator.SetInteger("Move", (int)state);
                 break;
             }
 
 
-            case MoveState.AVOIDANCE:
+            case PlayerAnimation.MoveAnimation.AVOIDANCE:
             {
                 _animator.SetInteger("Move", (int)state);
 
@@ -163,8 +157,8 @@ public class PlayerMove : MonoBehaviour
 
                     data.position = _palyer.transform.position;
                     data.radius = 2;
-                    data.layer = "Player";
-                    data.tagname = "Avoidance";
+                    data.layer = _collisionPram.collisionLayers[(int)CollisionAction.CollisionLayer.PLAYER_SURVIVE];
+                    data.tagname = _collisionPram.collisionTags[(int)CollisionAction.CollisionTag.AVOIDANCE];
                     data.time = _avoidanceTime;
 
                     // 生成

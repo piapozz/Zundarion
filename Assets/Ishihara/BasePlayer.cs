@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.EventSystems.StandaloneInputModule;
+using UnityEngine.InputSystem;
 
 public abstract class BasePlayer : MonoBehaviour
 {
@@ -19,7 +21,7 @@ public abstract class BasePlayer : MonoBehaviour
     public float selfComboCount { get; protected set; }
 
     /// <summary>現在の移動ステート</summary>
-    public PlayerMove.MoveState selfMoveState { get; set; }
+    public PlayerAnimation.MoveAnimation selfMoveState { get; set; }
 
     /// <summary>プレイヤーの移動速度</summary>
     public float selfMoveSpeed { get; protected set; }
@@ -30,13 +32,19 @@ public abstract class BasePlayer : MonoBehaviour
     /// <summary>アニメーションのパラメーター情報</summary>
     public PlayerAnimation selfAnimationData { get; protected set; }
 
+    /// <summary>アニメーションのパラメーター情報</summary>
+    public CollisionAction selfCollisionData { get; protected set; }
+
     /// <summary>自身の前方アングル</summary>
     public float selfFrontAngleZ { get; set; }
 
     // protected //////////////////////////////////////////////////////////////////
 
+    /// <summary>派生先による初期化</summary>
+    protected abstract void Init();
+
     /// <summary>毎フレーム呼ばれるAIによる操作</summary>
-    protected abstract void UpdateAI();
+    // protected abstract void UpdateAI();
 
     /// <summary>障害物のレイヤーマスク</summary>
     protected LayerMask obstacleLayerMask { get; private set; }
@@ -47,10 +55,19 @@ public abstract class BasePlayer : MonoBehaviour
     private Animator _selfAnimator = null;
 
     /// <summary>プレイヤーの移動コンポーネント</summary>
-    private PlayerMove selfMove = null;
+    private PlayerMove _selfMove = null;
+
+    /// <summary>プレイヤーの入力</summary>
+    private PlayerInput _playerInput = null;
+
+    /// <summary>プレイヤーの移動入力状態</summary>
+    private InputAction _inputAction;
+
+    /// <summary>プレイヤーの入力方向</summary>
+    private Vector3 _inputMove = Vector3.zero;
 
     /// <summary>戦車の移動コンポーネント</summary>
-    //private TankMovement selfTankMovement = null;
+    private bool _inputRun = false;
 
     /// <summary>戦車の砲弾発射コンポーネント</summary>
     //private TankShooting selfTankShooting = null;
@@ -80,7 +97,11 @@ public abstract class BasePlayer : MonoBehaviour
     {
         obstacleLayerMask = LayerMask.GetMask("FieldObject");
         _selfAnimator = GetComponent<Animator>();
-        selfMove = GetComponent<PlayerMove>();
+        _selfMove = GetComponent<PlayerMove>();
+        _playerInput = GetComponent<PlayerInput>();
+        _inputAction = _playerInput.actions["Move"];
+
+        Init();
     }
 
 
@@ -92,16 +113,35 @@ public abstract class BasePlayer : MonoBehaviour
     {
         // ターゲットの情報収集
 
+
+        if(_inputRun) selfMoveState = PlayerAnimation.MoveAnimation.AVOIDANCE;
+        else selfMoveState = PlayerAnimation.MoveAnimation.WALK;
+
+        if(!_inputAction.inProgress) selfMoveState = PlayerAnimation.MoveAnimation.IDLE;
+
         // AIの更新
-        UpdateAI();
+        // UpdateAI();
 
         // 出力の調整
         Quaternion q = Quaternion.AngleAxis(selfFrontAngleZ, Vector3.up);
         this.transform.rotation = Quaternion.RotateTowards(this.transform.rotation, this.transform.rotation * q, 1);
 
-        // selfMove.Move( , );
+        _selfMove.Move( _inputMove, selfMoveState);
 
         // 次フレームのために情報を残す
+
+    }
+
+    // アクションマップのMoveに登録されているキーが押されたときに入力値を取得
+    public void OnMove(InputAction.CallbackContext context)
+    {
+        _inputMove = context.ReadValue<Vector2>();
+    }
+
+    // ActionsのRunに割り当てられている入力があったなら実行
+    public void OnRun(InputAction.CallbackContext context)
+    {
+        if (context.ReadValue<bool>()) _inputRun = !_inputRun;
     }
 
 #if GUI_OUTPUT
