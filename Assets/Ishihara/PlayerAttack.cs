@@ -10,7 +10,7 @@ public class PlayerAttack : MonoBehaviour
     private Animator _animator = null;
 
     /// <summary>プレイヤーの親コンボーネント</summary>
-    private BasePlayer _palyer = null;
+    private BasePlayer _player = null;
 
     /// <summary>当たり判定生成コンポーネント</summary>
     private CreateCollision _createCollision = null;
@@ -30,10 +30,10 @@ public class PlayerAttack : MonoBehaviour
     /// </summary>
     void Start()
     {
-        _animator = GetComponent<Animator>();   // アニメーター取得
-        _palyer = GetComponent<BasePlayer>();   // プレイヤー取得
-        _animationPram = _palyer.selfAnimationData; // アニメーションデータ取得
-        _collisionPram = _palyer.selfCollisionData; // コリジョンデータ取得
+        _player = GetComponent<BasePlayer>();   // プレイヤー取得
+        _animator = _player.selfAnimator;   // アニメーター取得
+        _animationPram = _player.selfAnimationData; // アニメーションデータ取得
+        _collisionPram = _player.selfCollisionData; // コリジョンデータ取得
     }
 
     // Update is called once per frame
@@ -52,7 +52,7 @@ public class PlayerAttack : MonoBehaviour
     void Attack()
     {
         // コンボの派生がまだあるなら
-        if(_comboCount >= _palyer.selfComboCount) return;
+        if(_comboCount >= _player.selfComboCount) return;
 
         // 攻撃できるアニメーション状況なら
         if(!CheckAssailable()) return;
@@ -62,7 +62,17 @@ public class PlayerAttack : MonoBehaviour
         _animator.SetTrigger(_animationPram.attackPram[(int)PlayerAnimation.AttackAnimation.ATTACK]);
 
         // 当たり判定を生成する
+        // パラメーターを準備
+        CreateCollision.AttackData data = new CreateCollision.AttackData().zero();
 
+        data.position = _player.transform.position;
+        data.radius = 2;
+        data.layer = _collisionPram.collisionLayers[(int)CollisionAction.CollisionLayer.PLAYER_ATTACK];
+        data.tagname = _collisionPram.collisionTags[(int)CollisionAction.CollisionTag.ATTACK_NOMAL];
+        data.time = 2;
+
+        // 生成
+        CreateCollision.instance.CreateCollisionSphere(_player.gameObject, data);
     }
 
     /// <summary>
