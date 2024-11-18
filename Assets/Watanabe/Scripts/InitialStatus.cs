@@ -12,4 +12,5 @@ public class InitialStatus : ScriptableObject
     public int health;
     public int speed;
     public int power;
+    public float breakMax;
 }

@@ -11,9 +11,6 @@ using UnityEngine.UIElements;
 
 public class EnemyBear : EnemyBase
 {
-
-    int count = 0;
-
     // 敵の
     public enum StateBear
     {
@@ -23,24 +20,37 @@ public class EnemyBear : EnemyBase
         STATE_TURN,                   // 距離は近いが攻撃範囲から外れたとき
         STATE_ATTACK,                 // 通常攻撃
         STATE_ATTACK_UNIQUE,          // 特定の条件下でする攻撃
+        STATE_DOWN,                   // ダウン状態
         STATE_DEAD,                   // 倒されたとき
 
         MAX
     }
     
     // 敵の行動
+    // ※ダメージ処理を最後にしないとステートが更新されて生き返ったりする
     protected override void UpdateEnemy()
     {
+        // Rayを飛ばしてPlayerタグだったものの情報を取得
+        // GetPlayerObject();
+
         // 行動する
         status.m_state.Action(status);
 
-        // 条件でステートの変更
-        // 敵が近かったら
-        if (1 == 1) status.m_state = new BearAttack();
+        // ブレイク値が溜まったら
+        if (status.m_breakMax <= status.m_break)
+        {
+            // 状態の切り替え
+            status.m_state = new BearDown();
+        }
 
-        
+        // ダメージ処理
+        if(status.m_health <= 0)
+        {
+            status.m_state = new BearDead();
+        }
 
-
+        // アニメーションの再生が終わったら自身を消滅
+        if (status.m_dead == true) Destroy(this.gameObject);
     }
 
     protected override void Init()
