@@ -41,6 +41,8 @@ public abstract class BasePlayer : MonoBehaviour
     /// <summary>自身の前方アングル</summary>
     public float selfFrontAngleZ { get; set; }
 
+    public GameObject selfGameObject { get; private set; }
+
     // protected //////////////////////////////////////////////////////////////////
 
     /// <summary>派生先による初期化</summary>
@@ -55,13 +57,19 @@ public abstract class BasePlayer : MonoBehaviour
     /// <summary>プレイヤーの入力方向</summary>
     protected Vector2 inputMove = Vector3.zero;
 
-    /// <summary>戦車の移動コンポーネント</summary>
+    /// <summary>走る入力</summary>
     protected bool inputRun = false;
+
+    /// <summary>攻撃入力</summary>
+    protected bool inputAttack = false;
 
     // private //////////////////////////////////////////////////////////////////
 
     /// <summary>プレイヤーの移動コンポーネント</summary>
     private PlayerMove _selfMove ;
+
+    /// <summary>プレイヤーの攻撃コンポーネント</summary>
+    private PlayerAttack _selfAttack;
 
     /// <summary>プレイヤーの入力</summary>
     private PlayerInput _playerInput ;
@@ -88,7 +96,10 @@ public abstract class BasePlayer : MonoBehaviour
         _playerInput = GetComponent<PlayerInput>();
         _inputAction = _playerInput.actions["Move"];
         _selfMove = GetComponent<PlayerMove>();
+        _selfAttack = GetComponent<PlayerAttack>();
         selfMoveState = PlayerAnimation.MoveAnimation.IDLE;
+        selfComboCount = 3;
+        selfGameObject = this.gameObject;
 
         Init();
 
@@ -111,10 +122,10 @@ public abstract class BasePlayer : MonoBehaviour
     private void Update()
     {
         // ターゲットの情報収集
-
+        this.transform.position = new Vector3(transform.position.x, 0, transform.position.z);
 
         if(inputRun) selfMoveState = PlayerAnimation.MoveAnimation.AVOIDANCE;
-        else selfMoveState = PlayerAnimation.MoveAnimation.WALK;
+        else if(selfMoveState != PlayerAnimation.MoveAnimation.RUN) selfMoveState = PlayerAnimation.MoveAnimation.WALK;
 
         if(inputMove == Vector2.zero) selfMoveState = PlayerAnimation.MoveAnimation.IDLE;
 
@@ -123,11 +134,13 @@ public abstract class BasePlayer : MonoBehaviour
 
         _selfMove.Move(inputMove, selfMoveState);
 
+        if(inputAttack) _selfAttack.Attack();
+
         if (inputMove == Vector2.zero) return;
 
         // 出力の調整
         Quaternion q = Quaternion.AngleAxis(selfFrontAngleZ - 90, Vector3.down);
-        this.transform.rotation = Quaternion.RotateTowards(this.transform.rotation,  q, 5);
+        this.transform.rotation = Quaternion.RotateTowards(this.transform.rotation,  q, 0.5f);
 
 
         // 次フレームのために情報を残す
@@ -147,6 +160,12 @@ public abstract class BasePlayer : MonoBehaviour
         else inputRun = false;
     }
 
+    // ActionsのAttakに割り当てられている入力があったなら実行
+    public void OnAttack(InputAction.CallbackContext context)
+    {
+        if(context.ReadValue<float>() != 0) inputAttack = true;
+        else inputAttack = false;
+    }
 
 #if GUI_OUTPUT
 

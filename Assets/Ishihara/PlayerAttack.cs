@@ -43,16 +43,16 @@ public class PlayerAttack : MonoBehaviour
     void Update()
     {
         // 定期的にコンボ回数を初期化する
-        _comboCount = 0;
+        //_comboCount = 0;
     }
 
     /// <summary>
     /// アニメーションを攻撃に更新して、当たり判定を生成する
     /// </summary>
-    void Attack()
+    public void Attack()
     {
         // コンボの派生がまだあるなら
-        if(_comboCount >= _player.selfComboCount) return;
+        if(_comboCount > _player.selfComboCount) return;
 
         // 攻撃できるアニメーション状況なら
         if(!CheckAssailable()) return;
@@ -72,7 +72,7 @@ public class PlayerAttack : MonoBehaviour
         data.time = 2;
 
         // 生成
-        CreateCollision.instance.CreateCollisionSphere(_player.gameObject, data);
+        CreateCollision.instance.CreateCollisionSphere(_player.selfGameObject, data);
     }
 
     /// <summary>
@@ -80,7 +80,20 @@ public class PlayerAttack : MonoBehaviour
     /// </summary>
     bool CheckAssailable()
     {
-        return true;
+        bool result;
+
+        // 0 レイヤーの再生されているアニメーション情報を呼び出す
+        AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
+
+        // 現在のステートとアニメーションが違っていたら
+        result = !stateInfo.IsName("Attack_1") &&
+                !stateInfo.IsName("Attack_2") &&
+                !stateInfo.IsName("Attack_3") &&
+                !_animator.IsInTransition(0);
+
+        
+
+        return result;
     }
 
 }
