@@ -917,6 +917,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 9a3bbe0d-bcb0-49c3-ad41-54357b79b906
     m_ActionName: Player/Run[/Keyboard/shift,/XInputControllerWindows/buttonSouth]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1845350343}
+        m_TargetAssemblyTypeName: BasePlayer, Assembly-CSharp
+        m_MethodName: OnAttack
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: ac7c2958-fe63-486a-9968-d48ae68fb217
+    m_ActionName: Player/Attack[/Mouse/leftButton]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -942,6 +958,18 @@ Animator:
   m_CorrespondingSourceObject: {fileID: 5763272221447493137, guid: 59827da187accf94584def2cedf901fe, type: 3}
   m_PrefabInstance: {fileID: 1994833378}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1845350346
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1845350339}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01fe41a0bfb7f6b4c83365d6ffbc28ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1994833378
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -125,11 +125,11 @@ public class PlayerMove : MonoBehaviour
         // 結果
         bool result = true;
 
-        //// 0 レイヤーの再生されているアニメーション情報を呼び出す
-        //AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
+        // 0 レイヤーの再生されているアニメーション情報を呼び出す
+        AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
 
-        //// 現在のステートとアニメーションが違っていたら
-        //result = stateInfo.IsName(_animationPram.movePram[(int)state]);
+        // 現在のステートとアニメーションが違っていたら
+        result = stateInfo.IsName(_animationPram.movePram[(int)state]);
 
         return result; 
     }
@@ -167,7 +167,7 @@ public class PlayerMove : MonoBehaviour
                     data.time = _avoidanceTime;
 
                     // 生成
-                    //CreateCollision.instance.CreateCollisionSphere(_player.gameObject, data);
+                    CreateCollision.instance.CreateCollisionSphere(_player.gameObject, data);
 
                 break;
             }

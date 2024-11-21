@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -71,7 +72,6 @@ public class CreateCollision : MonoBehaviour
                     tagsProp.InsertArrayElementAtIndex(tagsProp.arraySize);
                     tagsProp.GetArrayElementAtIndex(tagsProp.arraySize - 1).stringValue = tag;
                     tagManager.ApplyModifiedProperties();
-                    Debug.Log("Tag '" + tag + "' has been added.");
                 }
             }
         }
@@ -93,11 +93,9 @@ public class CreateCollision : MonoBehaviour
                     {
                         layerSP.stringValue = layer;
                         tagManager.ApplyModifiedProperties();
-                        Debug.Log("Layer '" + layer + "' has been added.");
                         return;
                     }
                 }
-                Debug.LogWarning("Layer limit reached. Could not add layer '" + layer + "'.");
             }
         }
 
@@ -130,7 +128,7 @@ public class CreateCollision : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        instance = this;
     }
 
     // Update is called once per frame
@@ -154,13 +152,9 @@ public class CreateCollision : MonoBehaviour
             parent.transform
             );
 
-        // ゲームオブジェクトの設定
-        attackData.CheckTagAndLayer();
-        attack.tag = attackData.tagname;
-        attack.layer = LayerMask.NameToLayer(attackData.layer);
-
         // 新しくスフィアコライダーをアタッチ
-        SphereCollider sphere = attack.AddComponent<SphereCollider>();
+        attack.AddComponent<SphereCollider>();
+        SphereCollider sphere = attack.GetComponent<SphereCollider>();
 
         // 当たり判定の設定一覧
         sphere.center = Vector3.zero;
@@ -172,5 +166,10 @@ public class CreateCollision : MonoBehaviour
 
         // コリジョンチェックをアタッチ
         attack.AddComponent<CheckCollision>();
+
+        // ゲームオブジェクトの設定
+        attackData.CheckTagAndLayer();
+        attack.tag = attackData.tagname;
+        attack.layer = LayerMask.NameToLayer(attackData.layer);
     }
 }
