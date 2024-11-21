@@ -8,7 +8,7 @@ public class BearFound : IEnemyState
 {
     float animCount;
 
-    public void Action(EnemyBase.EnemyStatus enemyStatus)
+    public EnemyBase.EnemyStatus Action(EnemyBase.EnemyStatus enemyStatus)
     {
         // アニメーションが再生されていなかったら
         if (enemyStatus.m_animator.GetBool("Found") == false)
@@ -20,13 +20,15 @@ public class BearFound : IEnemyState
         }
 
         // アニメーションの現在時間を計算
-        animCount += enemyStatus.m_animatorState.speed * Time.deltaTime;
+        animCount = animCount + enemyStatus.m_animatorState.speed * Time.deltaTime;
 
         // アニメーションの再生が終了したら
         if (enemyStatus.m_animatorState.length < animCount)
         {
             // ステートを切り替える
-            enemyStatus.m_state = new BearTracking();
+            enemyStatus.m_state = (int)EnemyBase.EnemyStatus.ActionState.STATE_TRACKING;
         }
+
+        return enemyStatus;
     }
 }

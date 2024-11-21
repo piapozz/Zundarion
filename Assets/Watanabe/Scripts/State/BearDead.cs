@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class BearDead : IEnemyState
 {
     float animCount;
-    public void Action(EnemyBase.EnemyStatus enemyStatus)
+
+    public EnemyBase.EnemyStatus Action(EnemyBase.EnemyStatus enemyStatus)
     {
         // アニメーションを再生
         enemyStatus.m_animator.SetBool("Dead", true);
@@ -28,5 +30,7 @@ public class BearDead : IEnemyState
             // 死亡フラグをtrueに設定
             enemyStatus.m_dead = true;
         }
+
+        return enemyStatus;
     }
 }

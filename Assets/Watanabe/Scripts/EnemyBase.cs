@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Animations;
 using UnityEngine;
+using UnityEngine.AI;
+using static EnemyBase;
 
 // 敵クラスの親
 // 基礎ステータスと使用されるAIはScriptableObjectでいじれるように作る
@@ -10,7 +12,9 @@ using UnityEngine;
 
 public abstract class EnemyBase : MonoBehaviour
 {
-    public InitialStatus initialStatus;             // ScriptableObjectの情報
+    public InitialStatus initialStatus;     // ScriptableObjectの情報
+
+    protected IEnemyState actionState;      // ステート
 
     // 敵のステータス
     public struct EnemyStatus
@@ -29,8 +33,11 @@ public abstract class EnemyBase : MonoBehaviour
         public bool m_dead;                 // 死亡状態
         public Vector3 m_position;          // 敵の座標
         public Vector3 m_positionNext;      // 敵の移動後予定の座標
+        public Vector3 m_relativePosition;  // プレイヤーとの距離を測って行動する
+        public Quaternion m_toPlayerAngle;  // 敵から見たプレイヤーの方向
+        public Vector3 m_forward;
 
-        public IEnemyState m_state;                 // 敵の状態
+        public int m_state;                         // 敵の状態
         public GameObject m_gameObject;             // ゲームオブジェクト
         public GameObject m_playerObject;           // Playerのデータ
         public Animator m_animator;                 // キャラクターに使われているAnimator
@@ -51,11 +58,8 @@ public abstract class EnemyBase : MonoBehaviour
         }
     }
 
-    //public float visionDistance = 10.0f;  // 視界の距離
-    //public float visionAngle = 45.0f;     // 視野角
-    //public int rayCount = 50;             // 扇形に飛ばすRayの本数
-
-    protected EnemyStatus status;
+    protected EnemyStatus status;           // 構造体を生成
+    protected int oldState;                 // ステータスの初期化
 
     // 敵の行動
     protected abstract void UpdateEnemy();
@@ -66,16 +70,21 @@ public abstract class EnemyBase : MonoBehaviour
     // 初期設定
     private void Awake()
     {
-        // ScriptableObjectからステータスを取得
-        InputStatus();
-        // 敵の種類に応じて必要な初期化を実行
-        Init();
         // アニメーターの初期化
         status.m_animator = gameObject.GetComponent<Animator>();
         // 当たり判定の生成に使うGameObjectを初期化
         status.m_gameObject = this.gameObject;
         // プレイヤーを取得 ※GameObject.Find()は重いらしいので使うなら初期化などのタイミングで一括
         status.m_playerObject = GameObject.Find("Player");
+
+        status.m_forward = Vector3.forward;
+
+        // ステータスを初期化
+        oldState = (int)EnemyBase.EnemyStatus.ActionState.STATE_IDLE;
+        // ScriptableObjectからステータスを取得
+        InputStatus();
+        // 敵の種類に応じて必要な初期化を実行
+        Init();
     }
 
     // 敵の処理
@@ -83,6 +92,13 @@ public abstract class EnemyBase : MonoBehaviour
     {
         // アニメーションの状態を取得
         status.m_animatorState = status.m_animator.GetCurrentAnimatorStateInfo(0);
+
+        // 自身の位置情報を更新
+        PositionUpdate();
+
+        // プレイヤーとの相対座標を取得
+        GetRelativePosition();
+
         // AIの挙動
         UpdateEnemy();
     }
@@ -98,6 +114,10 @@ public abstract class EnemyBase : MonoBehaviour
     }
 
     /*
+    //public float visionDistance = 10.0f;  // 視界の距離
+    //public float visionAngle = 45.0f;     // 視野角
+    //public int rayCount = 50;             // 扇形に飛ばすRayの本数 
+     
     // Rayを飛ばして視野を作成
     protected void GetPlayerObject()
     {
@@ -139,15 +159,57 @@ public abstract class EnemyBase : MonoBehaviour
     }
     */
 
+    // 渡された番号でステートを変更
+    protected void SetState(int stateNum)
+    {
+        // ステートを保持しておく
+        oldState = stateNum;
+
+        switch (stateNum)
+        {
+            case (int)EnemyBase.EnemyStatus.ActionState.STATE_IDLE:
+                actionState = new BearIdle();
+                break;
+            case (int)EnemyBase.EnemyStatus.ActionState.STATE_FOUND:
+                actionState = new BearFound();
+                break;
+            case (int)EnemyBase.EnemyStatus.ActionState.STATE_TRACKING:
+                actionState = new BearTracking();
+                break;
+            case (int)EnemyBase.EnemyStatus.ActionState.STATE_TURN:
+                // actionState = new BearTurn();
+                break;
+            case (int)EnemyBase.EnemyStatus.ActionState.STATE_ATTACK:
+                actionState = new BearAttack();
+                break;
+            case (int)EnemyBase.EnemyStatus.ActionState.STATE_ATTACK_UNIQUE:
+                actionState = new BearAttackUnique();
+                break;
+            case (int)EnemyBase.EnemyStatus.ActionState.STATE_DOWN:
+                actionState = new BearDown();
+                break;
+            case (int)EnemyBase.EnemyStatus.ActionState.STATE_DEAD:
+                actionState = new BearDead();
+                break;
+
+        }
+    }
+
     // アニメーションで更新されたオブジェクトの座標を保存
     private void PositionUpdate()
     {
         status.m_position = gameObject.transform.position;
     }
 
+    // プレイヤーとの相対距離を取得
+    private void GetRelativePosition()
+    {
+        status.m_relativePosition = status.m_playerObject.transform.position - status.m_position;
+    }
+
     // ダメージを受ける
-    public void GetDamage(float damageSize) { status.m_health -= damageSize * status.m_defence * status.m_multiplier; }
+    public void ReceiveDamage(float damageSize) { status.m_health -= damageSize * status.m_defence * status.m_multiplier; }
 
     // ブレイク値を変動させる
-    public void GetBreakPoint(float breakSize) { status.m_break -= breakSize; }
+    public void ReceiveBreakPoint(float breakSize) { status.m_break -= breakSize; }
 }
