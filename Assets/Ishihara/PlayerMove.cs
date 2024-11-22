@@ -62,8 +62,6 @@ public class PlayerMove : MonoBehaviour
     /// </summary>
     void Update()
     {
-        //if(_animationPram == null)return;
-
         // 0 レイヤーの再生されているアニメーション情報を呼び出す
         AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
 
@@ -79,9 +77,6 @@ public class PlayerMove : MonoBehaviour
     /// </summary>
     public void Move(Vector2 moveVec, PlayerAnimation.MoveAnimation moveState)
     {
-        //if (_animationPram == null) return;
-
-                    Debug.Log(moveState);
         // 移動できるアニメーション状況なら
         if (!CheckAssailable()) return;
 
@@ -129,7 +124,7 @@ public class PlayerMove : MonoBehaviour
         AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
 
         // 現在のステートとアニメーションが違っていたら
-        result = stateInfo.IsName(_animationPram.movePram[(int)state]);
+        result = _animator.GetInteger("Move") != (int)state;
 
         return result; 
     }
