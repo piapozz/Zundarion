@@ -24,6 +24,14 @@ public class PlayerAttack : MonoBehaviour
     /// <summary>現在のコンボ数</summary>
     private int _comboCount = 0;
 
+    /// <summary>アニメーションの名前</summary>
+    private string[] _comboName =
+    {
+        "Attack_1",
+        "Attack_2",
+        "Attack_3"
+    };
+
     // Start is called before the first frame update
     /// <summary>
     /// 開始時に１度呼ばれる
@@ -43,7 +51,7 @@ public class PlayerAttack : MonoBehaviour
     void Update()
     {
         // 定期的にコンボ回数を初期化する
-        //_comboCount = 0;
+        _comboCount = 0;
     }
 
     /// <summary>
@@ -73,6 +81,8 @@ public class PlayerAttack : MonoBehaviour
 
         // 生成
         CreateCollision.instance.CreateCollisionSphere(_player.selfGameObject, data);
+
+        Debug.Log("xs");
     }
 
     /// <summary>
@@ -86,12 +96,8 @@ public class PlayerAttack : MonoBehaviour
         AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
 
         // 現在のステートとアニメーションが違っていたら
-        result = !stateInfo.IsName("Attack_1") &&
-                !stateInfo.IsName("Attack_2") &&
-                !stateInfo.IsName("Attack_3") &&
+        result = stateInfo.IsName(_comboName[_comboCount]) &&
                 !_animator.IsInTransition(0);
-
-        
 
         return result;
     }
