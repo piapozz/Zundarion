@@ -165,6 +165,76 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "PlayerManaer",
+            "id": "3ad8f1db-f170-46f1-a8ec-6add34942199",
+            "actions": [
+                {
+                    "name": "ChangeNextChara",
+                    "type": "Button",
+                    "id": "02514bca-ff62-46fb-95c6-ad5952f4dd86",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ChangeBeforeChara",
+                    "type": "Button",
+                    "id": "dfac235f-2db5-4b5f-b0ea-6331be3c7315",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "85e23bb6-8a61-4a8e-9d1e-e516de98829e",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ChangeNextChara",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8af591c2-03a9-4715-972d-a6ad3599a931",
+                    "path": "<Gamepad>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ChangeNextChara",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "70d9b667-a0b3-4e29-adeb-070db292765b",
+                    "path": "<Gamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ChangeBeforeChara",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2dfe0519-2e1d-4263-999e-2b7576f68150",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ChangeBeforeChara",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []
