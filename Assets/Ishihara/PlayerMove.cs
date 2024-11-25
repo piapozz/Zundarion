@@ -83,12 +83,17 @@ public class PlayerMove : MonoBehaviour
         // 現在の移動ステートが変わっていたならフラグを切り替える
         if (CheckChangeMoveState(moveState)) ChangeMoveState(moveState);
 
-        // 向きを入力の方向に向く
-        float temp;
+        // カメラの方向に基づいて入力ベクトルを修正
+        Vector3 cameraForward = _player.selfCamera.transform.forward;
+        Vector3 cameraRight = _player.selfCamera.transform.right;
 
-        temp = Mathf.Atan2(moveVec.y, moveVec.x);
+        // カメラ方向に基づいた移動ベクトルを計算
+        Vector3 adjustedMove = (cameraRight * moveVec.x + cameraForward * moveVec.y).normalized;
 
-        _player.selfFrontAngleZ = (temp * Mathf.Rad2Deg);
+        // 向きを計算して更新
+        float angle = Mathf.Atan2(adjustedMove.z, adjustedMove.x) * Mathf.Rad2Deg;
+
+        _player.selfFrontAngleZ = angle;
     }
 
     /// <summary>
@@ -149,21 +154,6 @@ public class PlayerMove : MonoBehaviour
             case PlayerAnimation.MoveAnimation.AVOIDANCE:
             {
                 _animator.SetInteger("Move", (int)state);
-
-                    // 回避当たり判定を生成
-
-                    // パラメーターを準備
-                    CreateCollision.AttackData data = new CreateCollision.AttackData().zero();
-
-                    data.position = _player.transform.position;
-                    data.radius = 2;
-                    data.layer = _collisionPram.collisionLayers[(int)CollisionAction.CollisionLayer.PLAYER_SURVIVE];
-                    data.tagname = _collisionPram.collisionTags[(int)CollisionAction.CollisionTag.AVOIDANCE];
-                    data.time = _avoidanceTime;
-
-                    // 生成
-                    CreateCollision.instance.CreateCollisionSphere(_player.gameObject, data);
-
                 break;
             }
 

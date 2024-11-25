@@ -17,11 +17,14 @@ public abstract class BasePlayer : MonoBehaviour
     /// <summary>アニメーターコンポーネント</summary>
     public Animator selfAnimator = null;
 
+    /// <summary>カメラ</summary>
+    public Camera selfCamera = null;
+
     /// <summary>自身の現在の体力</summary>
     //public float selfCurrentHealth { get => selfTankHealth?.CurrentHealth ?? 0.0f; }
 
     /// <summary>攻撃コンボの最大数</summary>
-    public float selfComboCount { get; protected set; }
+    public int selfComboCount { get; protected set; }
 
     /// <summary>現在の移動ステート</summary>
     public PlayerAnimation.MoveAnimation selfMoveState  { get; set; }
@@ -41,6 +44,7 @@ public abstract class BasePlayer : MonoBehaviour
     /// <summary>自身の前方アングル</summary>
     public float selfFrontAngleZ { get; set; }
 
+    /// <summary>自身のゲームオブジェクト</summary>
     public GameObject selfGameObject { get; private set; }
 
     // protected //////////////////////////////////////////////////////////////////
@@ -98,8 +102,8 @@ public abstract class BasePlayer : MonoBehaviour
         _selfMove = GetComponent<PlayerMove>();
         _selfAttack = GetComponent<PlayerAttack>();
         selfMoveState = PlayerAnimation.MoveAnimation.IDLE;
-        selfComboCount = 3;
         selfGameObject = this.gameObject;
+        selfCamera = Camera.main;
 
         Init();
 
