@@ -10,20 +10,25 @@ public class Zunda : BasePlayer
 {
     // private //////////////////////////////////////////////////////////////////
 
-    /// <summary>アニメーターコンポーネント</summary>
+    /// <summary>アニメーターデータ</summary>
     [SerializeField]
     private PlayerAnimation playerAnimation = null;
 
-    /// <summary>プレイヤーの移動コンポーネント</summary>
+    /// <summary>プレイヤーの移動データ</summary>
     [SerializeField]
     private CollisionAction collisionAction = null;
+
+    /// <summary>プレイヤーの当たり判定発生データ</summary>
+    [SerializeField]
+    private OccurrenceFrame occurrenceFrame = null;
 
     /// <summary>派生先による初期化</summary>
     protected override void Init()
     {
         selfAnimationData = playerAnimation;
         selfCollisionData = collisionAction;
-        selfComboCount = 3;
+        selfOccurrenceFrame = occurrenceFrame;
+        selfComboCountMax = 3;
     }
 
 

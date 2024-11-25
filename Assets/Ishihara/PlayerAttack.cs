@@ -50,8 +50,11 @@ public class PlayerAttack : MonoBehaviour
     /// </summary>
     void Update()
     {
+        // 0 レイヤーの再生されているアニメーション情報を呼び出す
+        AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
+
         // 定期的にコンボ回数を初期化する
-        _comboCount = 0;
+        if(stateInfo.IsName("Idle")) _comboCount = 0;
     }
 
     /// <summary>
