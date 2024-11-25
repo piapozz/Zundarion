@@ -4,21 +4,25 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Player : MonoBehaviour
+public class PlayerManager : MonoBehaviour
 {
-    private int nowCharaNum = 0;
+    private int nowCharaNum = 1;
+    private const int CHARA_CHANGE_COOL_TIME = 60;
 
     [SerializeField] private List<GameObject> _playerList;
     [SerializeField] private CinemachineStateDrivenCamera _stateCam;
     private CinemachineFreeLook _freeLookCam;
-    private bool _canParry;
-
     private Animator _animator;
+    private List<CheckCollision> _checkCollisionList = new List<CheckCollision>();
+    private int _charaChangeCoolDown;
 
     void Start()
     {
         for (int i = 0; i < _playerList.Count; i++)
         {
+            CheckCollision cc = _playerList[i].GetComponent<CheckCollision>();
+            _checkCollisionList.Add(cc);
+
             if (i == nowCharaNum)
             {
                 _playerList[i].gameObject.SetActive(true);
@@ -37,6 +41,14 @@ public class Player : MonoBehaviour
         CheckDeadCharacter(1);
     }
 
+    void FixedUpdate()
+    {
+        // キャラチェンジのクールダウン
+        if (_charaChangeCoolDown > 0)
+            _charaChangeCoolDown--;
+    }
+
+    // キャラの切り替え方向と出現位置を指定してキャラを切り替える関数
     void CharaChange(int charaDir, Vector3 entryOffset)
     {
         // 次の登場位置を決める
@@ -57,6 +69,7 @@ public class Player : MonoBehaviour
         _animator.SetTrigger("TransFrontline");
     }
 
+    // カメラにプレイヤーの設定をする関数
     void AttachPlayer(int playerNum)
     {
         _animator = _playerList[playerNum].transform.GetComponent<Animator>();
@@ -65,16 +78,18 @@ public class Player : MonoBehaviour
         _stateCam.m_AnimatedTarget = _animator;
     }
 
+    // キャラが死亡しているか判定する関数
     void CheckDeadCharacter(float health)
     {
         if (health <= 0)
         {
             _playerList.RemoveAt(nowCharaNum);
 
-            ChangeCharaNum(1);
+            CharaChange(1, Vector3.zero);
         }
     }
 
+    // キャラを切り替え方向に切り替える関数
     void ChangeCharaNum(int charaDir)
     {
         // 今のキャラの番号を変更
@@ -85,20 +100,39 @@ public class Player : MonoBehaviour
             nowCharaNum = 0;
     }
 
+    // 次のキャラに切り替える関数
     public void OnChangeNextChara()
     {
-        CharaChange(1, -_playerList[nowCharaNum].transform.forward * 2.0f);
+        if (_charaChangeCoolDown > 0) return;
+
+        _charaChangeCoolDown = CHARA_CHANGE_COOL_TIME;
+
+        // パリィになるか判定
+        if (_checkCollisionList[nowCharaNum].GetCanParry())
+            Parry(1);
+        else
+            CharaChange(1, -_playerList[nowCharaNum].transform.forward * 2.0f);
     }
 
+    // 前のキャラに切り替える関数
     public void OnChangeBeforeChara()
     {
-        CharaChange(-1, -_playerList[nowCharaNum].transform.forward * 2.0f);
+        if (_charaChangeCoolDown > 0) return;
+
+        _charaChangeCoolDown = CHARA_CHANGE_COOL_TIME;
+
+        // パリィになるか判定
+        if (_checkCollisionList[nowCharaNum].GetCanParry())
+            Parry(-1);
+        else
+            CharaChange(-1, -_playerList[nowCharaNum].transform.forward * 2.0f);
     }
 
-    public void OnParry()
+    // パリィする関数
+    public void Parry(int charaDir)
     {
         // キャラチェンジ
-        CharaChange(1, Vector3.zero);
+        CharaChange(charaDir, Vector3.zero);
         _animator.SetTrigger("Parry");
         // 通常カメラをリセット
         _freeLookCam.m_XAxis.Value = _playerList[nowCharaNum].transform.eulerAngles.y;
