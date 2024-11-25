@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerManager : MonoBehaviour
 {
-    private int nowCharaNum = 1;
+    private int nowCharaNum = 0;
     private const int CHARA_CHANGE_COOL_TIME = 60;
 
     [SerializeField] private List<GameObject> _playerList;
@@ -100,6 +100,17 @@ public class PlayerManager : MonoBehaviour
             nowCharaNum = 0;
     }
 
+    // パリィする関数
+    void Parry(int charaDir)
+    {
+        // キャラチェンジ
+        CharaChange(charaDir, Vector3.zero);
+        _animator.SetTrigger("Parry");
+        // 通常カメラをリセット
+        _freeLookCam.m_XAxis.Value = _playerList[nowCharaNum].transform.eulerAngles.y;
+        _freeLookCam.m_YAxis.Value = 0.5f;
+    }
+
     // 次のキャラに切り替える関数
     public void OnChangeNextChara()
     {
@@ -128,14 +139,9 @@ public class PlayerManager : MonoBehaviour
             CharaChange(-1, -_playerList[nowCharaNum].transform.forward * 2.0f);
     }
 
-    // パリィする関数
-    public void Parry(int charaDir)
+    // 今のアクティブなキャラを取得する関数
+    public GameObject GetActiveChara()
     {
-        // キャラチェンジ
-        CharaChange(charaDir, Vector3.zero);
-        _animator.SetTrigger("Parry");
-        // 通常カメラをリセット
-        _freeLookCam.m_XAxis.Value = _playerList[nowCharaNum].transform.eulerAngles.y;
-        _freeLookCam.m_YAxis.Value = 0.5f;
+        return _playerList[nowCharaNum];
     }
 }
