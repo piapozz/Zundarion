@@ -460,12 +460,12 @@ MonoBehaviour:
     m_ActionName: Player/Attack[/Mouse/press]
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 004cfe1e-9d8d-40a2-80a0-0e8777b6c415
-    m_ActionName: Player/ChangeNextChara[/Keyboard/e]
+    m_ActionId: 02514bca-ff62-46fb-95c6-ad5952f4dd86
+    m_ActionName: PlayerManaer/ChangeNextChara[/Keyboard/e]
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: add7f0a2-ab12-4805-95d5-0bd246a8b26b
-    m_ActionName: Player/ChangeBeforeChara[/Keyboard/q]
+    m_ActionId: dfac235f-2db5-4b5f-b0ea-6331be3c7315
+    m_ActionName: PlayerManaer/ChangeBeforeChara[/Keyboard/q]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -485,6 +485,18 @@ CapsuleCollider:
   m_Height: 1.4
   m_Direction: 1
   m_Center: {x: 0, y: 0.7, z: 0}
+--- !u!114 &546059008
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 546058997}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e164c9c073d5a2b47aca61fa6e9f8f74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &572827301
 GameObject:
   m_ObjectHideFlags: 3
@@ -2077,6 +2089,18 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &919132148288480464
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919132148288480452}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e164c9c073d5a2b47aca61fa6e9f8f74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2202774950034338325
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2207,7 +2231,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5192641542776290001, guid: 0757510f077421249baea0f6b3df8b37, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0757510f077421249baea0f6b3df8b37, type: 3}
