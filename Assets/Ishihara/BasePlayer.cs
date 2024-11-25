@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.EventSystems.StandaloneInputModule;
 using UnityEngine.InputSystem;
+using static PlayerAnimation;
 
 public abstract class BasePlayer : MonoBehaviour
 {
@@ -21,9 +22,12 @@ public abstract class BasePlayer : MonoBehaviour
     public Camera selfCamera = null;
 
     /// <summary>自身の現在の体力</summary>
-    //public float selfCurrentHealth { get => selfTankHealth?.CurrentHealth ?? 0.0f; }
+    public float selfCurrentHealth { get; private set; }
 
     /// <summary>攻撃コンボの最大数</summary>
+    public int selfComboCountMax { get; protected set; }
+
+    /// <summary>攻撃コンボ数</summary>
     public int selfComboCount { get; protected set; }
 
     /// <summary>現在の移動ステート</summary>
@@ -38,8 +42,11 @@ public abstract class BasePlayer : MonoBehaviour
     /// <summary>アニメーションのパラメーター情報</summary>
     public PlayerAnimation selfAnimationData { get; protected set; }
 
-    /// <summary>アニメーションのパラメーター情報</summary>
+    /// <summary>当たり判定情報</summary>
     public CollisionAction selfCollisionData { get; protected set; }
+
+    /// <summary>当たり判定発生情報</summary>
+    public OccurrenceFrame selfOccurrenceFrame { get; protected set; }
 
     /// <summary>自身の前方アングル</summary>
     public float selfFrontAngleZ { get; set; }
@@ -114,8 +121,6 @@ public abstract class BasePlayer : MonoBehaviour
 
         // 入力を受け取るために有効化
         hold.action.Enable();
-
-
     }
 
 
@@ -128,27 +133,40 @@ public abstract class BasePlayer : MonoBehaviour
         // ターゲットの情報収集
         this.transform.position = new Vector3(transform.position.x, 0, transform.position.z);
 
-        if(inputRun) selfMoveState = PlayerAnimation.MoveAnimation.AVOIDANCE;
-        else if(selfMoveState != PlayerAnimation.MoveAnimation.RUN) selfMoveState = PlayerAnimation.MoveAnimation.WALK;
+        if(inputRun) 
+            selfMoveState = PlayerAnimation.MoveAnimation.AVOIDANCE;
+        else if(selfMoveState != PlayerAnimation.MoveAnimation.RUN) 
+            selfMoveState = PlayerAnimation.MoveAnimation.WALK;
 
-        if(inputMove == Vector2.zero) selfMoveState = PlayerAnimation.MoveAnimation.IDLE;
+        if(inputMove == Vector2.zero && selfMoveState != PlayerAnimation.MoveAnimation.AVOIDANCE) 
+            selfMoveState = PlayerAnimation.MoveAnimation.IDLE;
 
         // AIの更新
         // UpdateAI();
 
         _selfMove.Move(inputMove, selfMoveState);
 
-        if(inputAttack) _selfAttack.Attack();
+        if(inputAttack)
+            _selfAttack.Attack();
 
-        if (inputMove == Vector2.zero) return;
+        if (inputMove == Vector2.zero) 
+            return;
 
         // 出力の調整
         Quaternion q = Quaternion.AngleAxis(selfFrontAngleZ - 90, Vector3.down);
-        this.transform.rotation = Quaternion.RotateTowards(this.transform.rotation,  q, 0.5f);
-
+        this.transform.rotation = Quaternion.RotateTowards(this.transform.rotation,  q, 1.5f);
 
         // 次フレームのために情報を残す
 
+    }
+
+    /// <summary>
+    /// プレイヤーにダメージを与える
+    /// </summary>
+    public void TakeDamage(float damage)
+    {
+        selfAnimator.SetTrigger(selfAnimationData.interruptPram[(int)InterruqtAnimation.IMPACT]);
+        selfCurrentHealth -= damage;
     }
 
     // アクションマップのMoveに登録されているキーが押されたときに入力値を取得

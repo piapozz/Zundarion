@@ -425,8 +425,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selfAnimator: {fileID: 1845350344}
+  selfCamera: {fileID: 0}
   playerAnimation: {fileID: 11400000, guid: f7c2d37f1ed27d946baa0f8d2390fafa, type: 2}
   collisionAction: {fileID: 11400000, guid: ee9c9448eb08cf449b03ba2affff0bb5, type: 2}
+  occurrenceFrame: {fileID: 0}
 --- !u!95 &1845350344 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 5763272221447493137, guid: 59827da187accf94584def2cedf901fe, type: 3}
