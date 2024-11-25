@@ -22,7 +22,7 @@ public class BearTracking : IEnemyState
         }
 
         // ‹——£‚É‚æ‚Á‚Äs“®‚ð•Ï‚¦‚é
-        if (direction > 5.0f)
+        if (direction > 5.0f && direction < 8.0f)
         {
             // ƒWƒƒƒ“ƒv‚ÅÕŒ‚UŒ‚
             // enemyStatus.m_state = new BearAttackUnique();
