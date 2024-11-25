@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.InputSystem.HID;
 using static EnemyBase;
 
 // 敵クラスの親
@@ -12,7 +13,8 @@ using static EnemyBase;
 
 public abstract class EnemyBase : MonoBehaviour
 {
-    public InitialStatus initialStatus;     // ScriptableObjectの情報
+    public InitialStatus initialStatus;     // ScriptableObjectのステータス情報
+    public CollisionAction collisionAction; // ScriptableObjectの当たり判定情報
 
     protected IEnemyState actionState;      // ステート
 
@@ -42,6 +44,7 @@ public abstract class EnemyBase : MonoBehaviour
         public GameObject m_playerObject;           // Playerのデータ
         public Animator m_animator;                 // キャラクターに使われているAnimator
         public AnimatorStateInfo m_animatorState;   // アニメーション再生時間の長さを取得するための変数
+        public CollisionAction m_collisionAction;
 
         public enum ActionState
         {
@@ -75,7 +78,10 @@ public abstract class EnemyBase : MonoBehaviour
         // 当たり判定の生成に使うGameObjectを初期化
         status.m_gameObject = this.gameObject;
         // プレイヤーを取得 ※GameObject.Find()は重いらしいので使うなら初期化などのタイミングで一括
-        status.m_playerObject = GameObject.Find("Player");
+        // status.m_playerObject = GameObject.Find("Player");
+        status.m_playerObject = GameObject.FindWithTag("Player");
+
+        status.m_collisionAction = collisionAction;
 
         status.m_forward = Vector3.forward;
 
