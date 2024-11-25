@@ -60,7 +60,7 @@ public class PlayerAttack : MonoBehaviour
     public void Attack()
     {
         // コンボの派生がまだあるなら
-        if(_comboCount > _player.selfComboCount) return;
+        if(_comboCount >= _player.selfComboCount) return;
 
         // 攻撃できるアニメーション状況なら
         if(!CheckAssailable()) return;
@@ -68,21 +68,6 @@ public class PlayerAttack : MonoBehaviour
         // カウンターを増やして。トリガーをセットする
         _comboCount++;
         _animator.SetTrigger(_animationPram.attackPram[(int)PlayerAnimation.AttackAnimation.ATTACK]);
-
-        // 当たり判定を生成する
-        // パラメーターを準備
-        CreateCollision.AttackData data = new CreateCollision.AttackData().zero();
-
-        data.position = _player.transform.position;
-        data.radius = 2;
-        data.layer = _collisionPram.collisionLayers[(int)CollisionAction.CollisionLayer.PLAYER_ATTACK];
-        data.tagname = _collisionPram.collisionTags[(int)CollisionAction.CollisionTag.ATTACK_NOMAL];
-        data.time = 2;
-
-        // 生成
-        CreateCollision.instance.CreateCollisionSphere(_player.selfGameObject, data);
-
-        Debug.Log("xs");
     }
 
     /// <summary>
@@ -96,8 +81,8 @@ public class PlayerAttack : MonoBehaviour
         AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
 
         // 現在のステートとアニメーションが違っていたら
-        result = stateInfo.IsName(_comboName[_comboCount]) &&
-                !_animator.IsInTransition(0);
+        result = !stateInfo.IsName(_comboName[_player.selfComboCount - 1]) &&
+                 !_animator.IsInTransition(0);
 
         return result;
     }

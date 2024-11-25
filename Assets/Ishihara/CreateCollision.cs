@@ -162,7 +162,9 @@ public class CreateCollision : MonoBehaviour
         sphere.isTrigger = true;
 
         // ゲームオブジェクトに時間制限スクリプトをアタッチして時間を設定
-        attack.AddComponent<LimitTime>().SetPeriod(attackData.time);
+        attack.AddComponent<LimitTime>();
+        LimitTime limit = attack.GetComponent<LimitTime>();
+        limit.SetPeriod(attackData.time);
 
         // コリジョンチェックをアタッチ
         attack.AddComponent<CheckCollision>();

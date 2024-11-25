@@ -23,6 +23,7 @@ public class Zunda : BasePlayer
     {
         selfAnimationData = playerAnimation;
         selfCollisionData = collisionAction;
+        selfComboCount = 3;
     }
 
 
