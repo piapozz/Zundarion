@@ -15,6 +15,7 @@ public abstract class EnemyBase : MonoBehaviour
 {
     public InitialStatus initialStatus;     // ScriptableObjectのステータス情報
     public CollisionAction collisionAction; // ScriptableObjectの当たり判定情報
+    private PlayerManager playerManager;     // プレイヤーの情報を管理する
 
     protected IEnemyState actionState;      // ステート
 
@@ -78,8 +79,7 @@ public abstract class EnemyBase : MonoBehaviour
         // 当たり判定の生成に使うGameObjectを初期化
         status.m_gameObject = this.gameObject;
         // プレイヤーを取得 ※GameObject.Find()は重いらしいので使うなら初期化などのタイミングで一括
-        // status.m_playerObject = GameObject.Find("Player");
-        status.m_playerObject = GameObject.FindWithTag("Player");
+        playerManager = GameObject.Find("PlayerManager").GetComponent<PlayerManager>();
 
         status.m_collisionAction = collisionAction;
 
@@ -101,6 +101,9 @@ public abstract class EnemyBase : MonoBehaviour
 
         // 自身の位置情報を更新
         PositionUpdate();
+
+        // プレイヤーーの更新
+        status.m_playerObject = playerManager.GetActiveChara();
 
         // プレイヤーとの相対座標を取得
         GetRelativePosition();
