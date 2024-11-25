@@ -117,7 +117,7 @@ public class PlayerManager : MonoBehaviour
         if (_charaChangeCoolDown > 0) return;
 
         _charaChangeCoolDown = CHARA_CHANGE_COOL_TIME;
-
+        
         // パリィになるか判定
         if (_checkCollisionList[nowCharaNum].GetCanParry())
             Parry(1);
@@ -129,9 +129,9 @@ public class PlayerManager : MonoBehaviour
     public void OnChangeBeforeChara()
     {
         if (_charaChangeCoolDown > 0) return;
-
+        
         _charaChangeCoolDown = CHARA_CHANGE_COOL_TIME;
-
+        
         // パリィになるか判定
         if (_checkCollisionList[nowCharaNum].GetCanParry())
             Parry(-1);
