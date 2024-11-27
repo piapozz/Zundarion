@@ -23,13 +23,15 @@ public class OccurrenceCollision : StateMachineBehaviour
     [SerializeField]
     private CollisionAction.CollisionTag tag;
 
+    /// <summary>状態内で一度だけ生成するためのフラグ</summary>
+    private bool _hasGeneratedCollision = false;
+
     public sealed override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        // 現在再生されている時間が特定のタイミングが来たら。
-        if (stateInfo.normalizedTime >= _occurrenceTime)
+        // 特定のタイミングが来ていて、かつまだ生成していない場合のみ実行
+        if (!_hasGeneratedCollision && stateInfo.normalizedTime > _occurrenceTime)
         {
             // 当たり判定を生成する
-            // パラメーターを準備
             CreateCollision.AttackData data = new CreateCollision.AttackData().zero();
 
             data.position = animator.transform.position;
@@ -40,6 +42,15 @@ public class OccurrenceCollision : StateMachineBehaviour
 
             // 生成
             CreateCollision.instance.CreateCollisionSphere(animator.gameObject, data);
+
+            // 一度だけ実行するためフラグを立てる
+            _hasGeneratedCollision = true;
         }
+       
+    }
+    public sealed override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    {
+        // 状態開始時にフラグをリセット
+        _hasGeneratedCollision = false;
     }
 }
