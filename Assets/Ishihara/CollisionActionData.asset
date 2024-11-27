@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: CollisionActionData
   m_EditorClassIdentifier: 
   collisionTags:
-  - AttackNomal
+  - AttackNormal
   - AttackPassable
   - AttackDangerous
   - Avoidance

@@ -26,7 +26,7 @@ public class BearAttack : IEnemyState
             attackData.radius = 1.0f;
             attackData.time = 2.0f;
             attackData.layer = enemyStatus.m_collisionAction.collisionLayers[(int)CollisionAction.CollisionLayer.ENEMY_ATTACK];
-            attackData.tagname = enemyStatus.m_collisionAction.collisionTags[(int)CollisionAction.CollisionTag.ATTACK_NOMAL];
+            attackData.tagname = enemyStatus.m_collisionAction.collisionTags[(int)CollisionAction.CollisionTag.ATTACK_NORMAL];
 
             // ìñÇΩÇËîªíËÇÃî≠ê∂
             CreateCollision.instance.CreateCollisionSphere(enemyStatus.m_gameObject, attackData);

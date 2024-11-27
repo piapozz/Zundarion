@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CheckPlayerCollision : MonoBehaviour
 {
-    CollisionAction collisionAction;
+    [SerializeField] CollisionAction collisionAction;
     bool canParry;
 
     public bool GetCanParry()
@@ -12,17 +12,18 @@ public class CheckPlayerCollision : MonoBehaviour
         return canParry;
     }
 
-
     void OnTriggerStay(Collider other)
     {
         string hitLayerName = LayerMask.LayerToName(other.gameObject.layer);
         string hitTagName = other.gameObject.tag;
-        Debug.Log("レイヤー:" + hitLayerName + "タグ:" + hitTagName);
 
         // 接触したCollisionが敵の攻撃ならcanParryを切り替え
         if (hitLayerName == collisionAction.collisionLayers[(int)CollisionAction.CollisionLayer.ENEMY_ATTACK] &&
-            hitTagName == "Enemy")
+            hitTagName == "AttackNormal")
+        {
             canParry = true;
+            Debug.Log("パリィ可能");
+        }
         else
             canParry = false;
     }

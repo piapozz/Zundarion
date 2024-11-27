@@ -4,20 +4,26 @@ using UnityEngine;
 
 public class DealDamage : MonoBehaviour
 {
-    CollisionAction collisionAction;
-
     // 通り抜けたときに１度だけ呼ばれる
-    void OnTrrigerEnter(Collider other)
+    void OnTriggerEnter(Collider other)
     {
-        string thisTag = transform.parent.tag;
+        string thisTag = gameObject.transform.parent.tag;
         string hitLayerName = LayerMask.LayerToName(other.gameObject.layer);
         string hitTagName = other.gameObject.tag;
-        //プレイヤーの攻撃が敵に当たったら
-        if ((hitTagName == "Enemy" && thisTag == "Player") || 
-            (hitTagName == "Player" && thisTag == "Enemy"))
+        Debug.Log("レイヤー:" + hitLayerName + "タグ:" + hitTagName);
+
+        // 敵の攻撃がプレイヤーに当たったら
+        if (hitTagName == "Player" && thisTag == "Enemy")
         {
             // ダメージを与える
             other.GetComponent<BasePlayer>().TakeDamage(5);
+            Debug.Log("与ダメージ");
+        }
+        // プレイヤーの攻撃が敵に当たったら
+        else if (hitTagName == "Enemy" && thisTag == "Player")
+        {
+            other.GetComponent<EnemyBase>().ReceiveDamage(5);
+            Debug.Log("与ダメージ");
         }
     }
 }
