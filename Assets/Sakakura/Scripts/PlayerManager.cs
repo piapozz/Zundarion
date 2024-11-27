@@ -13,14 +13,14 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private CinemachineStateDrivenCamera _stateCam;
     private CinemachineFreeLook _freeLookCam;
     private Animator _animator;
-    private List<CheckCollision> _checkCollisionList = new List<CheckCollision>();
+    private List<CheckPlayerCollision> _checkCollisionList = new List<CheckPlayerCollision>();
     private int _charaChangeCoolDown;
 
     void Start()
     {
         for (int i = 0; i < _playerList.Count; i++)
         {
-            CheckCollision cc = _playerList[i].GetComponent<CheckCollision>();
+            CheckPlayerCollision cc = _playerList[i].GetComponent<CheckPlayerCollision>();
             _checkCollisionList.Add(cc);
 
             if (i == nowCharaNum)
@@ -143,5 +143,11 @@ public class PlayerManager : MonoBehaviour
     public GameObject GetActiveChara()
     {
         return _playerList[nowCharaNum];
+    }
+
+    // ˆø”‚Å‚à‚ç‚Á‚½”Ô†‚ÌƒLƒƒƒ‰‚ğ“n‚·
+    public GameObject GetChara(int charaNum)
+    {
+        return _playerList[charaNum];
     }
 }

@@ -393,6 +393,18 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3423510600292888726, guid: 0757510f077421249baea0f6b3df8b37, type: 3}
   m_PrefabInstance: {fileID: 3423510600837349987}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &546058998
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 546058997}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d4a5eccd2a43aa40b2eaf82faaefc53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &572827301
 GameObject:
   m_ObjectHideFlags: 3
@@ -1909,6 +1921,18 @@ Animator:
   m_CorrespondingSourceObject: {fileID: 2892533442517954711, guid: 59827da187accf94584def2cedf901fe, type: 3}
   m_PrefabInstance: {fileID: 2658599352776791122}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &919132148288480454
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919132148288480452}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d4a5eccd2a43aa40b2eaf82faaefc53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2658599352776791122
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1968,7 +1992,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2892533442517954690, guid: 59827da187accf94584def2cedf901fe, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 59827da187accf94584def2cedf901fe, type: 3}
 --- !u!1001 &3423510600837349987
 PrefabInstance:
@@ -2029,5 +2054,6 @@ PrefabInstance:
       propertyPath: selfCamera
       value: 
       objectReference: {fileID: 1383235435}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3423510600292888931, guid: 0757510f077421249baea0f6b3df8b37, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 0757510f077421249baea0f6b3df8b37, type: 3}
