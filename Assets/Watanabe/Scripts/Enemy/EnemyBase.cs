@@ -25,6 +25,7 @@ public abstract class EnemyBase : MonoBehaviour
         public int m_enemyNum;              // 敵の番号
 
         public float m_health;              // ヘルス
+        public float m_healthMax;
         public float m_speed;               // スピード
         public float m_power;               // パワー 
         public float m_defence;             // 防御力
@@ -62,7 +63,7 @@ public abstract class EnemyBase : MonoBehaviour
         }
     }
 
-    protected EnemyStatus status;           // 構造体を生成
+    public EnemyStatus status;           // 構造体を生成
     protected int oldState;                 // ステータスの初期化
 
     // 敵の行動
@@ -117,9 +118,13 @@ public abstract class EnemyBase : MonoBehaviour
     {
         // ScriptableObjectの情報を読み込む
         status.m_health = initialStatus.health;
+        status.m_healthMax = initialStatus.health;
         status.m_power = initialStatus.power;
         status.m_speed = initialStatus.speed;
         status.m_break = initialStatus.breakMax;
+
+        status.m_defence = 1;
+        status.m_multiplier = 1;
     }
 
     /*

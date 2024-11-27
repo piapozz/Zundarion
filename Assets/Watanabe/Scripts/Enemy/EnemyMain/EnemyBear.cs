@@ -25,6 +25,8 @@ public class EnemyBear : EnemyBase
 
         // プレイヤーの方を向く
         gameObject.transform.rotation = status.m_toPlayerAngle;
+        
+        if(transform.position.y < 0.0f) transform.position = status.m_position;
 
         // ステートの変更があればステートを変更
         if (oldState != status.m_state) SetState(status.m_state);
