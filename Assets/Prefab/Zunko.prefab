@@ -10782,7 +10782,7 @@ GameObject:
   - component: {fileID: 3423510600292888730}
   - component: {fileID: 3423510600292888729}
   - component: {fileID: 3423510600292888728}
-  - component: {fileID: 3423510600292888931}
+  - component: {fileID: 3027454330762297403}
   m_Layer: 0
   m_Name: Zunko
   m_TagString: Player
@@ -10874,6 +10874,7 @@ MonoBehaviour:
   selfCamera: {fileID: 0}
   playerAnimation: {fileID: 11400000, guid: f7c2d37f1ed27d946baa0f8d2390fafa, type: 2}
   collisionAction: {fileID: 11400000, guid: ee9c9448eb08cf449b03ba2affff0bb5, type: 2}
+  occurrenceFrame: {fileID: 0}
 --- !u!114 &3423510600292888730
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10988,7 +10989,7 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!114 &3423510600292888931
+--- !u!114 &3027454330762297403
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -10997,9 +10998,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 3423510600292888726}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e164c9c073d5a2b47aca61fa6e9f8f74, type: 3}
+  m_Script: {fileID: 11500000, guid: 2d4a5eccd2a43aa40b2eaf82faaefc53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  collisionAction: {fileID: 11400000, guid: ee9c9448eb08cf449b03ba2affff0bb5, type: 2}
 --- !u!1 &3459703884816288342
 GameObject:
   m_ObjectHideFlags: 0

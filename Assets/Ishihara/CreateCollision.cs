@@ -150,6 +150,11 @@ public class CreateCollision : MonoBehaviour
         obj.AddComponent<SphereCollider>();
         SphereCollider sphere = obj.GetComponent<SphereCollider>();
 
+        // RigidBodyをアタッチ
+        obj.AddComponent<Rigidbody>();
+        Rigidbody rb = obj.GetComponent<Rigidbody>();
+        rb.useGravity = false;
+
         // 当たり判定の設定一覧
         sphere.center = Vector3.zero;
         sphere.radius = attackData.radius;
@@ -161,7 +166,7 @@ public class CreateCollision : MonoBehaviour
         //limit.SetPeriod(attackData.time);
 
         // コリジョンチェックをアタッチ
-        //obj.AddComponent<DeelDamage>();
+        obj.AddComponent<DealDamage>();
 
         // ゲームオブジェクトの設定
         attackData.CheckTagAndLayer();
