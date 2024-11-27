@@ -144,17 +144,11 @@ public class CreateCollision : MonoBehaviour
     /// <param name="attackData">   当たり判定の情報    </param>
     public void CreateCollisionSphere(GameObject parent, AttackData attackData)
     {
-        // からのゲームオブジェクトを親のオブジェクト直下に生成する
-        GameObject attack = Instantiate(
-            new GameObject(parent.name + attackData.tagname),
-            attackData.position,
-            parent.transform.rotation,
-            parent.transform
-            );
+        GameObject obj = new GameObject(parent.name + attackData.tagname);
 
         // 新しくスフィアコライダーをアタッチ
-        attack.AddComponent<SphereCollider>();
-        SphereCollider sphere = attack.GetComponent<SphereCollider>();
+        obj.AddComponent<SphereCollider>();
+        SphereCollider sphere = obj.GetComponent<SphereCollider>();
 
         // 当たり判定の設定一覧
         sphere.center = Vector3.zero;
@@ -162,16 +156,28 @@ public class CreateCollision : MonoBehaviour
         sphere.isTrigger = true;
 
         // ゲームオブジェクトに時間制限スクリプトをアタッチして時間を設定
-        attack.AddComponent<LimitTime>();
-        LimitTime limit = attack.GetComponent<LimitTime>();
-        limit.SetPeriod(attackData.time);
+        obj.AddComponent<LimitTime>();
+        LimitTime limit = obj.GetComponent<LimitTime>();
+        //limit.SetPeriod(attackData.time);
 
         // コリジョンチェックをアタッチ
-        attack.AddComponent<CheckCollision>();
+        //obj.AddComponent<DeelDamage>();
 
         // ゲームオブジェクトの設定
         attackData.CheckTagAndLayer();
-        attack.tag = attackData.tagname;
-        attack.layer = LayerMask.NameToLayer(attackData.layer);
+        obj.tag = attackData.tagname;
+        obj.layer = LayerMask.NameToLayer(attackData.layer);
+
+        // からのゲームオブジェクトを親のオブジェクト直下に生成する
+        Instantiate(
+            obj,
+            attackData.position,
+            parent.transform.rotation,
+            parent.transform
+            );
+
+        // 一時的なオブジェクトを破棄（元のテンプレートオブジェクトが不要な場合）
+        Destroy(obj);
+
     }
 }

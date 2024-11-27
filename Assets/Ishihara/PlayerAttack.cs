@@ -63,7 +63,7 @@ public class PlayerAttack : MonoBehaviour
     public void Attack()
     {
         // コンボの派生がまだあるなら
-        if(_comboCount >= _player.selfComboCount) return;
+        if(_comboCount > _player.selfComboCountMax) return;
 
         // 攻撃できるアニメーション状況なら
         if(!CheckAssailable()) return;
@@ -84,7 +84,7 @@ public class PlayerAttack : MonoBehaviour
         AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
 
         // 現在のステートとアニメーションが違っていたら
-        result = !stateInfo.IsName(_comboName[_player.selfComboCount - 1]) &&
+        result = !stateInfo.IsName(_comboName[_player.selfComboCountMax - 1]) &&
                  !_animator.IsInTransition(0);
 
         return result;
