@@ -5,14 +5,16 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
+    // 画像を管理
     [SerializeField] Image[] playerHealthBar;
     [SerializeField] Image[] enemyHealthBar;
-
     [SerializeField] Image[] playerSkillBar;
     [SerializeField] Image[] enemyBreakBar;
 
+    // PlayerManager
     PlayerManager playerManager;
-    BasePlayer[] basePlayer;
+ 
+    // キャラクター
     BasePlayer zundaObject;
     BasePlayer zunkoObject;
     EnemyBase enemyBear;
@@ -44,6 +46,7 @@ public class UIManager : MonoBehaviour
         // PlayerManagerを取得
         playerManager = GameObject.Find("PlayerManager").GetComponent<PlayerManager>();
 
+        // Playerを取得
         zundaObject = GameObject.Find("Zundamon").GetComponent<Zunda>();
         zunkoObject = GameObject.Find("Zunko").GetComponent<Zunda>();
 
@@ -55,6 +58,7 @@ public class UIManager : MonoBehaviour
     void Update()
     {
         time += Time.deltaTime;
+
         // プレイヤーの体力をゲージで変動させる
         //for (int i = 0; i < playerHealthBar.Length; i++)
         //{
@@ -64,10 +68,9 @@ public class UIManager : MonoBehaviour
         for (int i = 0; i < playerHealthBar.Length; i++)
         {
             // VariableBar(playerHealthBar[i], MAX_TIME, basePlayer[i].selfCurrentHealth);
+            VariableBar(playerHealthBar[(int)TeamMember.MEMBER_1], zundaObject.selfCurrentHealth, 100.0f);
+            VariableBar(playerHealthBar[(int)TeamMember.MEMBER_2], zunkoObject.selfCurrentHealth, 100.0f);
         }
-
-        VariableBar(playerHealthBar[(int)TeamMember.MEMBER_1], MAX_TIME, zundaObject.selfCurrentHealth);
-        VariableBar(playerHealthBar[(int)TeamMember.MEMBER_2], MAX_TIME, zunkoObject.selfCurrentHealth);
 
         //// プレイヤーのスキルゲージを変動させる
         //for (int i = 0; i < playerSkillBar.Length; i++)
@@ -76,9 +79,9 @@ public class UIManager : MonoBehaviour
         //}
 
         // 敵の体力をゲージで変動させる
-        for (int i = 0; i < (int)TeamMember.MEMBER_2; i++)
+        for (int i = 0; i < enemyHealthBar.Length; i++)
         {
-            VariableBar(playerHealthBar[i], enemyBear.status.m_health, enemyBear.status.m_healthMax);
+            VariableBar(enemyHealthBar[i], enemyBear.status.m_health, enemyBear.status.m_healthMax);
         }
 
         //// 敵のブレイク値の溜まり具合を変動させる

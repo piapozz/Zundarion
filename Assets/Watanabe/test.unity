@@ -183,11 +183,8 @@ MonoBehaviour:
   playerHealthBar:
   - {fileID: 1456898516}
   - {fileID: 1457403145}
-  - {fileID: 277836743}
   enemyHealthBar:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 1684221732}
   playerSkillBar:
   - {fileID: 1896346874}
   - {fileID: 1050012696}
