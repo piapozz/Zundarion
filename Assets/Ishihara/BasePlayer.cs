@@ -165,6 +165,13 @@ public abstract class BasePlayer : MonoBehaviour
     /// </summary>
     public void TakeDamage(float damage)
     {
+        // 回避中ならダメージを食らわない
+        // 0 レイヤーの再生されているアニメーション情報を呼び出す
+        AnimatorStateInfo stateInfo = selfAnimator.GetCurrentAnimatorStateInfo(0);
+
+        // 定期的にコンボ回数を初期化する
+        if (stateInfo.IsName("Avoidance")) return;
+
         selfAnimator.SetTrigger(selfAnimationData.interruptPram[(int)InterruqtAnimation.IMPACT]);
         selfCurrentHealth -= damage;
     }
