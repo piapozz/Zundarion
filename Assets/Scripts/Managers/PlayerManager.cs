@@ -15,6 +15,7 @@ public class PlayerManager : MonoBehaviour
     private Animator _animator;
     private List<CheckPlayerCollision> _checkCollisionList = new List<CheckPlayerCollision>();
     private int _charaChangeCoolDown;
+    private List<BasePlayer> _basePlayer = new List<BasePlayer>();
 
     void Start()
     {
@@ -22,6 +23,7 @@ public class PlayerManager : MonoBehaviour
         {
             CheckPlayerCollision cc = _playerList[i].GetComponent<CheckPlayerCollision>();
             _checkCollisionList.Add(cc);
+            _basePlayer.Add(_playerList[i].GetComponent<BasePlayer>());
 
             if (i == nowCharaNum)
             {
@@ -38,7 +40,7 @@ public class PlayerManager : MonoBehaviour
     void Update()
     {
         // 体力チェック
-        CheckDeadCharacter(1);
+        CheckDeadCharacter(_basePlayer[nowCharaNum].selfCurrentHealth);
     }
 
     void FixedUpdate()
@@ -81,11 +83,14 @@ public class PlayerManager : MonoBehaviour
     // キャラが死亡しているか判定する関数
     void CheckDeadCharacter(float health)
     {
+        Debug.Log(health);
         if (health <= 0)
         {
+            _basePlayer[nowCharaNum].selfAnimator.SetTrigger("Die");
+            //_playerList[nowCharaNum].SetActive(false);
+            CharaChange(1, Vector3.zero);
             _playerList.RemoveAt(nowCharaNum);
 
-            CharaChange(1, Vector3.zero);
         }
     }
 
