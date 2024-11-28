@@ -1,10 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 using UnityEditor.Animations;
-using UnityEngine.InputSystem;
-using Unity.VisualScripting;
 
 public class PlayerMove : MonoBehaviour
 {
