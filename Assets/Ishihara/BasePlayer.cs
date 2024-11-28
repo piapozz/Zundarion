@@ -22,7 +22,7 @@ public abstract class BasePlayer : MonoBehaviour
     public Camera selfCamera = null;
 
     /// <summary>©g‚ÌŒ»İ‚Ì‘Ì—Í</summary>
-    public float selfCurrentHealth { get; private set; }
+    public float selfCurrentHealth { get; protected set; }
 
     /// <summary>UŒ‚ƒRƒ“ƒ{‚ÌÅ‘å”</summary>
     public int selfComboCountMax { get; protected set; }

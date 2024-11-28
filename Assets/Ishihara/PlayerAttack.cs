@@ -38,8 +38,8 @@ public class PlayerAttack : MonoBehaviour
     /// </summary>
     void Start()
     {
-        _player = GetComponent<BasePlayer>();   // プレイヤー取得
-        _animator = _player.selfAnimator;   // アニメーター取得
+        _player = GetComponent<BasePlayer>();       // プレイヤー取得
+        _animator = _player.selfAnimator;           // アニメーター取得
         _animationPram = _player.selfAnimationData; // アニメーションデータ取得
         _collisionPram = _player.selfCollisionData; // コリジョンデータ取得
     }
@@ -63,10 +63,12 @@ public class PlayerAttack : MonoBehaviour
     public void Attack()
     {
         // コンボの派生がまだあるなら
-        if(_comboCount > _player.selfComboCountMax) return;
+        if(_comboCount >= _player.selfComboCountMax) return;
 
         // 攻撃できるアニメーション状況なら
         if(!CheckAssailable()) return;
+
+        Debug.Log(_comboCount);
 
         // カウンターを増やして。トリガーをセットする
         _comboCount++;
@@ -84,8 +86,7 @@ public class PlayerAttack : MonoBehaviour
         AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
 
         // 現在のステートとアニメーションが違っていたら
-        result = !stateInfo.IsName(_comboName[_player.selfComboCountMax - 1]) &&
-                 !_animator.IsInTransition(0);
+        result = !stateInfo.IsName(_comboName[_player.selfComboCount]);
 
         return result;
     }

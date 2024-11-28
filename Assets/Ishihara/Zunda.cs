@@ -22,6 +22,10 @@ public class Zunda : BasePlayer
     [SerializeField]
     private OccurrenceFrame occurrenceFrame = null;
 
+    /// <summary>ƒvƒŒƒCƒ„[‚ÌÅ‘åHP</summary>
+    [SerializeField]
+    private int MaxHP = 100;
+
     /// <summary>”h¶æ‚É‚æ‚é‰Šú‰»</summary>
     protected override void Init()
     {
@@ -29,6 +33,7 @@ public class Zunda : BasePlayer
         selfCollisionData = collisionAction;
         selfOccurrenceFrame = occurrenceFrame;
         selfComboCountMax = 3;
+        selfCurrentHealth = MaxHP;
     }
 
 
