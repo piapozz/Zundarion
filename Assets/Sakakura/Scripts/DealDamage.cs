@@ -7,7 +7,7 @@ public class DealDamage : MonoBehaviour
     // 通り抜けたときに１度だけ呼ばれる
     void OnTriggerEnter(Collider other)
     {
-        string thisTag = gameObject.transform.parent.tag;
+        string thisTag = transform.parent.gameObject.tag;
         string hitLayerName = LayerMask.LayerToName(other.gameObject.layer);
         string hitTagName = other.gameObject.tag;
         Debug.Log("レイヤー:" + hitLayerName + "タグ:" + hitTagName);
@@ -16,13 +16,13 @@ public class DealDamage : MonoBehaviour
         if (hitTagName == "Player" && thisTag == "Enemy")
         {
             // ダメージを与える
-            other.GetComponent<BasePlayer>().TakeDamage(5);
+            other.GetComponent<BasePlayer>().TakeDamage(20);
             Debug.Log("与ダメージ");
         }
         // プレイヤーの攻撃が敵に当たったら
         else if (hitTagName == "Enemy" && thisTag == "Player")
         {
-            other.GetComponent<EnemyBase>().ReceiveDamage(5);
+            other.GetComponent<EnemyBase>().ReceiveDamage(20);
             Debug.Log("与ダメージ");
         }
     }
