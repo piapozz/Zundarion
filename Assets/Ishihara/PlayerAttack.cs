@@ -68,8 +68,6 @@ public class PlayerAttack : MonoBehaviour
         // 攻撃できるアニメーション状況なら
         if(!CheckAssailable()) return;
 
-        Debug.Log(_comboCount);
-
         // カウンターを増やして。トリガーをセットする
         _comboCount++;
         _animator.SetTrigger(_animationPram.attackPram[(int)PlayerAnimation.AttackAnimation.ATTACK]);
