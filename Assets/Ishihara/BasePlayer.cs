@@ -170,7 +170,7 @@ public abstract class BasePlayer : MonoBehaviour
         AnimatorStateInfo stateInfo = selfAnimator.GetCurrentAnimatorStateInfo(0);
 
         // ’èŠú“I‚ÉƒRƒ“ƒ{‰ñ”‚ğ‰Šú‰»‚·‚é
-        if (stateInfo.IsName("Avoidance")) return;
+        if (stateInfo.IsName("Avoidance") || stateInfo.IsName("Parry")) return;
 
         selfAnimator.SetTrigger(selfAnimationData.interruptPram[(int)InterruqtAnimation.IMPACT]);
         selfCurrentHealth -= damage;
