@@ -222,7 +222,21 @@ public abstract class EnemyBase : MonoBehaviour
     }
 
     // ダメージを受ける
-    public void ReceiveDamage(float damageSize) { status.m_health -= damageSize * status.m_defence * status.m_multiplier; }
+    public void ReceiveDamage(float damageSize)
+    {
+        float damage = damageSize * status.m_defence * status.m_multiplier;
+
+        if(damage > status.m_healthMax / 3)
+        {
+            status.m_animator.SetTrigger("HitBackHigh");
+        }
+        else if (damage > status.m_healthMax / 100)
+        {
+            status.m_animator.SetTrigger("HitBackLow");
+        }
+
+        status.m_health -= damage;
+    }
 
     // ブレイク値を変動させる
     public void ReceiveBreakPoint(float breakSize) { status.m_break -= breakSize; }
