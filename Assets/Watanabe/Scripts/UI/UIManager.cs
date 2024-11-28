@@ -44,14 +44,14 @@ public class UIManager : MonoBehaviour
     void Start()
     {
         // PlayerManagerを取得
-        playerManager = GameObject.Find("PlayerManager").GetComponent<PlayerManager>();
+        // playerManager = GameObject.Find("PlayerManager").GetComponent<PlayerManager>();
 
         // Playerを取得
-        zundaObject = GameObject.Find("Zundamon").GetComponent<Zunda>();
-        zunkoObject = GameObject.Find("Zunko").GetComponent<Zunda>();
+        zundaObject = GameObject.Find("Zundamon").GetComponent<BasePlayer>();
+        zunkoObject = GameObject.Find("Zunko").GetComponent<BasePlayer>();
 
         // 敵を取得
-        enemyBear = GameObject.Find("Bear").GetComponent<EnemyBase>();
+        enemyBear = GameObject.Find("Bear").GetComponent<EnemyBear>();
     }
 
     // Update is called once per frame
@@ -59,12 +59,7 @@ public class UIManager : MonoBehaviour
     {
         time += Time.deltaTime;
 
-        // プレイヤーの体力をゲージで変動させる
-        //for (int i = 0; i < playerHealthBar.Length; i++)
-        //{
-        //    VariableBar(playerHealthBar[i], MAX_TIME, basePlayer[i].selfCurrentHealth);
-        //}
-
+        //// プレイヤーの体力をゲージで変動させる
         for (int i = 0; i < playerHealthBar.Length; i++)
         {
             // VariableBar(playerHealthBar[i], MAX_TIME, basePlayer[i].selfCurrentHealth);
@@ -78,10 +73,12 @@ public class UIManager : MonoBehaviour
         //    VariableBar(playerSkillBar[i], MAX_TIME, MAX_TIME - time);
         //}
 
-        // 敵の体力をゲージで変動させる
+        //敵の体力をゲージで変動させる
         for (int i = 0; i < enemyHealthBar.Length; i++)
         {
             VariableBar(enemyHealthBar[i], enemyBear.status.m_health, enemyBear.status.m_healthMax);
+            Debug.Log(enemyBear.status.m_health);
+            Debug.Log(enemyBear.status.m_healthMax);
         }
 
         //// 敵のブレイク値の溜まり具合を変動させる
