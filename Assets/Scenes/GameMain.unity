@@ -497,7 +497,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1647211736172163786, guid: 5149a7075fef9574d811c6e788b57abb, type: 3}
       propertyPath: m_RootOrder
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 1647211736172163786, guid: 5149a7075fef9574d811c6e788b57abb, type: 3}
       propertyPath: m_LocalPosition.x
@@ -542,6 +542,10 @@ PrefabInstance:
     - target: {fileID: 1647211736172163794, guid: 5149a7075fef9574d811c6e788b57abb, type: 3}
       propertyPath: m_Name
       value: Bear
+      objectReference: {fileID: 0}
+    - target: {fileID: 1647211736172163794, guid: 5149a7075fef9574d811c6e788b57abb, type: 3}
+      propertyPath: m_TagString
+      value: Enemy
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5149a7075fef9574d811c6e788b57abb, type: 3}
@@ -1543,7 +1547,7 @@ Transform:
   - {fileID: 631847552}
   - {fileID: 1910760022}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1795823073
 GameObject:
