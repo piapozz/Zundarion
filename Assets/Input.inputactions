@@ -40,6 +40,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Parry",
+                    "type": "Button",
+                    "id": "222c7a96-034a-44ca-9825-82b045db55ae",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -59,7 +68,7 @@
                     "id": "a2cf9687-7c04-43c3-bfe5-620a41712fd7",
                     "path": "<Gamepad>/rightStick",
                     "interactions": "",
-                    "processors": "",
+                    "processors": "InvertVector2(invertX=false)",
                     "groups": "",
                     "action": "Look",
                     "isComposite": false,
@@ -145,7 +154,7 @@
                 {
                     "name": "",
                     "id": "8b192251-46ed-4410-bea4-b4cc8f329e1f",
-                    "path": "<Gamepad>/buttonSouth",
+                    "path": "<Gamepad>/rightShoulder",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -178,11 +187,33 @@
                 {
                     "name": "",
                     "id": "9cecc569-70e8-4fc8-a918-3c1759a312a8",
-                    "path": "<Keyboard>/#(B)",
+                    "path": "<Gamepad>/buttonEast",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Attack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "080c5163-aaee-4b43-803f-034b65f739e1",
+                    "path": "<Keyboard>/e",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Parry",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6bd60ba8-a41a-4c78-a2d5-0967f6d4faa8",
+                    "path": "<Gamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Parry",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

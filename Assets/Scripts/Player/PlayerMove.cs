@@ -80,8 +80,8 @@ public class PlayerMove : MonoBehaviour
         if (CheckChangeMoveState(moveState)) ChangeMoveState(moveState);
 
         // カメラの方向に基づいて入力ベクトルを修正
-        Vector3 cameraForward = _player.selfCamera.transform.forward;
-        Vector3 cameraRight = _player.selfCamera.transform.right;
+        Vector3 cameraForward = CameraManager.instance.selfCamera.transform.forward;
+        Vector3 cameraRight = CameraManager.instance.selfCamera.transform.right;
 
         // カメラ方向に基づいた移動ベクトルを計算
         Vector3 adjustedMove = (cameraRight * moveVec.x + cameraForward * moveVec.y).normalized;
