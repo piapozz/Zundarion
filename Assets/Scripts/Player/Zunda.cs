@@ -14,10 +14,6 @@ public class Zunda : BasePlayer
     [SerializeField]
     private PlayerAnimation playerAnimation = null;
 
-    /// <summary>プレイヤーの移動データ</summary>
-    [SerializeField]
-    private CollisionAction collisionAction = null;
-
     /// <summary>プレイヤーの当たり判定発生データ</summary>
     [SerializeField]
     private OccurrenceFrame occurrenceFrame = null;
@@ -30,7 +26,6 @@ public class Zunda : BasePlayer
     protected override void Init()
     {
         selfAnimationData = playerAnimation;
-        selfCollisionData = collisionAction;
         selfOccurrenceFrame = occurrenceFrame;
         selfComboCountMax = 3;
         selfCurrentHealth = MaxHP;
