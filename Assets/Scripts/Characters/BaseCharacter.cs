@@ -9,6 +9,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 // 親クラスのpublicをインスペクター上に表示
 #if UNITY_EDITOR
@@ -18,6 +19,10 @@ using UnityEngine;
 public abstract class BaseCharacter : MonoBehaviour
 {
     [SerializeField] CharacterData charaData;       // キャラクターのデータ
+
+    /// <summary>プレイヤーの移動データ</summary>
+    [SerializeField]
+    private CollisionAction _collisionAction = null;
 
     // キャラクターのステータス
     protected float healthMax;         // 最大体力
@@ -45,7 +50,7 @@ public abstract class BaseCharacter : MonoBehaviour
     /// ダメージを受ける処理
     /// </summary>
     /// <param name="damageSize"></param>
-    public void ReceiveDamage(float damageSize)
+    public void TakeDamage(float damageSize)
     {
         float damage = damageSize * defence * multiplier;
 
@@ -66,4 +71,19 @@ public abstract class BaseCharacter : MonoBehaviour
 
     public float GetCharacterHealth() {  return health; }
 
+    public void CreateCollisionEvent(CollisionAction.CollisionLayer layer, Vector3 genOffset, float radius, float damage)
+    {
+        // 当たり判定を生成する
+        CreateCollision.AttackData data = new CreateCollision.AttackData().zero();
+
+        data.tagname = transform.tag;
+        data.layer = _collisionAction.collisionLayers[(int)layer];
+        data.position = transform.position + genOffset;
+        data.radius = radius;
+        data.time = 2;
+        data.damage = damage;
+
+        // 生成
+        CreateCollision.instance.CreateCollisionSphere(gameObject, data);
+    }
 }

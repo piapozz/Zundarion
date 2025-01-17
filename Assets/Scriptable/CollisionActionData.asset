@@ -13,12 +13,8 @@ MonoBehaviour:
   m_Name: CollisionActionData
   m_EditorClassIdentifier: 
   collisionTags:
-  - AttackNormal
-  - AttackPassable
-  - AttackDangerous
-  - Avoidance
+  - Player
+  - Enemy
   collisionLayers:
-  - PlayerAttack
-  - PlayerSurvive
-  - EnemyAttack
-  - EnemySurvive
+  - Attack
+  - 

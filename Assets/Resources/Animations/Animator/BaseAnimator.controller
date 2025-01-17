@@ -575,6 +575,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _collisionPram: {fileID: 11400000, guid: ee9c9448eb08cf449b03ba2affff0bb5, type: 2}
   _occurrenceTime: 0
+  _damage: 0
   layer: 0
   tag: 0
 --- !u!1107 &-2757845039148561058
@@ -703,55 +704,55 @@ AnimatorController:
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: Attack
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: Parry
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: TransFrontline
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: TransDuplicate
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: TransEnhanced
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: Impact
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: Victory
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: Die
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
@@ -992,6 +993,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _collisionPram: {fileID: 11400000, guid: ee9c9448eb08cf449b03ba2affff0bb5, type: 2}
   _occurrenceTime: 0
+  _damage: 0
   layer: 1
   tag: 3
 --- !u!1101 &3591951971030630898
@@ -1112,6 +1114,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _collisionPram: {fileID: 11400000, guid: ee9c9448eb08cf449b03ba2affff0bb5, type: 2}
   _occurrenceTime: 0
+  _damage: 0
   layer: 0
   tag: 0
 --- !u!1101 &5206571278145731058
@@ -1380,6 +1383,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _collisionPram: {fileID: 11400000, guid: ee9c9448eb08cf449b03ba2affff0bb5, type: 2}
   _occurrenceTime: 0.1
+  _damage: 0
   layer: 0
   tag: 0
 --- !u!1101 &7855655425957998965

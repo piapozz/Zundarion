@@ -11,7 +11,8 @@ using UnityEngine;
 
 public class CheckCollision : MonoBehaviour
 {
-    [SerializeField] CollisionAction collisionAction;
+    [SerializeField]
+    private CollisionAction _collisionAction;
 
     public bool canParry { get; private set; } = false;
     private string playerTag = null;
@@ -22,9 +23,9 @@ public class CheckCollision : MonoBehaviour
 
     private void Start()
     {
-        playerTag = collisionAction.collisionTags[(int)CollisionAction.CollisionTag.PLAYER];
-        enemyTag = collisionAction.collisionTags[(int)CollisionAction.CollisionTag.ENEMY];
-        thisTag = transform.parent.gameObject.tag;
+        //playerTag = CollisionAction.collisionTags[(int)CollisionAction.CollisionTag.PLAYER];
+        //enemyTag = CollisionAction.collisionTags[(int)CollisionAction.CollisionTag.ENEMY];
+        thisTag = gameObject.tag;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -71,7 +72,7 @@ public class CheckCollision : MonoBehaviour
     private bool JudgeParry(string hitLayerName)
     {
         // ê⁄êGÇµÇΩÉRÉäÉWÉáÉìÇ™çUåÇó\íõÇ©îªíË
-        if (hitLayerName == collisionAction.collisionLayers[(int)CollisionAction.CollisionLayer.ATTACK_OMEN])
+        if (hitLayerName == _collisionAction.collisionLayers[(int)CollisionAction.CollisionLayer.ATTACK_OMEN])
             return true;
         else
             return false;
@@ -79,10 +80,11 @@ public class CheckCollision : MonoBehaviour
 
     private void TakeDamage(GameObject hitObj, string hitLayerName)
     {
-        if (hitLayerName != collisionAction.collisionLayers[(int)CollisionAction.CollisionLayer.ATTACK_NORMAL])
+        if (hitLayerName != _collisionAction.collisionLayers[(int)CollisionAction.CollisionLayer.ATTACK])
             return;
 
         float damage = hitObj.GetComponent<DealDamage>().damage;
-        gameObject.BaseCharacter.TakeDamage(damage);
+        BaseCharacter character = GetComponent<BaseCharacter>();
+        character.TakeDamage(damage);
     }
 }

@@ -5,7 +5,7 @@ using static UnityEngine.EventSystems.StandaloneInputModule;
 using UnityEngine.InputSystem;
 using static PlayerAnimation;
 
-public abstract class BasePlayer : MonoBehaviour
+public abstract class BasePlayer : BaseCharacter
 {
     // public //////////////////////////////////////////////////////////////////
 

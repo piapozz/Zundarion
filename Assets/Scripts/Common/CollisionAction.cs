@@ -15,7 +15,7 @@ public class CollisionAction : ScriptableObject
 
     public enum CollisionLayer
     {
-        ATTACK_NORMAL,      // UŒ‚
+        ATTACK,      // UŒ‚
         ATTACK_OMEN,        // UŒ‚—\’›
 
         MAX

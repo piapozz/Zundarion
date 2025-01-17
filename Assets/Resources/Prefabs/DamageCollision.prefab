@@ -15,9 +15,9 @@ GameObject:
   - component: {fileID: 7160554885725776429}
   - component: {fileID: 5673804975509042392}
   - component: {fileID: 6737252982486824032}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: DamageCollision
-  m_TagString: Untagged
+  m_TagString: AttackNormal
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -98,7 +98,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 2
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &7160554885725776429
 Rigidbody:
@@ -128,6 +128,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f46a1d072025ba47a01c194d71d6f29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damage: 0
 --- !u!114 &6737252982486824032
 MonoBehaviour:
   m_ObjectHideFlags: 0

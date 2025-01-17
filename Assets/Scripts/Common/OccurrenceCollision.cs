@@ -7,13 +7,17 @@ public class OccurrenceCollision : StateMachineBehaviour
 {
     // private //////////////////////////////////////////////////////////////////
 
-    /// <summary>プレイヤーの当たり判定情報</summary>
+    /// <summary>プレイヤーの移動データ</summary>
     [SerializeField]
-    private CollisionAction _collisionPram = null;
+    private CollisionAction _collisionAction = null;
 
     /// <summary>プレイヤーの当たり判定発生情報</summary>
     [SerializeField]
     private float _occurrenceTime;
+
+    /// <summary>ダメージ量</summary>
+    [SerializeField]
+    private float _damage;
 
     /// <summary>発生させるレイヤー</summary>
     [SerializeField]
@@ -36,9 +40,10 @@ public class OccurrenceCollision : StateMachineBehaviour
 
             data.position = animator.transform.position;
             data.radius = 2;
-            data.layer = _collisionPram.collisionLayers[(int)layer];
-            data.tagname = _collisionPram.collisionTags[(int)tag];
+            data.layer = _collisionAction.collisionLayers[(int)layer];
+            data.tagname = _collisionAction.collisionTags[(int)tag];
             data.time = 2;
+            data.damage = _damage;
 
             // 生成
             CreateCollision.instance.CreateCollisionSphere(animator.gameObject, data);
