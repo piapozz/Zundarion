@@ -52,7 +52,7 @@ public abstract class BasePlayer : MonoBehaviour
     public GameObject selfGameObject { get; private set; }
 
     /// <summary>プレイヤーの当たり判定チェック</summary>
-    public CheckPlayerCollision selfCheckCollision { get; protected set; }
+    public CheckCollision selfCheckCollision { get; protected set; }
 
     // protected //////////////////////////////////////////////////////////////////
 
@@ -117,7 +117,7 @@ public abstract class BasePlayer : MonoBehaviour
         _selfParry = GetComponent<PlayerParry>();
         selfMoveState = PlayerAnimation.MoveAnimation.IDLE;
         selfGameObject = this.gameObject;
-        selfCheckCollision = GetComponent<CheckPlayerCollision>();
+        selfCheckCollision = GetComponent<CheckCollision>();
 
         Init();
 

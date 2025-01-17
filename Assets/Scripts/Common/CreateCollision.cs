@@ -7,6 +7,9 @@ public class CreateCollision : MonoBehaviour
     // このクラスをstaticとしてインスタンスする
     public static CreateCollision instance;
 
+    [SerializeField]
+    private GameObject _damageCollision;
+
     // public //////////////////////////////////////////////////////////////////
 
     /// <summary>攻撃のデータ</summary>
@@ -15,6 +18,7 @@ public class CreateCollision : MonoBehaviour
         public Vector3 position;
         public float radius;
         public float time;
+        public float damage;
         public string layer;
         public string tagname;
 
@@ -26,14 +30,15 @@ public class CreateCollision : MonoBehaviour
             layer = string.Empty;
             tagname = string.Empty;
 
-            return new AttackData(Vector3.zero, 0f, 0f, string.Empty, string.Empty);
+            return new AttackData(Vector3.zero, 0f, 0f, 0f, string.Empty, string.Empty);
         }
 
-        public AttackData(Vector3 pos, float radius, float time, string layer, string tag)
+        public AttackData(Vector3 pos, float radius, float time, float damage, string layer, string tag)
         {
             this.position = pos;
             this.radius = radius;
             this.time = time;
+            this.damage = damage;
             this.layer = layer;
             this.tagname = tag;
         }
@@ -43,6 +48,7 @@ public class CreateCollision : MonoBehaviour
             if (position == null) position = Vector3.zero;
             if (radius == 0f) radius = 0f;
             if (time == 0f) time = 0f;
+            if (damage == 0f) damage = 0f;
             if (layer == string.Empty) layer = "Empty";
             if (tagname == string.Empty) tagname = "Empty";
         }
@@ -140,6 +146,26 @@ public class CreateCollision : MonoBehaviour
     /// <param name="attackData">   当たり判定の情報    </param>
     public void CreateCollisionSphere(GameObject parent, AttackData attackData)
     {
+        GameObject genObj = _damageCollision;
+
+        SphereCollider collision = genObj.GetComponent<SphereCollider>();
+        collision.radius = attackData.radius;
+
+        DealDamage dealDamage = genObj.GetComponent<DealDamage>();
+        dealDamage.damage = attackData.damage;
+
+        attackData.CheckTagAndLayer();
+        genObj.tag = attackData.tagname;
+        genObj.layer = LayerMask.NameToLayer(attackData.layer);
+
+        Instantiate(
+            genObj,
+            attackData.position,
+            parent.transform.rotation,
+            parent.transform
+            );
+
+        /*
         GameObject obj = new GameObject(parent.name + attackData.tagname);
 
         // 新しくスフィアコライダーをアタッチ
@@ -179,6 +205,6 @@ public class CreateCollision : MonoBehaviour
 
         // 一時的なオブジェクトを破棄（元のテンプレートオブジェクトが不要な場合）
         Destroy(obj);
-
+        */
     }
 }

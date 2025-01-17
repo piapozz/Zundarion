@@ -11,7 +11,7 @@ public class PlayerParry : MonoBehaviour
     private Animator _animator = null;
 
     /// <summary>プレイヤーの当たり判定チェック</summary>
-    private CheckPlayerCollision _checkCollision = null;
+    private CheckCollision _checkCollision = null;
 
     private void Start()
     {
@@ -23,9 +23,13 @@ public class PlayerParry : MonoBehaviour
     public void Parry()
     {
         // パリィになるか判定
-        //if (!_checkCollision.GetCanParry()) return;
+        if (_checkCollision.parryList.Count == 0) return;
+
+        // アニメーションをセット
         _animator.SetTrigger("Parry");
         // 通常カメラをリセット
         CameraManager.instance.SetFreeCam(transform.eulerAngles.y, 0.5f);
+        // プレイヤーを敵の方向に向ける
+        transform.LookAt(_checkCollision.parryList[0].transform);
     }
 }
