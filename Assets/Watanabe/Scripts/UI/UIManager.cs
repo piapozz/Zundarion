@@ -17,7 +17,7 @@ public class UIManager : MonoBehaviour
     // キャラクター
     BasePlayer zundaObject;
     BasePlayer zunkoObject;
-    EnemyBase enemyBear;
+    // EnemyBase enemyBear;
 
     float time;
 
@@ -51,7 +51,7 @@ public class UIManager : MonoBehaviour
         zunkoObject = GameObject.Find("Zunko").GetComponent<BasePlayer>();
 
         // 敵を取得
-        enemyBear = GameObject.Find("Bear").GetComponent<EnemyBear>();
+        // enemyBear = GameObject.Find("Bear").GetComponent<EnemyBear>();
     }
 
     // Update is called once per frame
@@ -76,9 +76,9 @@ public class UIManager : MonoBehaviour
         //敵の体力をゲージで変動させる
         for (int i = 0; i < enemyHealthBar.Length; i++)
         {
-            VariableBar(enemyHealthBar[i], enemyBear.status.m_health, enemyBear.status.m_healthMax);
-            Debug.Log(enemyBear.status.m_health);
-            Debug.Log(enemyBear.status.m_healthMax);
+            //VariableBar(enemyHealthBar[i], enemyBear.status.m_health, enemyBear.status.m_healthMax);
+            //Debug.Log(enemyBear.status.m_health);
+            //Debug.Log(enemyBear.status.m_healthMax);
         }
 
         //// 敵のブレイク値の溜まり具合を変動させる
