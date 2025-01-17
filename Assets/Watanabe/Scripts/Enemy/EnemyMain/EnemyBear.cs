@@ -26,7 +26,7 @@ public class EnemyBear : EnemyBase
         // プレイヤーの方を向く
         gameObject.transform.rotation = status.m_toPlayerAngle;
         
-        if(transform.position.y < 0.0f) transform.position = status.m_position;
+        // Eif(transform.position.y < 0.0f) transform.position = status.m_position;
 
         // ステートの変更があればステートを変更
         if (oldState != status.m_state) SetState(status.m_state);
@@ -39,9 +39,9 @@ public class EnemyBear : EnemyBase
         }
 
         // ダメージ処理
-        if(status.m_health <= 0)
+        if(status.m_health <= 0 )
         {
-            actionState = new BearDead();
+            status.m_state = (int)EnemyBase.EnemyStatus.ActionState.STATE_DEAD;
         }
 
         // アニメーションの再生が終わったら自身を消滅

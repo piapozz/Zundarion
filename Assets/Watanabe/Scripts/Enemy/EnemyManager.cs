@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class EnemyManager : MonoBehaviour
 {
+
+
     void Start()
     {
 
@@ -19,4 +21,9 @@ public class EnemyManager : MonoBehaviour
     {
 
     }
+
+    //public void PopEnemy(int enemyNum,)
+    //{
+
+    //}
 }
