@@ -4763,6 +4763,7 @@ GameObject:
   - component: {fileID: 2892533442517954714}
   - component: {fileID: 2892533442517954713}
   - component: {fileID: 2892533442517954718}
+  - component: {fileID: 2812111105665102077}
   - component: {fileID: 2892533442517954719}
   - component: {fileID: 2892533442517954716}
   - component: {fileID: 5128092972259059506}
@@ -4852,6 +4853,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5a7242c46efd1e4f9af19bce826fdc2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2812111105665102077
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2892533442517954710}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 887332ace94197641bd515752f8f23b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &2892533442517954719
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4865,10 +4878,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selfAnimator: {fileID: 2892533442517954711}
-  selfCamera: {fileID: 0}
   playerAnimation: {fileID: 11400000, guid: f7c2d37f1ed27d946baa0f8d2390fafa, type: 2}
   collisionAction: {fileID: 11400000, guid: ee9c9448eb08cf449b03ba2affff0bb5, type: 2}
   occurrenceFrame: {fileID: 0}
+  MaxHP: 100
 --- !u!114 &2892533442517954716
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4954,6 +4967,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: dfac235f-2db5-4b5f-b0ea-6331be3c7315
     m_ActionName: PlayerManaer/New action
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 222c7a96-034a-44ca-9825-82b045db55ae
+    m_ActionName: Player/Parry[/Keyboard/e]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player

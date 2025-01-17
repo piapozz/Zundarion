@@ -18,9 +18,6 @@ public abstract class BasePlayer : MonoBehaviour
     /// <summary>アニメーターコンポーネント</summary>
     public Animator selfAnimator = null;
 
-    /// <summary>カメラ</summary>
-    public Camera selfCamera = null;
-
     /// <summary>自身の現在の体力</summary>
     public float selfCurrentHealth { get; protected set; }
 
@@ -54,6 +51,9 @@ public abstract class BasePlayer : MonoBehaviour
     /// <summary>自身のゲームオブジェクト</summary>
     public GameObject selfGameObject { get; private set; }
 
+    /// <summary>プレイヤーの当たり判定チェック</summary>
+    public CheckPlayerCollision selfCheckCollision { get; protected set; }
+
     // protected //////////////////////////////////////////////////////////////////
 
     /// <summary>派生先による初期化</summary>
@@ -74,6 +74,9 @@ public abstract class BasePlayer : MonoBehaviour
     /// <summary>攻撃入力</summary>
     protected bool inputAttack = false;
 
+    /// <summary>パリィ入力</summary>
+    protected bool inputParry = false;
+
     // private //////////////////////////////////////////////////////////////////
 
     /// <summary>プレイヤーの移動コンポーネント</summary>
@@ -81,6 +84,9 @@ public abstract class BasePlayer : MonoBehaviour
 
     /// <summary>プレイヤーの攻撃コンポーネント</summary>
     private PlayerAttack _selfAttack;
+
+    /// <summary>プレイヤーのパリィコンポーネント</summary>
+    private PlayerParry _selfParry;
 
     /// <summary>プレイヤーの入力</summary>
     private PlayerInput _playerInput ;
@@ -108,9 +114,10 @@ public abstract class BasePlayer : MonoBehaviour
         _inputAction = _playerInput.actions["Move"];
         _selfMove = GetComponent<PlayerMove>();
         _selfAttack = GetComponent<PlayerAttack>();
+        _selfParry = GetComponent<PlayerParry>();
         selfMoveState = PlayerAnimation.MoveAnimation.IDLE;
         selfGameObject = this.gameObject;
-        selfCamera = Camera.main;
+        selfCheckCollision = GetComponent<CheckPlayerCollision>();
 
         Init();
 
@@ -194,6 +201,17 @@ public abstract class BasePlayer : MonoBehaviour
     {
         if(context.ReadValue<float>() != 0) inputAttack = true;
         else inputAttack = false;
+    }
+
+    /// <summary>
+    /// ActionsのParryに割り当てられている入力があったなら実行
+    /// </summary>
+    /// <param name="context"></param>
+    public void OnParry(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+
+        _selfParry.Parry();
     }
 
 #if GUI_OUTPUT
