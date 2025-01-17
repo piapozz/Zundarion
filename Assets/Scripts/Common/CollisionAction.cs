@@ -7,20 +7,16 @@ public class CollisionAction : ScriptableObject
 {
     public enum CollisionTag
     {
-        ATTACK_NORMAL,       // 攻撃
-        ATTACK_PASSABLE,    // パリィ可能予兆
-        ATTACK_DANGEROUS,   // パリィ不可予兆
-        AVOIDANCE,          // 回避
+        PLAYER,      // プレイヤー
+        ENEMY,       // エネミー
 
         MAX
     }
 
     public enum CollisionLayer
     {
-        PLAYER_ATTACK,      // プレイヤー攻撃
-        PLAYER_SURVIVE,     // プレイヤー受け手
-        ENEMY_ATTACK,       // エネミー攻撃
-        ENEMY_SURVIVE,      // エネミー受け手
+        ATTACK_NORMAL,      // 攻撃
+        ATTACK_OMEN,        // 攻撃予兆
 
         MAX
     }
