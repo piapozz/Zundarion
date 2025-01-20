@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class LimitTime : MonoBehaviour
 {
+    public float deleteTime = 0.1f;
+
     /// <summary>
     /// 制限時間を設定し、時間経過後にゲームオブジェクトを破壊します。
     /// </summary>
@@ -11,7 +13,7 @@ public class LimitTime : MonoBehaviour
     // 指定時間経過後に破壊処理を呼び出す
     public void OnEnable()
     {
-        StartCoroutine(DestroyAfterTime(0.6f));
+        StartCoroutine(DestroyAfterTime(deleteTime));
     }
 
     // Coroutine で破壊処理

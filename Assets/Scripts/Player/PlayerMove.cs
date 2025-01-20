@@ -16,7 +16,7 @@ public class PlayerMove : MonoBehaviour
     private PlayerAnimation _animationPram = null;
 
     /// <summary>アニメーションパラメーターの情報</summary>
-    private CollisionAction _collisionPram;
+    private TagData _collisionPram;
 
     /// <summary>回避の再生時間</summary>
     private float _avoidanceTime = 0f;
@@ -29,7 +29,7 @@ public class PlayerMove : MonoBehaviour
     void Start()
     {
         _player = GetComponent<BasePlayer>();       // プレイヤー取得
-        _animator = _player.selfAnimator;       // アニメーター取得
+        _animator = _player.selfAnimator;           // アニメーター取得
         _animationPram = _player.selfAnimationData; // アニメーションデータ取得
         _collisionPram = _player.selfCollisionData; // コリジョンデータ取得
 

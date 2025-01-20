@@ -8,23 +8,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 public class CheckCollision : MonoBehaviour
 {
-    [SerializeField]
-    private CollisionAction _collisionAction;
-
-    public bool canParry { get; private set; } = false;
     private string playerTag = null;
     private string enemyTag = null;
     private string thisTag = null;
 
-    public List<GameObject> parryList { get; private set; } = new List<GameObject>(3);
+    public List<BaseCharacter> parryList { get; private set; } = new List<BaseCharacter>(3);
 
     private void Start()
     {
-        //playerTag = CollisionAction.collisionTags[(int)CollisionAction.CollisionTag.PLAYER];
-        //enemyTag = CollisionAction.collisionTags[(int)CollisionAction.CollisionTag.ENEMY];
+        playerTag = "Player";
+        enemyTag = "Enemy";
         thisTag = gameObject.tag;
     }
 
@@ -32,27 +29,34 @@ public class CheckCollision : MonoBehaviour
     {
         GameObject hitObj = other.gameObject;
         string hitTagName = hitObj.tag;
-        string hitLayerName = LayerMask.LayerToName(hitObj.layer);
-        // 敵のコリジョンか判定
-        if (!JudgeTag(hitTagName)) return;
 
-        // パリィリストに入れる
-        if (JudgeParry(hitLayerName) && !parryList.Exists(x => x == hitObj))
+        // 判定すべきコリジョンか判定
+        CollisionData collisionData = hitObj.GetComponent<CollisionData>();
+        if (collisionData == null || !JudgeTag(hitTagName)) return;
+
+        bool isParry = collisionData.isParry;
+        BaseCharacter character = hitObj.GetComponent<BaseCharacter>();
+        if (character == null) return;
+        // パリィでリストに入っていないなら
+        if (isParry && !parryList.Exists(x => x == character))
         {
-            parryList.Add(hitObj);
-            return;
+            // リストに入れる
+            parryList.Add(character);
         }
-
-        // ダメージ判定
-        TakeDamage(hitObj, hitLayerName);
+        else
+        {
+            // ダメージ判定
+            character.TakeDamage(collisionData.damage);
+        }
     }
 
     private void OnTriggerExit(Collider other)
     {
         // パリィリストから削除
         GameObject hitObj = other.gameObject;
-        if (parryList.Exists(x => x == hitObj))
-            parryList.Remove(hitObj);
+        BaseCharacter character = hitObj.GetComponent<BaseCharacter>();
+        if (parryList.Exists(x => x == character))
+            parryList.Remove(character);
     }
 
     /// <summary>
@@ -67,24 +71,5 @@ public class CheckCollision : MonoBehaviour
             return true;
         else
             return false;
-    }
-
-    private bool JudgeParry(string hitLayerName)
-    {
-        // 接触したコリジョンが攻撃予兆か判定
-        if (hitLayerName == _collisionAction.collisionLayers[(int)CollisionAction.CollisionLayer.ATTACK_OMEN])
-            return true;
-        else
-            return false;
-    }
-
-    private void TakeDamage(GameObject hitObj, string hitLayerName)
-    {
-        if (hitLayerName != _collisionAction.collisionLayers[(int)CollisionAction.CollisionLayer.ATTACK])
-            return;
-
-        float damage = hitObj.GetComponent<DealDamage>().damage;
-        BaseCharacter character = GetComponent<BaseCharacter>();
-        character.TakeDamage(damage);
     }
 }

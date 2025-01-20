@@ -5,8 +5,9 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "CharacterAttack", menuName = "CharacterAttack")]
 public class CharacterAttackData : ScriptableObject
 {
-    public Vector3 generateOffset;
-    public float radius;
-    public float damage;
-
+    public bool isParry;        // パリィかどうか
+    public float distance;      // 距離
+    public float radius;        // 半径
+    public float damage;        // ダメージ
+    public float generateTime;  // 生成している時間
 }

@@ -19,7 +19,7 @@ public class PlayerAttack : MonoBehaviour
     private PlayerAnimation _animationPram = null;
 
     /// <summary>アニメーションパラメーターの情報</summary>
-    private CollisionAction _collisionPram;
+    private TagData _collisionPram;
 
     /// <summary>現在のコンボ数</summary>
     private int _comboCount = 0;

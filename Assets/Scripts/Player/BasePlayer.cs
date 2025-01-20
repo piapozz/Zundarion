@@ -15,9 +15,6 @@ public abstract class BasePlayer : BaseCharacter
        
     }
 
-    /// <summary>アニメーターコンポーネント</summary>
-    public Animator selfAnimator = null;
-
     /// <summary>自身の現在の体力</summary>
     public float selfCurrentHealth { get; protected set; }
 
@@ -40,7 +37,7 @@ public abstract class BasePlayer : BaseCharacter
     public PlayerAnimation selfAnimationData { get; protected set; }
 
     /// <summary>当たり判定情報</summary>
-    public CollisionAction selfCollisionData { get; protected set; }
+    public TagData selfCollisionData { get; protected set; }
 
     /// <summary>当たり判定発生情報</summary>
     public OccurrenceFrame selfOccurrenceFrame { get; protected set; }
@@ -170,6 +167,7 @@ public abstract class BasePlayer : BaseCharacter
     /// <summary>
     /// プレイヤーにダメージを与える
     /// </summary>
+    /*
     public void TakeDamage(float damage)
     {
         // 回避中ならダメージを食らわない
@@ -181,7 +179,7 @@ public abstract class BasePlayer : BaseCharacter
 
         selfAnimator.SetTrigger(selfAnimationData.interruptPram[(int)InterruqtAnimation.IMPACT]);
         selfCurrentHealth -= damage;
-    }
+    }*/
 
     // アクションマップのMoveに登録されているキーが押されたときに入力値を取得
     public void OnMove(InputAction.CallbackContext context)

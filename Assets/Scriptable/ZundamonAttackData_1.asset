@@ -9,12 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ba16780144fed7f408422db2ee8a9258, type: 3}
-  m_Name: CollisionActionData
+  m_Script: {fileID: 11500000, guid: 26598dd705daf2f409c55aeb49e8e735, type: 3}
+  m_Name: ZundamonAttackData_1
   m_EditorClassIdentifier: 
-  collisionTags:
-  - Player
-  - Enemy
-  collisionLayers:
-  - Attack
-  - 
+  isParry: 0
+  distance: 1
+  radius: 1
+  damage: 10
+  generateTime: 0.1

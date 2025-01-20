@@ -27,9 +27,11 @@ public class PlayerParry : MonoBehaviour
 
         // アニメーションをセット
         _animator.SetTrigger("Parry");
+        // パリィ相手のアニメーションをひるみにする
+        _checkCollision.parryList[0].selfAnimator.SetTrigger("Impact");
+        // プレイヤーを敵の方向に向ける
+        _player.TurnAround(_checkCollision.parryList[0].transform);
         // 通常カメラをリセット
         CameraManager.instance.SetFreeCam(transform.eulerAngles.y, 0.5f);
-        // プレイヤーを敵の方向に向ける
-        transform.LookAt(_checkCollision.parryList[0].transform);
     }
 }

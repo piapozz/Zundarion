@@ -8,10 +8,13 @@ public class CreateCollision : MonoBehaviour
     public static CreateCollision instance;
 
     [SerializeField]
-    private GameObject _damageCollision;
+    private GameObject _damageCollision;    // 当たり判定の元オブジェ
+
+    [SerializeField]
+    private Transform _rootCollision;       // 当たり判定生成する親
 
     // public //////////////////////////////////////////////////////////////////
-
+    /*
     /// <summary>攻撃のデータ</summary>
     public struct AttackData
     {
@@ -124,87 +127,47 @@ public class CreateCollision : MonoBehaviour
             }
             return false;
         }
-
     }
+    */
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         instance = this;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     /// <summary>
     /// 当たり判定を生成
     /// </summary>
-    /// <param name="parent">       親のオブジェクト    </param>
-    /// <param name="attackData">   当たり判定の情報    </param>
-    public void CreateCollisionSphere(GameObject parent, AttackData attackData)
+    /// <param name="attackData"></param>
+    /// <param name="transform"></param>
+    public void CreateCollisionSphere(CharacterAttackData attackData, Transform transform)
     {
         GameObject genObj = _damageCollision;
-
+        // 半径設定
         SphereCollider collision = genObj.GetComponent<SphereCollider>();
         collision.radius = attackData.radius;
-
-        DealDamage dealDamage = genObj.GetComponent<DealDamage>();
-        dealDamage.damage = attackData.damage;
-
-        attackData.CheckTagAndLayer();
-        genObj.tag = attackData.tagname;
-        genObj.layer = LayerMask.NameToLayer(attackData.layer);
-
+        // ダメージ設定
+        CollisionData collisionData = genObj.GetComponent<CollisionData>();
+        collisionData.damage = attackData.damage;
+        // パリィ設定
+        collisionData.isParry = attackData.isParry;
+        // 生成時間設定
+        LimitTime limitTime = genObj.GetComponent<LimitTime>();
+        limitTime.deleteTime = attackData.generateTime;
+        // タグ設定
+        genObj.tag = transform.tag;
+        // 座標設定
+        Vector3 genPos = transform.position;
+        float angle = transform.rotation.eulerAngles.y * Mathf.Deg2Rad;
+        float distance = attackData.distance;
+        Vector3 offset = new Vector3(Mathf.Sin(angle) * distance, 1, Mathf.Cos(angle) * distance);
+        genPos += offset;
+        // 生成
         Instantiate(
             genObj,
-            attackData.position,
-            parent.transform.rotation,
-            parent.transform
+            genPos,
+            Quaternion.identity,
+            _rootCollision
             );
-
-        /*
-        GameObject obj = new GameObject(parent.name + attackData.tagname);
-
-        // 新しくスフィアコライダーをアタッチ
-        obj.AddComponent<SphereCollider>();
-        SphereCollider sphere = obj.GetComponent<SphereCollider>();
-
-        // RigidBodyをアタッチ
-        obj.AddComponent<Rigidbody>();
-        Rigidbody rb = obj.GetComponent<Rigidbody>();
-        rb.useGravity = false;
-
-        // 当たり判定の設定一覧
-        sphere.center = Vector3.zero;
-        sphere.radius = attackData.radius;
-        sphere.isTrigger = true;
-
-        // ゲームオブジェクトに時間制限スクリプトをアタッチして時間を設定
-        obj.AddComponent<LimitTime>();
-        LimitTime limit = obj.GetComponent<LimitTime>();
-        //limit.SetPeriod(attackData.time);
-
-        // コリジョンチェックをアタッチ
-        obj.AddComponent<DealDamage>();
-
-        // ゲームオブジェクトの設定
-        attackData.CheckTagAndLayer();
-        obj.tag = attackData.tagname;
-        obj.layer = LayerMask.NameToLayer(attackData.layer);
-
-        // からのゲームオブジェクトを親のオブジェクト直下に生成する
-        Instantiate(
-            obj,
-            attackData.position,
-            parent.transform.rotation,
-            parent.transform
-            );
-
-        // 一時的なオブジェクトを破棄（元のテンプレートオブジェクトが不要な場合）
-        Destroy(obj);
-        */
     }
 }

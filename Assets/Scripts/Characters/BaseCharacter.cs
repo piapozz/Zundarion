@@ -22,7 +22,7 @@ public abstract class BaseCharacter : MonoBehaviour
 
     /// <summary>プレイヤーの移動データ</summary>
     [SerializeField]
-    private CollisionAction _collisionAction = null;
+    private TagData _collisionAction = null;
 
     // キャラクターのステータス
     protected float healthMax;         // 最大体力
@@ -34,6 +34,9 @@ public abstract class BaseCharacter : MonoBehaviour
     protected Vector3 position;        // 座標
     protected float multiplier;        // 倍率
 
+    /// <summary>アニメーターコンポーネント</summary>
+    public Animator selfAnimator = null;
+
     /// <summary>
     /// ScriptableObjectを使って初期化
     /// </summary>
@@ -44,6 +47,7 @@ public abstract class BaseCharacter : MonoBehaviour
         strength = charaData.strength;
         defence = charaData.defence;
         speed = charaData.speed;
+        selfAnimator = GetComponent<Animator>();
     }
 
     /// <summary>
@@ -71,19 +75,25 @@ public abstract class BaseCharacter : MonoBehaviour
 
     public float GetCharacterHealth() {  return health; }
 
-    public void CreateCollisionEvent(CollisionAction.CollisionLayer layer, Vector3 genOffset, float radius, float damage)
+    /// <summary>
+    /// 当たり判定を生成する
+    /// </summary>
+    /// <param name="attackData"></param>
+    public void CreateCollisionEvent(CharacterAttackData attackData)
     {
-        // 当たり判定を生成する
-        CreateCollision.AttackData data = new CreateCollision.AttackData().zero();
-
-        data.tagname = transform.tag;
-        data.layer = _collisionAction.collisionLayers[(int)layer];
-        data.position = transform.position + genOffset;
-        data.radius = radius;
-        data.time = 2;
-        data.damage = damage;
-
         // 生成
-        CreateCollision.instance.CreateCollisionSphere(gameObject, data);
+        CreateCollision.instance.CreateCollisionSphere(attackData, transform);
+    }
+
+    /// <summary>
+    /// 目標の方向に振り向く
+    /// </summary>
+    /// <param name="target"></param>
+    public void TurnAround(Transform target)
+    {
+        Vector3 dir = target.position - transform.position;
+        dir.y = position.y;
+        Quaternion dirRot = Quaternion.LookRotation(dir);
+        transform.rotation = dirRot;
     }
 }

@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class OccurrenceCollision : StateMachineBehaviour
 {
+    /*
     // private //////////////////////////////////////////////////////////////////
 
     /// <summary>プレイヤーの移動データ</summary>
@@ -46,7 +47,7 @@ public class OccurrenceCollision : StateMachineBehaviour
             data.damage = _damage;
 
             // 生成
-            CreateCollision.instance.CreateCollisionSphere(animator.gameObject, data);
+            CreateCollision.instance.CreateCollisionSphere(data);
 
             // 一度だけ実行するためフラグを立てる
             _hasGeneratedCollision = true;
@@ -58,4 +59,5 @@ public class OccurrenceCollision : StateMachineBehaviour
         // 状態開始時にフラグをリセット
         _hasGeneratedCollision = false;
     }
+    */
 }
