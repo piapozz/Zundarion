@@ -63,7 +63,7 @@ ModelImporter:
       - time: 0.738198
         functionName: CreateCollisionEvent
         data: 
-        objectReferenceParameter: {instanceID: 0}
+        objectReferenceParameter: {fileID: 11400000, guid: 9f5766af2c9511e4c9c4cfb3bf99bb08, type: 2}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
