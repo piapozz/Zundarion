@@ -15,8 +15,8 @@ public class PlayerParry : MonoBehaviour
 
     private void Start()
     {
-        _player = GetComponent<BasePlayer>();       // プレイヤー取得
-        _animator = _player.selfAnimator;           // アニメーター取得
+        _player = GetComponent<BasePlayer>();           // プレイヤー取得
+        _animator = _player.selfAnimator;               // アニメーター取得
         _checkCollision = _player.selfCheckCollision;
     }
 
@@ -24,7 +24,7 @@ public class PlayerParry : MonoBehaviour
     {
         // パリィになるか判定
         if (_checkCollision.parryList.Count == 0) return;
-
+        Debug.Log(_checkCollision.parryList.Count);
         // アニメーションをセット
         _animator.SetTrigger("Parry");
         // パリィ相手のアニメーションをひるみにする

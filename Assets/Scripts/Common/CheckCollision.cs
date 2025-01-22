@@ -18,11 +18,14 @@ public class CheckCollision : MonoBehaviour
 
     public List<BaseCharacter> parryList { get; private set; } = new List<BaseCharacter>(3);
 
+    private BaseCharacter _character = null;
+
     private void Start()
     {
         playerTag = "Player";
         enemyTag = "Enemy";
         thisTag = gameObject.tag;
+        _character = GetComponent<BaseCharacter>();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -35,18 +38,19 @@ public class CheckCollision : MonoBehaviour
         if (collisionData == null || !JudgeTag(hitTagName)) return;
 
         bool isParry = collisionData.isParry;
-        BaseCharacter character = hitObj.GetComponent<BaseCharacter>();
-        if (character == null) return;
+        int hitID = collisionData.characterID;
+        BaseCharacter hitCharacter = CharacterManager.instance.GetCharacter(hitID);
+        if (hitCharacter == null) return;
         // パリィでリストに入っていないなら
-        if (isParry && !parryList.Exists(x => x == character))
+        if (isParry && !parryList.Exists(x => x == hitCharacter))
         {
             // リストに入れる
-            parryList.Add(character);
+            parryList.Add(hitCharacter);
         }
         else
         {
             // ダメージ判定
-            character.TakeDamage(collisionData.damage);
+            hitCharacter.TakeDamage(collisionData.damage);
         }
     }
 

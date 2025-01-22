@@ -13,7 +13,7 @@ public class PlayerAttack : MonoBehaviour
     private BasePlayer _player = null;
 
     /// <summary>当たり判定生成コンポーネント</summary>
-    private CreateCollision _createCollision = null;
+    private CollisionManager _createCollision = null;
 
     /// <summary>アニメーションパラメーターの情報</summary>
     private PlayerAnimation _animationPram = null;

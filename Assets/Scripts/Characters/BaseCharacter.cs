@@ -9,7 +9,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 // 親クラスのpublicをインスペクター上に表示
 #if UNITY_EDITOR
@@ -18,11 +17,10 @@ using static UnityEditor.Experimental.GraphView.GraphView;
 
 public abstract class BaseCharacter : MonoBehaviour
 {
-    [SerializeField] CharacterData charaData;       // キャラクターのデータ
+    [SerializeField] 
+    private CharacterData charaData = null;       // キャラクターのデータ
 
-    /// <summary>プレイヤーの移動データ</summary>
-    [SerializeField]
-    private TagData _collisionAction = null;
+    public int ID { get; private set; } = -1;
 
     // キャラクターのステータス
     protected float healthMax;         // 最大体力
@@ -40,14 +38,21 @@ public abstract class BaseCharacter : MonoBehaviour
     /// <summary>
     /// ScriptableObjectを使って初期化
     /// </summary>
-    private void Awake()
+    public void Initialize(int setID)
     {
+        ID = setID;
         healthMax = charaData.health;
         health = healthMax;
         strength = charaData.strength;
         defence = charaData.defence;
         speed = charaData.speed;
         selfAnimator = GetComponent<Animator>();
+    }
+
+    public void SetTransform(Transform setTransform)
+    {
+        transform.position = setTransform.position;
+        transform.rotation = setTransform.rotation;
     }
 
     /// <summary>
@@ -82,7 +87,7 @@ public abstract class BaseCharacter : MonoBehaviour
     public void CreateCollisionEvent(CharacterAttackData attackData)
     {
         // 生成
-        CreateCollision.instance.CreateCollisionSphere(attackData, transform);
+        CollisionManager.instance.CreateCollisionSphere(ID, attackData, transform);
     }
 
     /// <summary>
