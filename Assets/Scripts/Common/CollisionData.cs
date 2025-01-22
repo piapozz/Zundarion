@@ -10,6 +10,7 @@ using UnityEngine;
 
 public class CollisionData : MonoBehaviour
 {
+    public int characterID = -1;
     public bool isParry = false;
     public float damage = -1;
 }

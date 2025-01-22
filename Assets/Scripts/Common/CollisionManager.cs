@@ -2,13 +2,13 @@ using System.Collections;
 using UnityEditor;
 using UnityEngine;
 
-public class CreateCollision : MonoBehaviour
+public class CollisionManager : MonoBehaviour
 {
     // このクラスをstaticとしてインスタンスする
-    public static CreateCollision instance;
+    public static CollisionManager instance;
 
     [SerializeField]
-    private GameObject _damageCollision;    // 当たり判定の元オブジェ
+    private GameObject _collisionOrigin;    // 当たり判定の元オブジェ
 
     [SerializeField]
     private Transform _rootCollision;       // 当たり判定生成する親
@@ -130,7 +130,7 @@ public class CreateCollision : MonoBehaviour
     }
     */
 
-    private void Start()
+    private void Awake()
     {
         instance = this;
     }
@@ -139,26 +139,26 @@ public class CreateCollision : MonoBehaviour
     /// 当たり判定を生成
     /// </summary>
     /// <param name="attackData"></param>
-    /// <param name="transform"></param>
-    public void CreateCollisionSphere(CharacterAttackData attackData, Transform transform)
+    /// <param name="setTransform"></param>
+    public void CreateCollisionSphere(int ID, CharacterAttackData attackData, Transform setTransform)
     {
-        GameObject genObj = _damageCollision;
+        GameObject genObj = _collisionOrigin;
+        // 判定のデータ設定
+        CollisionData collisionData = genObj.GetComponent<CollisionData>();
+        collisionData.damage = attackData.damage;
+        collisionData.isParry = attackData.isParry;
+        collisionData.characterID = ID;
         // 半径設定
         SphereCollider collision = genObj.GetComponent<SphereCollider>();
         collision.radius = attackData.radius;
-        // ダメージ設定
-        CollisionData collisionData = genObj.GetComponent<CollisionData>();
-        collisionData.damage = attackData.damage;
-        // パリィ設定
-        collisionData.isParry = attackData.isParry;
         // 生成時間設定
         LimitTime limitTime = genObj.GetComponent<LimitTime>();
         limitTime.deleteTime = attackData.generateTime;
         // タグ設定
-        genObj.tag = transform.tag;
+        genObj.tag = setTransform.tag;
         // 座標設定
-        Vector3 genPos = transform.position;
-        float angle = transform.rotation.eulerAngles.y * Mathf.Deg2Rad;
+        Vector3 genPos = setTransform.position;
+        float angle = setTransform.rotation.eulerAngles.y * Mathf.Deg2Rad;
         float distance = attackData.distance;
         Vector3 offset = new Vector3(Mathf.Sin(angle) * distance, 1, Mathf.Cos(angle) * distance);
         genPos += offset;
