@@ -31,9 +31,10 @@ public class StageManager : MonoBehaviour
     {
         _nowWave = waveNum;
 
-        for (int i = 0, max = _stageData.waveData.Length; i < max; i++)
+        WaveData waveData = _stageData.waveData[waveNum];
+        int characterNum = waveData.generateCharacterData.Length;
+        for (int i = 0; i < characterNum; i++)
         {
-            WaveData waveData = _stageData.waveData[waveNum];
             GameObject geneCharacter = waveData.generateCharacterData[i].characterPrefab;
             int anchorNum = waveData.generateCharacterData[i].generateAnchorNum;
             CharacterManager.instance.GenerateEnemy(geneCharacter, _generateAnchor[anchorNum]);

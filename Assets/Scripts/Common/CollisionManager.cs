@@ -135,6 +135,7 @@ public class CollisionManager : MonoBehaviour
         instance = this;
     }
 
+    // オブジェクトプーリングでやる予定
     /// <summary>
     /// 当たり判定を生成
     /// </summary>
@@ -148,12 +149,11 @@ public class CollisionManager : MonoBehaviour
         collisionData.damage = attackData.damage;
         collisionData.isParry = attackData.isParry;
         collisionData.characterID = ID;
-        // 半径設定
-        SphereCollider collision = genObj.GetComponent<SphereCollider>();
-        collision.radius = attackData.radius;
         // 生成時間設定
         LimitTime limitTime = genObj.GetComponent<LimitTime>();
         limitTime.deleteTime = attackData.generateTime;
+        // 半径設定
+        genObj.transform.localScale = Vector3.one * attackData.scale;
         // タグ設定
         genObj.tag = setTransform.tag;
         // 座標設定

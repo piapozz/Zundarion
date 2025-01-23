@@ -20,7 +20,8 @@ public abstract class BaseCharacter : MonoBehaviour
     [SerializeField] 
     private CharacterData charaData = null;       // キャラクターのデータ
 
-    public int ID { get; private set; } = -1;
+    [SerializeField]
+    private int _ID = -1;
 
     // キャラクターのステータス
     protected float healthMax;         // 最大体力
@@ -40,7 +41,7 @@ public abstract class BaseCharacter : MonoBehaviour
     /// </summary>
     public void Initialize(int setID)
     {
-        ID = setID;
+        _ID = setID;
         healthMax = charaData.health;
         health = healthMax;
         strength = charaData.strength;
@@ -87,7 +88,7 @@ public abstract class BaseCharacter : MonoBehaviour
     public void CreateCollisionEvent(CharacterAttackData attackData)
     {
         // 生成
-        CollisionManager.instance.CreateCollisionSphere(ID, attackData, transform);
+        CollisionManager.instance.CreateCollisionSphere(_ID, attackData, transform);
     }
 
     /// <summary>

@@ -1532,8 +1532,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4792213932067412095}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.610064, y: -0.00000047683716, z: 12.979203}
+  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1576,7 +1576,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   charaData: {fileID: 11400000, guid: 7e5b1f79ac293af4fab999f21e4f9bc2, type: 2}
-  selfAnimator: {fileID: 0}
+  selfAnimator: {fileID: 2245784756199610559}
   relativePosition: {x: 0, y: 0, z: 0}
   enemyForward: {x: 0, y: 0, z: 0}
   nowState: 0

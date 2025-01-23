@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,13 +14,25 @@ public class LimitTime : MonoBehaviour
     // w’èŠÔŒo‰ßŒã‚É”j‰óˆ—‚ğŒÄ‚Ño‚·
     public void OnEnable()
     {
-        StartCoroutine(DestroyAfterTime(deleteTime));
+        DestroyCountStart(deleteTime);
+        //StartCoroutine(DestroyAfterTime(deleteTime));
     }
 
     // Coroutine ‚Å”j‰óˆ—
     private IEnumerator DestroyAfterTime(float delay)
     {
         yield return new WaitForSeconds(delay);
+        LimitOver();
+    }
+
+    private async UniTask DestroyCountStart(float time)
+    {
+        float elapsedTime = 0.0f;
+        while (elapsedTime < time)
+        {
+            elapsedTime += Time.deltaTime;
+            await UniTask.DelayFrame(1);
+        }
         LimitOver();
     }
 
