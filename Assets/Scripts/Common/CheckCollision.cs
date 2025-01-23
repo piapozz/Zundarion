@@ -42,8 +42,10 @@ public class CheckCollision : MonoBehaviour
         BaseCharacter hitCharacter = CharacterManager.instance.GetCharacter(hitID);
         if (hitCharacter == null) return;
         // パリィでリストに入っていないなら
-        if (isParry && !parryList.Exists(x => x == hitCharacter))
+        if (isParry)
         {
+            if (parryList.Exists(x => x == hitCharacter)) return;
+
             // リストに入れる
             parryList.Add(hitCharacter);
         }

@@ -16,7 +16,9 @@ public class CharacterManager : MonoBehaviour
     private static readonly int CHARACTER_MAX = 10;
 
     [SerializeField]
-    private GameObject _playerCharacter = null;
+    private GameObject playerOrigin = null;
+
+    public GameObject playerObject { get; private set; } = null;
 
     public List<GameObject> characterList { get; private set; } = null;
 
@@ -24,55 +26,60 @@ public class CharacterManager : MonoBehaviour
     {
         instance = this;
         characterList = new List<GameObject>(CHARACTER_MAX);
+        for (int i = 0, max = CHARACTER_MAX; i < max; i++)
+        {
+            characterList.Add(null);
+        }
     }
 
     private void Start()
     {
-        GeneratePlayer(_playerCharacter, StageManager.instance._playerAnchor);
+        playerObject = GeneratePlayer(playerOrigin, StageManager.instance._playerAnchor);
     }
 
     /// <summary>
     /// プレイヤーを生成する
     /// </summary>
-    public void GeneratePlayer(GameObject geneCharacter, Transform geneTransform)
+    public GameObject GeneratePlayer(GameObject geneCharacter, Transform geneTransform)
     {
-        characterList.Clear();
-        GenerateCharacter(geneCharacter, geneTransform);
-
+        return GenerateCharacter(geneCharacter, geneTransform);
     }
 
     /// <summary>
     /// 敵を生成する
     /// </summary>
     /// <param name="generateNum"></param>
-    public void GenerateEnemy(GameObject geneCharacter, Transform geneTransform)
+    public GameObject GenerateEnemy(GameObject geneCharacter, Transform geneTransform)
     {
-        GenerateCharacter(geneCharacter, geneTransform);
+        return GenerateCharacter(geneCharacter, geneTransform);
     }
 
     /// <summary>
     /// キャラクターを生成する関数
     /// </summary>
     /// <param name="character"></param>
-    private void GenerateCharacter(GameObject geneCharacter, Transform geneTransform)
+    private GameObject GenerateCharacter(GameObject geneCharacter, Transform geneTransform)
     {
-        BaseCharacter character = gameObject.GetComponent<BaseCharacter>();
+        GameObject geneObj = null;
+        BaseCharacter character = geneCharacter.GetComponent<BaseCharacter>();
         int useID = GetEmptyID();
         if (useID < 0)
         {
             useID = characterList.Count;
             character.Initialize(useID);
-            characterList.Add(Instantiate(geneCharacter));
+            geneObj = Instantiate(geneCharacter);
+            characterList.Add(geneObj);
         }
         else
         {
             character.Initialize(useID);
-            characterList[useID] = Instantiate(geneCharacter);
+            geneObj = Instantiate(geneCharacter);
+            characterList[useID] = geneObj;
         }
         character.SetTransform(geneTransform);
+        return geneObj;
     }
 
-    // FIX -1しか返ってこない
     /// <summary>
     /// 空のキャラクターリストの番号を取得
     /// </summary>

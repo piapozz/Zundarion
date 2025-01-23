@@ -22,15 +22,13 @@ public class BaseEnemy : BaseCharacter
 
     public GameConst.EnemyState nowState;                // 現在のステートを管理
 
-    private void Awake()
+    private void Start()
     {
         nowState = GameConst.EnemyState.INVALID;
 
         selfAnimator = GetComponent<Animator>();
 
-        // プレイヤーを取得 ※GameObject.Find()は重いらしいので使うなら初期化などのタイミングで一括
-        player = GameObject.Find("Zundamon").GameObject();
-
+        player = CharacterManager.instance.playerObject;
     }
 
     public virtual void Attack() { }
@@ -47,6 +45,7 @@ public class BaseEnemy : BaseCharacter
     // プレイヤーとの相対距離を取得
     public Vector3 GetRelativePosition()
     {
+        Vector3 playerPos = player.transform.position;
          return player.transform.position - gameObject.transform.position;
     }
 

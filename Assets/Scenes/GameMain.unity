@@ -337,51 +337,7 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
   m_CustomBlends: {fileID: 0}
-  m_ParentHash:
-  - m_Hash: -1690138144
-    m_ParentHash: 756556552
-  - m_Hash: -1130755777
-    m_ParentHash: 756556552
-  - m_Hash: 1432961145
-    m_ParentHash: 756556552
-  - m_Hash: -604752631
-    m_ParentHash: 756556552
-  - m_Hash: 1130333774
-    m_ParentHash: 756556552
-  - m_Hash: -1150098905
-    m_ParentHash: 1130333774
-  - m_Hash: 1434223371
-    m_ParentHash: 1130333774
-  - m_Hash: 578532253
-    m_ParentHash: 1130333774
-  - m_Hash: 155712631
-    m_ParentHash: 1130333774
-  - m_Hash: -1657379778
-    m_ParentHash: 1130333774
-  - m_Hash: 1718862356
-    m_ParentHash: 756556552
-  - m_Hash: 457199773
-    m_ParentHash: 1718862356
-  - m_Hash: -1744805400
-    m_ParentHash: 1718862356
-  - m_Hash: -278308518
-    m_ParentHash: 1718862356
-  - m_Hash: 1625538346
-    m_ParentHash: 756556552
-  - m_Hash: -1498329036
-    m_ParentHash: 1625538346
-  - m_Hash: 484251139
-    m_ParentHash: 1625538346
-  - m_Hash: -1852808940
-    m_ParentHash: 1625538346
-  - m_Hash: 441364566
-    m_ParentHash: 1625538346
-  - m_Hash: -1404840944
-    m_ParentHash: 1625538346
-  - m_Hash: -2003858617
-    m_ParentHash: 1625538346
-  - m_Hash: 637845302
-    m_ParentHash: 1625538346
+  m_ParentHash: []
 --- !u!4 &10981294
 Transform:
   m_ObjectHideFlags: 0
@@ -865,7 +821,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77f98d0bf46f47d40884271a913a43ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerCharacter: {fileID: 2892533442517954710, guid: 59827da187accf94584def2cedf901fe, type: 3}
+  playerOrigin: {fileID: 2892533442517954710, guid: 59827da187accf94584def2cedf901fe, type: 3}
 --- !u!1 &449209453
 GameObject:
   m_ObjectHideFlags: 0
