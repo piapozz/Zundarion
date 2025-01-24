@@ -1,0 +1,108 @@
+/*
+ * @file EnemyBear.cs
+ * @brief BearÇä«óùÇ∑ÇÈÉNÉâÉX
+ * @author sein
+ * @date 2025/1/17
+ */
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEditor;
+using UnityEngine;
+
+public class EnemyBear : BaseEnemy
+{
+    float distance;
+
+    Quaternion targetRotation;
+
+    private void Update()
+    {
+        Move();
+        SetRotation(targetRotation);
+        // ãóó£ÇéÊìæ
+        distance = GetRelativePosition().magnitude;
+        // Debug.Log(distance);
+    }
+
+    public override void Attack()
+    {
+
+    }
+
+    public override void StrongAttack()
+    {
+
+    }
+
+    public override void UniqueAttack()
+    {
+
+    }
+
+    public override void Restraint()
+    {
+        // í«ê’îÕàÕÇÊÇËÇ‡ó£ÇÍÇƒÇ¢ÇΩÇÁ
+        if (distance >= 15.0f)
+        {
+            // å©é∏Ç§
+            SetAnimatorBool("Found", false);
+            SetAnimatorBool("Restraint", false);
+            return;
+        }
+
+        // é„çUåÇÇ©ã≠çUåÇÇÇ∑ÇÈ
+        if (distance <= 3.0f)
+        {
+            int attackType = Random.Range(0, 2);
+
+            targetRotation = GetPlayerDirection();
+
+            if (attackType == 0) SetAnimatorTrigger("Attack");
+            if (attackType == 1) SetAnimatorTrigger("StrongAttack");
+        }
+        // ÉWÉÉÉìÉvçUåÇÇ…ëJà⁄
+        else if (distance >= 6.0f && distance <= 10.0f)
+        {
+            targetRotation = GetPlayerDirection();
+            SetAnimatorTrigger("UniqueAttack");
+        }
+        // í«ê’Ç…ëJà⁄
+        else
+        {
+            SetAnimatorBool("Chasing", true);
+        }
+    }
+
+    public override void Wandering()
+    {
+        // î≠å©
+        if (distance <= 7.0f) SetAnimatorBool("Found", true);
+    }
+
+    public override void Found()
+    {
+
+    }
+
+    public override void Chasing()
+    {
+        if (distance <= 3.0f) SetAnimatorBool("Chasing", false);
+
+        // í«ê’îÕàÕÇÊÇËÇ‡ó£ÇÍÇƒÇ¢ÇΩÇÁ
+        if (distance >= 15.0f)
+        {
+            // å©é∏Ç§
+            SetAnimatorBool("Found", false);
+            SetAnimatorBool("Restraint", false);
+            return;
+        }
+        targetRotation = GetPlayerDirection();
+
+    }
+
+    public override void Dying()
+    {
+
+    }
+}
