@@ -34,6 +34,11 @@ public class BaseEnemy : BaseCharacter
     public virtual void Attack() { }
     public virtual void StrongAttack() { }
     public virtual void UniqueAttack() { }
+    public virtual void Restraint() { }
+    public virtual void Wandering() { }
+    public virtual void Found() { }
+    public virtual void Chasing() { }
+    public virtual void Dying() { }
 
     public void SetAnimatorTrigger(string triggerName) { selfAnimator?.SetTrigger(triggerName); }
 

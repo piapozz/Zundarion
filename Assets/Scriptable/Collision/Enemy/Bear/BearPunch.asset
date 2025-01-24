@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 26598dd705daf2f409c55aeb49e8e735, type: 3}
-  m_Name: BearAttack
+  m_Name: BearPunch
   m_EditorClassIdentifier: 
-  isParry: 1
+  isParry: 0
   distance: 1
   scale: 1
-  damage: 20
+  damage: 10
   generateTime: 0.7

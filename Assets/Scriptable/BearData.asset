@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterName: Bear
   health: 100
-  strength: 20
+  strength: 10
   defence: 10
-  speed: 0
+  speed: 1
