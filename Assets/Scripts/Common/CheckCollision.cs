@@ -12,58 +12,63 @@ using UnityEngine.TextCore.Text;
 
 public class CheckCollision : MonoBehaviour
 {
-    private string playerTag = null;
-    private string enemyTag = null;
-    private string thisTag = null;
-
-    public List<BaseCharacter> parryList { get; private set; } = new List<BaseCharacter>(3);
-
-    private BaseCharacter _character = null;
+    private readonly string PLAYER_TAG = "Player";
+    private readonly string ENEMY_TAG = "Enemy";
+    private string _thisTag = null;
 
     private void Start()
     {
-        playerTag = "Player";
-        enemyTag = "Enemy";
-        thisTag = gameObject.tag;
-        _character = GetComponent<BaseCharacter>();
+        _thisTag = gameObject.tag;
     }
 
     private void OnTriggerEnter(Collider other)
     {
+        // タグでチェック判定
         GameObject hitObj = other.gameObject;
         string hitTagName = hitObj.tag;
+        if (!JudgeTag(hitTagName)) return;
 
-        // 判定すべきコリジョンか判定
+        // CollisionDataを取得
         CollisionData collisionData = hitObj.GetComponent<CollisionData>();
-        if (collisionData == null || !JudgeTag(hitTagName)) return;
+        if (collisionData == null) return;
 
-        bool isParry = collisionData.isParry;
+        // IDからBaseCharacterを取得
         int hitID = collisionData.characterID;
         BaseCharacter hitCharacter = CharacterManager.instance.GetCharacter(hitID);
         if (hitCharacter == null) return;
-        // パリィでリストに入っていないなら
-        if (isParry)
-        {
-            if (parryList.Exists(x => x == hitCharacter)) return;
 
+        bool isParry = collisionData.isParry;
+        if (isParry)
             // リストに入れる
-            parryList.Add(hitCharacter);
-        }
+            CollisionManager.instance.parryList.Add(hitCharacter);
         else
-        {
             // ダメージ判定
             hitCharacter.TakeDamage(collisionData.damage);
-        }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        // パリィリストから削除
+        // タグでチェック判定
         GameObject hitObj = other.gameObject;
-        BaseCharacter character = hitObj.GetComponent<BaseCharacter>();
-        if (parryList.Exists(x => x == character))
-            parryList.Remove(character);
+        string hitTagName = hitObj.tag;
+        if (!JudgeTag(hitTagName)) return;
+
+        // CollisionDataを取得
+        CollisionData collisionData = hitObj.GetComponent<CollisionData>();
+        if (collisionData == null) return;
+
+        // IDからBaseCharacterを取得
+        int hitID = collisionData.characterID;
+        BaseCharacter hitCharacter = CharacterManager.instance.GetCharacter(hitID);
+        if (hitCharacter == null) return;
+
+        bool isParry = collisionData.isParry;
+        if (isParry)
+            // リストから外す
+            CollisionManager.instance.parryList.Remove(hitCharacter);
     }
+
+
 
     /// <summary>
     /// 敵のタグか判定する
@@ -72,8 +77,8 @@ public class CheckCollision : MonoBehaviour
     /// <returns></returns>
     private bool JudgeTag(string hitTag)
     {
-        if ((hitTag == enemyTag && thisTag == playerTag) ||
-            (hitTag == playerTag && thisTag == enemyTag))
+        if ((hitTag == ENEMY_TAG && _thisTag == PLAYER_TAG) ||
+            (hitTag == PLAYER_TAG && _thisTag == ENEMY_TAG))
             return true;
         else
             return false;

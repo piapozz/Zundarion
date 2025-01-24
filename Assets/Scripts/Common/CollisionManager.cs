@@ -1,17 +1,30 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+
+using static CommonModule;
 
 public class CollisionManager : MonoBehaviour
 {
     // このクラスをstaticとしてインスタンスする
-    public static CollisionManager instance;
+    public static CollisionManager instance = null;
 
     [SerializeField]
-    private GameObject _collisionOrigin;    // 当たり判定の元オブジェ
+    private GameObject _collisionOrigin = null;    // 当たり判定の元オブジェ
 
     [SerializeField]
-    private Transform _rootCollision;       // 当たり判定生成する親
+    public Transform useCollisionRoot = null;       // 当たり判定生成する親
+
+    [SerializeField]
+    public Transform unuseCollisionRoot = null;
+
+    private List<GameObject> _useCollisionList = null;
+    private List<GameObject> _unuseCollisionList = null;
+
+    public List<BaseCharacter> parryList = null;
+
+    public readonly int COLLISION_MAX = 10;
 
     // public //////////////////////////////////////////////////////////////////
     /*
@@ -133,9 +146,22 @@ public class CollisionManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
+        Initialize();
     }
 
-    // オブジェクトプーリングでやる予定
+    private void Initialize()
+    {
+        _useCollisionList = new List<GameObject>(COLLISION_MAX);
+        _unuseCollisionList = new List<GameObject>(COLLISION_MAX);
+
+        for (int i = 0; i < COLLISION_MAX; i++)
+        {
+            _unuseCollisionList.Add(Instantiate(_collisionOrigin, unuseCollisionRoot));
+        }
+
+        parryList = new List<BaseCharacter>(COLLISION_MAX);
+    }
+
     /// <summary>
     /// 当たり判定を生成
     /// </summary>
@@ -143,15 +169,36 @@ public class CollisionManager : MonoBehaviour
     /// <param name="setTransform"></param>
     public void CreateCollisionSphere(int ID, CharacterAttackData attackData, Transform setTransform)
     {
-        GameObject genObj = _collisionOrigin;
+        GameObject genObj = UseCollision();
+        if (genObj == null) return;
+
+        SetCollision(ref genObj, ID, attackData, setTransform);
+    }
+
+    public GameObject UseCollision()
+    {
+        ReinsertListMember(ref _unuseCollisionList, ref _useCollisionList);
+        GameObject useCollision = _useCollisionList[_useCollisionList.Count - 1];
+        useCollision.transform.parent = useCollisionRoot;
+        return useCollision;
+    }
+
+    public void UnuseCollision(GameObject unuseCollision)
+    {
+        ReinsertListMember(ref _useCollisionList, ref _unuseCollisionList, unuseCollision);
+        unuseCollision = _unuseCollisionList[_unuseCollisionList.Count - 1];
+        unuseCollision.transform.parent = unuseCollisionRoot;
+    }
+
+    public void SetCollision(ref GameObject genObj, int ID, CharacterAttackData attackData, Transform setTransform)
+    {
         // 判定のデータ設定
         CollisionData collisionData = genObj.GetComponent<CollisionData>();
         collisionData.damage = attackData.damage;
         collisionData.isParry = attackData.isParry;
         collisionData.characterID = ID;
         // 生成時間設定
-        LimitTime limitTime = genObj.GetComponent<LimitTime>();
-        limitTime.deleteTime = attackData.generateTime;
+        collisionData.deleteTime = attackData.generateTime;
         // 半径設定
         genObj.transform.localScale = Vector3.one * attackData.scale;
         // タグ設定
@@ -162,12 +209,6 @@ public class CollisionManager : MonoBehaviour
         float distance = attackData.distance;
         Vector3 offset = new Vector3(Mathf.Sin(angle) * distance, 1, Mathf.Cos(angle) * distance);
         genPos += offset;
-        // 生成
-        Instantiate(
-            genObj,
-            genPos,
-            Quaternion.identity,
-            _rootCollision
-            );
+        genObj.transform.position = genPos;
     }
 }

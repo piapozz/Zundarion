@@ -1760,7 +1760,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1095618547}
   m_Layer: 0
-  m_Name: CollisionsRoot
+  m_Name: UseCollisionRoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2289,6 +2289,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1342438351}
   m_CullTransparentMesh: 1
+--- !u!1 &1365792714
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1365792715}
+  m_Layer: 0
+  m_Name: UnuseCollisionRoot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &1365792715
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1365792714}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1910760022}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1397816263
 GameObject:
   m_ObjectHideFlags: 3
@@ -4003,6 +4034,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1095618547}
+  - {fileID: 1365792715}
   m_Father: {fileID: 1781942572}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4019,7 +4051,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _collisionOrigin: {fileID: 3941407092672998762, guid: b0f27a107d9e3a64fa7bb4352a3a424f, type: 3}
-  _rootCollision: {fileID: 1095618547}
+  useCollisionRoot: {fileID: 1095618547}
+  unuseCollisionRoot: {fileID: 1365792715}
 --- !u!1 &2008521555
 GameObject:
   m_ObjectHideFlags: 0

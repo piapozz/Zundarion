@@ -61,19 +61,21 @@ public class CharacterManager : MonoBehaviour
     private GameObject GenerateCharacter(GameObject geneCharacter, Transform geneTransform)
     {
         GameObject geneObj = null;
-        BaseCharacter character = geneCharacter.GetComponent<BaseCharacter>();
+        BaseCharacter character = null;
         int useID = GetEmptyID();
         if (useID < 0)
         {
             useID = characterList.Count;
-            character.Initialize(useID);
             geneObj = Instantiate(geneCharacter);
+            character = geneObj.GetComponent<BaseCharacter>();
+            character.Initialize(useID);
             characterList.Add(geneObj);
         }
         else
         {
-            character.Initialize(useID);
             geneObj = Instantiate(geneCharacter);
+            character = geneObj.GetComponent<BaseCharacter>();
+            character.Initialize(useID);
             characterList[useID] = geneObj;
         }
         character.SetTransform(geneTransform);

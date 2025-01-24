@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 96600614295962755}
   - component: {fileID: 7160554885725776429}
   - component: {fileID: 5673804975509042392}
-  - component: {fileID: 6737252982486824032}
   m_Layer: 3
   m_Name: CollisionOrigin
   m_TagString: Enemy
