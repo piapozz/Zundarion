@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class StrongAttackState : StateMachineBehaviour
 {
-    BaseEnemy enemy = null;
+    private BaseEnemy enemy = null;
 
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
@@ -13,7 +13,7 @@ public class StrongAttackState : StateMachineBehaviour
 
     public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        enemy.StrongAttack();
+        // enemy.StrongAttack();
     }
 
     public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
