@@ -5,10 +5,12 @@
  * @date 2025/1/17
  */
 
+using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 // 親クラスのpublicをインスペクター上に表示
 #if UNITY_EDITOR
@@ -24,11 +26,11 @@ public abstract class BaseCharacter : MonoBehaviour
     private int _ID = -1;
 
     // キャラクターのステータス
-    protected float healthMax;         // 最大体力
-    protected float health;            // 現在の体力
-    protected float strength;          // 攻撃力
-    protected float defence;           // 防御力
-    protected float speed;             // 速さ
+    [SerializeField] protected float healthMax = -1;         // 最大体力
+    [SerializeField] protected float health = -1;            // 現在の体力
+    protected float strength = -1;          // 攻撃力
+    protected float defence = -1;           // 防御力
+    protected float speed = -1;             // 速さ
 
     protected Vector3 position;        // 座標
     protected float multiplier;        // 倍率
@@ -102,4 +104,65 @@ public abstract class BaseCharacter : MonoBehaviour
         Quaternion dirRot = Quaternion.LookRotation(dir);
         transform.rotation = dirRot;
     }
+
+    /// <summary>
+    /// アクションイベントを使って細かい移動を行う
+    /// </summary>
+    /// <param name="dir">移動させたい向き</param>
+    /// <param name="frame">どれくらいのフレーム移動させるか</param>
+    /// <param name="speed">移動させる速さ</param>
+    /// <returns></returns>
+    public async UniTask MoveFine(Vector3 dir, float frame, float speed)
+    {
+        float frameCount = 0.0f;
+        Vector3 movePostion = transform.position;
+
+        dir = dir.normalized;
+
+        while (true)
+        {
+            // ループを抜ける処理
+            if (frameCount >= frame) break;
+            else { frameCount += Time.deltaTime; }
+
+            // 指定された方向に移動
+            movePostion += dir * speed * Time.deltaTime;
+            transform.position = movePostion;
+
+            // 1フレーム待ち
+            await UniTask.DelayFrame(1);
+        }
+    }
+
+    /// <summary>
+    /// 前進させる
+    /// </summary>
+    public void Move()
+    {
+        // 向いている方向に移動
+        Vector3 movePosition = transform.position + (transform.forward * speed * Time.deltaTime);
+
+        transform.position = movePosition;
+    }
+
+    /// <summary>
+    /// 角度に応じて向きを変更
+    /// </summary>
+    /// <param name="moveVec">移動方向</param>
+    /// <param name="_transform">基準となる向き</param>
+    public float Rotate(Vector2 moveVec, Transform _transform)
+    {
+        // 敵の前方と右方向を基準に移動ベクトルを計算
+        Vector3 forward = _transform.forward;
+        Vector3 right = _transform.right;
+
+        // 敵の向きに基づいた移動ベクトルを計算
+        Vector3 adjustedMove = (right * moveVec.x + forward * moveVec.y).normalized;
+
+        // 向きを計算して更新
+        float angle = Mathf.Atan2(adjustedMove.z, adjustedMove.x) * Mathf.Rad2Deg;
+
+        return angle;
+    }
+
 }

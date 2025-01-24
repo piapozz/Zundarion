@@ -1534,7 +1534,7 @@ Transform:
   m_GameObject: {fileID: 4792213932067412095}
   m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 10}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 403880644682211921}
@@ -1555,7 +1555,7 @@ Animator:
   m_Controller: {fileID: 22100000, guid: eb9e8682c901cd94bbd8f7e919b8d554, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_WarningMessage: 
@@ -1576,7 +1576,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   charaData: {fileID: 11400000, guid: c92e7374c55531b43b89b8b40a3a9053, type: 2}
-  _ID: -1
+  _ID: 1
   selfAnimator: {fileID: 2245784756199610559}
   relativePosition: {x: 0, y: 0, z: 0}
   enemyForward: {x: 0, y: 0, z: 0}
