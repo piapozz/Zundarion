@@ -2,10 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ChaseState : StateMachineBehaviour
+public class WanderingState : StateMachineBehaviour
 {
-    BaseEnemy enemy = null;
-    Quaternion rotation;
+    private BaseEnemy enemy = null;
 
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
@@ -14,7 +13,7 @@ public class ChaseState : StateMachineBehaviour
 
     public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-
+        enemy.Wandering();
     }
 
     public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
