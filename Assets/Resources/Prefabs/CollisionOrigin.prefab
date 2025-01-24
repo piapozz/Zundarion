@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 96600614295962755}
   - component: {fileID: 7160554885725776429}
   - component: {fileID: 5673804975509042392}
-  - component: {fileID: 6737252982486824032}
   m_Layer: 3
   m_Name: CollisionOrigin
   m_TagString: Player
@@ -131,16 +130,4 @@ MonoBehaviour:
   characterID: 0
   isParry: 0
   damage: 10
---- !u!114 &6737252982486824032
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3941407092672998762}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cbb63fca07ef68847b78a46aee0f73dc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
   deleteTime: 0.1

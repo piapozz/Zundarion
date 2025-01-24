@@ -1,0 +1,87 @@
+using Cysharp.Threading.Tasks;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class CommonModule
+{
+    /// <summary>
+    /// リストが空か否か
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="checkList"></param>
+    /// <returns></returns>
+    public static bool IsEmpty<T>(List<T> checkList)
+    {
+        return checkList == null || checkList.Count == 0;
+    }
+
+    /// <summary>
+    /// リスト1からリスト2に要素を移動させる
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="sourceList"></param>
+    /// <param name="targetList"></param>
+    public static void ReinsertListMember<T>(ref List<T> sourceList, ref List<T> targetList)
+    {
+        if (IsEmpty(sourceList)) return;
+
+        int targetNum = sourceList.Count - 1;
+        T member = sourceList[targetNum];
+        sourceList.RemoveAt(targetNum);
+        targetList.Add(member);
+    }
+
+    /// <summary>
+    /// リスト1からリスト2に指定した要素を移動させる
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="sourceList"></param>
+    /// <param name="targetList"></param>
+    /// <param name="target"></param>
+    public static void ReinsertListMember<T>(ref List<T> sourceList, ref List<T> targetList, T target)
+    {
+        if (IsEmpty(sourceList)) return;
+
+        int targetNum = sourceList.IndexOf(target);
+        if (targetNum < 0) return;
+
+        T member = sourceList[targetNum];
+        sourceList.RemoveAt(targetNum);
+        targetList.Add(member);
+    }
+
+    /// <summary>
+    /// 指定した秒数後に関数を実行する
+    /// </summary>
+    /// <param name="sec"></param>
+    /// <param name="action"></param>
+    /// <returns></returns>
+    public static async UniTask WaitAction(float sec, System.Action action)
+    {
+        float elapsedTime = 0.0f;
+        while (elapsedTime < sec)
+        {
+            elapsedTime += Time.deltaTime;
+            await UniTask.DelayFrame(1);
+        }
+        action();
+    }
+
+    /// <summary>
+    /// 指定したフレームに関数を実行する
+    /// </summary>
+    /// <param name="sec"></param>
+    /// <param name="action"></param>
+    /// <returns></returns>
+    public static async UniTask WaitAction(int frame, System.Action action)
+    {
+        float elapsedTime = 0;
+        while (elapsedTime < frame)
+        {
+            elapsedTime++;
+            await UniTask.DelayFrame(1);
+        }
+        action();
+    }
+}

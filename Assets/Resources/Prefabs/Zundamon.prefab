@@ -4878,6 +4878,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   charaData: {fileID: 11400000, guid: 2682e0f7083dedc4ea653e2f1463900e, type: 2}
+  _ID: 0
   selfAnimator: {fileID: 2892533442517954711}
   playerAnimation: {fileID: 11400000, guid: f7c2d37f1ed27d946baa0f8d2390fafa, type: 2}
   occurrenceFrame: {fileID: 0}
@@ -4968,7 +4969,19 @@ MonoBehaviour:
     m_ActionId: dfac235f-2db5-4b5f-b0ea-6331be3c7315
     m_ActionName: PlayerManaer/New action
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2892533442517954719}
+        m_TargetAssemblyTypeName: BasePlayer, Assembly-CSharp
+        m_MethodName: OnParry
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 222c7a96-034a-44ca-9825-82b045db55ae
     m_ActionName: Player/Parry[/Keyboard/e]
   m_NeverAutoSwitchControlSchemes: 0
