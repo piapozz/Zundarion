@@ -18,10 +18,11 @@ public class EnemyBear : BaseEnemy
 
     private void Update()
     {
+        Move();
         SetRotation(targetRotation);
         // 距離を取得
         distance = GetRelativePosition().magnitude;
-        Debug.Log(distance);
+        // Debug.Log(distance);
     }
 
     public override void Attack()
@@ -54,12 +55,16 @@ public class EnemyBear : BaseEnemy
         if (distance <= 3.0f)
         {
             int attackType = Random.Range(0, 2);
+
+            targetRotation = GetPlayerDirection();
+
             if (attackType == 0) SetAnimatorTrigger("Attack");
             if (attackType == 1) SetAnimatorTrigger("StrongAttack");
         }
         // ジャンプ攻撃に遷移
         else if (distance >= 6.0f && distance <= 10.0f)
         {
+            targetRotation = GetPlayerDirection();
             SetAnimatorTrigger("UniqueAttack");
         }
         // 追跡に遷移
@@ -84,14 +89,16 @@ public class EnemyBear : BaseEnemy
     {
         if (distance <= 3.0f) SetAnimatorBool("Chasing", false);
 
-        Transform enemyTransform = transform;
-        Transform playerTransform = player.transform;
+        // 追跡範囲よりも離れていたら
+        if (distance >= 15.0f)
+        {
+            // 見失う
+            SetAnimatorBool("Found", false);
+            SetAnimatorBool("Restraint", false);
+            return;
+        }
+        targetRotation = GetPlayerDirection();
 
-        // プレイヤーの方向を計算
-        Vector3 directionToPlayer = (playerTransform.position - enemyTransform.position).normalized;
-
-        // プレイヤーの方向を向く
-        targetRotation = Quaternion.LookRotation(new Vector3(directionToPlayer.x, 0, directionToPlayer.z));
     }
 
     public override void Dying()

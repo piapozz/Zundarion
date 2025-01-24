@@ -54,7 +54,17 @@ public class BaseEnemy : BaseCharacter
          return player.transform.position - gameObject.transform.position;
     }
 
-    public Quaternion LookAtMe() { return Quaternion.LookRotation(relativePosition, Vector3.up); }
+    public Quaternion GetPlayerDirection()
+    {
+        Transform enemyTransform = transform;
+        Transform playerTransform = player.transform;
+
+        // プレイヤーの方向を計算
+        Vector3 directionToPlayer = (playerTransform.position - enemyTransform.position).normalized;
+
+        // プレイヤーの方向を向く
+        return Quaternion.LookRotation(new Vector3(directionToPlayer.x, 0, directionToPlayer.z));
+    }
     public void SetRotation(Quaternion rotation)
     {
         rotation.x = 0f;
