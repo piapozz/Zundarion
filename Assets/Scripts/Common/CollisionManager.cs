@@ -11,20 +11,20 @@ public class CollisionManager : MonoBehaviour
     public static CollisionManager instance = null;
 
     [SerializeField]
-    private GameObject _collisionOrigin = null;    // 当たり判定の元オブジェ
+    private GameObject _collisionOrigin = null;     // 当たり判定の元オブジェ
 
     [SerializeField]
     public Transform useCollisionRoot = null;       // 当たり判定生成する親
 
     [SerializeField]
-    public Transform unuseCollisionRoot = null;
+    public Transform unuseCollisionRoot = null;     // 未使用のコリジョンの親
 
-    private List<GameObject> _useCollisionList = null;
-    private List<GameObject> _unuseCollisionList = null;
+    private List<GameObject> _useCollisionList = null;      // 使用中のコリジョンリスト
+    private List<GameObject> _unuseCollisionList = null;    // 未使用のコリジョンリスト
 
-    public List<BaseCharacter> parryList = null;
+    public List<BaseCharacter> parryList = null;        // パリィに使うリスト
 
-    public readonly int COLLISION_MAX = 10;
+    public readonly int COLLISION_MAX = 10;         // コリジョンの最大数
 
     // public //////////////////////////////////////////////////////////////////
     /*
@@ -175,6 +175,10 @@ public class CollisionManager : MonoBehaviour
         SetCollision(ref genObj, ID, attackData, setTransform);
     }
 
+    /// <summary>
+    /// コリジョンを使う時にリストから出し入れしてオブジェクトを返す
+    /// </summary>
+    /// <returns></returns>
     public GameObject UseCollision()
     {
         ReinsertListMember(ref _unuseCollisionList, ref _useCollisionList);
@@ -183,6 +187,10 @@ public class CollisionManager : MonoBehaviour
         return useCollision;
     }
 
+    /// <summary>
+    /// 使い終わったコリジョンをリストに入れなおす
+    /// </summary>
+    /// <param name="unuseCollision"></param>
     public void UnuseCollision(GameObject unuseCollision)
     {
         ReinsertListMember(ref _useCollisionList, ref _unuseCollisionList, unuseCollision);
@@ -190,6 +198,13 @@ public class CollisionManager : MonoBehaviour
         unuseCollision.transform.parent = unuseCollisionRoot;
     }
 
+    /// <summary>
+    /// コリジョンを生成するときにデータの設定をする
+    /// </summary>
+    /// <param name="genObj"></param>
+    /// <param name="ID"></param>
+    /// <param name="attackData"></param>
+    /// <param name="setTransform"></param>
     public void SetCollision(ref GameObject genObj, int ID, CharacterAttackData attackData, Transform setTransform)
     {
         // 判定のデータ設定
