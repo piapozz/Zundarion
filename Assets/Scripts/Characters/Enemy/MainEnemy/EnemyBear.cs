@@ -12,19 +12,16 @@ using UnityEngine;
 
 public class EnemyBear : BaseEnemy
 {
-    float distance;
-
-    Quaternion targetRotation;
-
     private void Update()
     {
-        Move();
-        SetRotation(targetRotation);
+        // –Ú•W‚ÉŒü‚©‚¤Œü‚«‚ðŽæ“¾
+        targetVec = GetTargetVec(player.transform.position);
+
         // ‹——£‚ðŽæ“¾
         distance = GetRelativePosition().magnitude;
-        // Debug.Log(distance);
     }
 
+    #region Action
     public override void Attack()
     {
 
@@ -56,15 +53,12 @@ public class EnemyBear : BaseEnemy
         {
             int attackType = Random.Range(0, 2);
 
-            targetRotation = GetPlayerDirection();
-
             if (attackType == 0) SetAnimatorTrigger("Attack");
             if (attackType == 1) SetAnimatorTrigger("StrongAttack");
         }
         // ƒWƒƒƒ“ƒvUŒ‚‚É‘JˆÚ
         else if (distance >= 6.0f && distance <= 10.0f)
         {
-            targetRotation = GetPlayerDirection();
             SetAnimatorTrigger("UniqueAttack");
         }
         // ’ÇÕ‚É‘JˆÚ
@@ -82,22 +76,29 @@ public class EnemyBear : BaseEnemy
 
     public override void Found()
     {
-
+        Rotate(targetVec, 200.0f);
     }
 
     public override void Chasing()
     {
-        if (distance <= 3.0f) SetAnimatorBool("Chasing", false);
+        if (distance <= 2.0f)
+        {
+            SetAnimatorBool("Chasing", false);
+            SetAnimatorTrigger("Attack");
+        }
+
+        Move(transform.forward, speed);
+        Rotate(targetVec, 300.0f);
 
         // ’ÇÕ”ÍˆÍ‚æ‚è‚à—£‚ê‚Ä‚¢‚½‚ç
         if (distance >= 15.0f)
         {
             // Œ©Ž¸‚¤
+            SetAnimatorBool("Chasing", false);
             SetAnimatorBool("Found", false);
             SetAnimatorBool("Restraint", false);
             return;
         }
-        targetRotation = GetPlayerDirection();
 
     }
 
@@ -105,4 +106,6 @@ public class EnemyBear : BaseEnemy
     {
 
     }
+
+    #endregion
 }

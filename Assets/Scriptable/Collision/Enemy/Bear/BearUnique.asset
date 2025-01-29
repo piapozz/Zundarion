@@ -9,11 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f1fbf63eab36add4a92087c0c824b117, type: 3}
-  m_Name: BearData
+  m_Script: {fileID: 11500000, guid: 26598dd705daf2f409c55aeb49e8e735, type: 3}
+  m_Name: BearUnique
   m_EditorClassIdentifier: 
-  characterName: Bear
-  health: 100
-  strength: 10
-  defence: 10
-  speed: 5
+  isParry: 0
+  distance: 0
+  scale: 2
+  damage: 15
+  generateTime: 0.7
