@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class RestraintState : StateMachineBehaviour
 {
@@ -12,7 +13,6 @@ public class RestraintState : StateMachineBehaviour
     {
         enemy = animator.GetComponent<BaseEnemy>();
         animCount = 0.0f;
-        Debug.Log("aaa");
 
         enterFlag = true;
     }
@@ -21,6 +21,7 @@ public class RestraintState : StateMachineBehaviour
     {
         if(enterFlag)
         {
+            enemy.Rotate(enemy.targetVec, 150.0f);
             animCount += stateInfo.speedMultiplier * Time.deltaTime;
 
             // ‘Ò‹@ŽžŠÔ
