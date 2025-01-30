@@ -13,22 +13,22 @@ public class CharacterManager : MonoBehaviour
 {
     public static CharacterManager instance { get; private set; } = null;
 
-    private static readonly int CHARACTER_MAX = 10;
+    private static readonly int ENEMY_MAX = 10;
 
     [SerializeField]
     private GameObject playerOrigin = null;
 
     public GameObject playerObject { get; private set; } = null;
 
-    public List<GameObject> characterList { get; private set; } = null;
+    public List<GameObject> enemyList { get; private set; } = null;
 
     private void Awake()
     {
         instance = this;
-        characterList = new List<GameObject>(CHARACTER_MAX);
-        for (int i = 0, max = CHARACTER_MAX; i < max; i++)
+        enemyList = new List<GameObject>(ENEMY_MAX);
+        for (int i = 0, max = ENEMY_MAX; i < max; i++)
         {
-            characterList.Add(null);
+            enemyList.Add(null);
         }
     }
 
@@ -65,18 +65,18 @@ public class CharacterManager : MonoBehaviour
         int useID = GetEmptyID();
         if (useID < 0)
         {
-            useID = characterList.Count;
+            useID = enemyList.Count + 1;
             geneObj = Instantiate(geneCharacter);
             character = geneObj.GetComponent<BaseCharacter>();
             character.Initialize(useID);
-            characterList.Add(geneObj);
+            enemyList.Add(geneObj);
         }
         else
         {
             geneObj = Instantiate(geneCharacter);
             character = geneObj.GetComponent<BaseCharacter>();
             character.Initialize(useID);
-            characterList[useID] = geneObj;
+            enemyList[useID] = geneObj;
         }
         character.SetTransform(geneTransform);
         return geneObj;
@@ -89,11 +89,11 @@ public class CharacterManager : MonoBehaviour
     private int GetEmptyID()
     {
         int ID = -1;
-        for (int i = 0, max = characterList.Count; i < max; i++)
+        for (int i = 0, max = enemyList.Count; i < max; i++)
         {
-            if (characterList[i] != null)
+            if (enemyList[i] != null)
                 continue;
-            ID = i;
+            ID = i + 1;
             break;
         }
         return ID;
@@ -105,7 +105,7 @@ public class CharacterManager : MonoBehaviour
     /// <param name="character"></param>
     public void RemoveCharacterList(int ID)
     {
-        characterList[ID] = null;
+        enemyList[ID] = null;
     }
 
     /// <summary>
@@ -115,6 +115,6 @@ public class CharacterManager : MonoBehaviour
     /// <returns></returns>
     public BaseCharacter GetCharacter(int ID)
     {
-        return characterList[ID].GetComponent<BaseCharacter>();
+        return enemyList[ID].GetComponent<BaseCharacter>();
     }
 }

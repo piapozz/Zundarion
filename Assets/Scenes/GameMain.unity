@@ -4053,6 +4053,7 @@ MonoBehaviour:
   _collisionOrigin: {fileID: 3941407092672998762, guid: b0f27a107d9e3a64fa7bb4352a3a424f, type: 3}
   useCollisionRoot: {fileID: 1095618547}
   unuseCollisionRoot: {fileID: 1365792715}
+  parryList: []
 --- !u!1 &2008521555
 GameObject:
   m_ObjectHideFlags: 0
