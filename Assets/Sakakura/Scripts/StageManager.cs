@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using static CommonModule;
+
 public class StageManager : MonoBehaviour
 {
     public static StageManager instance { get; private set; } = null;
@@ -13,9 +15,15 @@ public class StageManager : MonoBehaviour
     public Transform _playerAnchor = null;
 
     [SerializeField]
-    private Transform[] _generateAnchor = null;
+    private AnchorList[] _battles = null;
 
-    private int _nowWave = -1;
+    [System.Serializable]
+    public class AnchorList
+    {
+        public Transform[] anchors;
+    }
+
+    private int _nowBattle = -1;
 
     private void Awake()
     {
@@ -24,20 +32,33 @@ public class StageManager : MonoBehaviour
 
     private void Start()
     {
-        StartWave(0);
+        //StartBattle(0);
     }
 
-    public void StartWave(int waveNum)
+    /// <summary>
+    /// waveの番号を指定して敵を出現させる
+    /// </summary>
+    /// <param name="waveNum"></param>
+    public void StartBattle(int waveNum)
     {
-        _nowWave = waveNum;
-
         WaveData waveData = _stageData.waveData[waveNum];
         int characterNum = waveData.generateCharacterData.Length;
         for (int i = 0; i < characterNum; i++)
         {
             GameObject geneCharacter = waveData.generateCharacterData[i].characterPrefab;
             int anchorNum = waveData.generateCharacterData[i].generateAnchorNum;
-            CharacterManager.instance.GenerateEnemy(geneCharacter, _generateAnchor[anchorNum]);
+            CharacterManager.instance.GenerateEnemy(geneCharacter, _battles[waveNum].anchors[anchorNum]);
         }
+    }
+
+    /// <summary>
+    /// ウェーブを次に進める
+    /// </summary>
+    public void NextWave()
+    {
+        // 敵のリストが空なら次のウェーブに進む
+        //if (!IsEmpty(CharacterManager.instance.))
+        _nowBattle++;
+        StartBattle(_nowBattle);
     }
 }
