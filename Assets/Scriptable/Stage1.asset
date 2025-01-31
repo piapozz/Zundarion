@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b29d48e5360b61c4a8622fa358d6879f, type: 3}
   m_Name: Stage1
   m_EditorClassIdentifier: 
-  waveData:
-  - {fileID: 11400000, guid: 312aa5492c799354fad2b989dbc90caa, type: 2}
-  - {fileID: 11400000, guid: 312aa5492c799354fad2b989dbc90caa, type: 2}
-  - {fileID: 11400000, guid: 312aa5492c799354fad2b989dbc90caa, type: 2}
+  battleData:
+  - {fileID: 11400000, guid: 87197fc059c7ab44999a5cb06b0493c2, type: 2}
+  - {fileID: 11400000, guid: 87197fc059c7ab44999a5cb06b0493c2, type: 2}

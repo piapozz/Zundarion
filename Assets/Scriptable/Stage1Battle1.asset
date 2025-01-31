@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Stage1Battle1
   m_EditorClassIdentifier: 
   waveData:
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: 312aa5492c799354fad2b989dbc90caa, type: 2}
+  - {fileID: 11400000, guid: 312aa5492c799354fad2b989dbc90caa, type: 2}
