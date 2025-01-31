@@ -20,66 +20,69 @@ public class CharacterManager : MonoBehaviour
 
     public GameObject playerObject { get; private set; } = null;
 
-    public List<GameObject> enemyList { get; private set; } = null;
+    public List<GameObject> characterList { get; private set; } = null;
 
     private void Awake()
     {
         instance = this;
-        enemyList = new List<GameObject>(ENEMY_MAX);
-        for (int i = 0, max = ENEMY_MAX; i < max; i++)
+        characterList = new List<GameObject>(ENEMY_MAX + 1);
+        for (int i = 0, max = ENEMY_MAX + 1; i < max; i++)
         {
-            enemyList.Add(null);
+            characterList.Add(null);
         }
     }
-
+    
     private void Start()
     {
-        playerObject = GeneratePlayer(playerOrigin, StageManager.instance._playerAnchor);
+        GeneratePlayer(playerOrigin, StageManager.instance._playerAnchor);
     }
 
     /// <summary>
     /// プレイヤーを生成する
     /// </summary>
-    public GameObject GeneratePlayer(GameObject geneCharacter, Transform geneTransform)
+    public void GeneratePlayer(GameObject genBase, Transform genTransform)
     {
-        return GenerateCharacter(geneCharacter, geneTransform);
+        GameObject genCharacter = GenerateCharacter(genBase, genTransform);
+        playerObject = genCharacter;
     }
 
     /// <summary>
     /// 敵を生成する
     /// </summary>
     /// <param name="generateNum"></param>
-    public GameObject GenerateEnemy(GameObject geneCharacter, Transform geneTransform)
+    public void GenerateEnemy(GameObject genBase, Transform genTransform)
     {
-        return GenerateCharacter(geneCharacter, geneTransform);
+        GameObject genCharacter = GenerateCharacter(genBase, genTransform);
     }
 
     /// <summary>
-    /// キャラクターを生成する関数
+    /// キャラクターを生成する
     /// </summary>
-    /// <param name="character"></param>
-    private GameObject GenerateCharacter(GameObject geneCharacter, Transform geneTransform)
+    /// <param name="genBase"></param>
+    /// <param name="genTransform"></param>
+    /// <returns></returns>
+    private GameObject GenerateCharacter(GameObject genBase, Transform genTransform)
     {
-        GameObject geneObj = null;
+        GameObject genCharacter = null;
         BaseCharacter character = null;
         int useID = GetEmptyID();
         if (useID < 0)
         {
-            useID = enemyList.Count + 1;
-            geneObj = Instantiate(geneCharacter);
-            character = geneObj.GetComponent<BaseCharacter>();
+            useID = characterList.Count;
+            genCharacter = Instantiate(genBase);
+            character = genCharacter.GetComponent<BaseCharacter>();
             character.Initialize(useID);
-            enemyList.Add(geneObj);
+            characterList.Add(genCharacter);
         }
         else
         {
-            geneObj = Instantiate(geneCharacter);
-            character = geneObj.GetComponent<BaseCharacter>();
+            genCharacter = Instantiate(genBase);
+            character = genCharacter.GetComponent<BaseCharacter>();
             character.Initialize(useID);
-            enemyList[useID] = geneObj;
+            characterList[useID] = genCharacter;
         }
-        character.SetTransform(geneTransform);
-        return geneObj;
+        character.SetTransform(genTransform);
+        return genCharacter;
     }
 
     /// <summary>
@@ -89,11 +92,11 @@ public class CharacterManager : MonoBehaviour
     private int GetEmptyID()
     {
         int ID = -1;
-        for (int i = 0, max = enemyList.Count; i < max; i++)
+        for (int i = 0, max = characterList.Count; i < max; i++)
         {
-            if (enemyList[i] != null)
+            if (characterList[i] != null)
                 continue;
-            ID = i + 1;
+            ID = i;
             break;
         }
         return ID;
@@ -105,7 +108,7 @@ public class CharacterManager : MonoBehaviour
     /// <param name="character"></param>
     public void RemoveCharacterList(int ID)
     {
-        enemyList[ID] = null;
+        characterList[ID] = null;
     }
 
     /// <summary>
@@ -115,6 +118,8 @@ public class CharacterManager : MonoBehaviour
     /// <returns></returns>
     public BaseCharacter GetCharacter(int ID)
     {
-        return enemyList[ID].GetComponent<BaseCharacter>();
+        if (characterList[ID] == null) return null;
+
+        return characterList[ID].GetComponent<BaseCharacter>();
     }
 }

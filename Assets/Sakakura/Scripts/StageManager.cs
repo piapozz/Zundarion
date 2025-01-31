@@ -14,16 +14,9 @@ public class StageManager : MonoBehaviour
     [SerializeField]
     public Transform _playerAnchor = null;
 
-    [SerializeField]
-    private AnchorList[] _battles = null;
-
-    [System.Serializable]
-    public class AnchorList
-    {
-        public Transform[] anchors;
-    }
-
     private int _nowBattle = -1;
+
+    private List<Battle> _battleList = null;
 
     private void Awake()
     {
@@ -33,6 +26,12 @@ public class StageManager : MonoBehaviour
     private void Start()
     {
         //StartBattle(0);
+        _battleList = new List<Battle>(_stageData.battleData.Length);
+        for (int i = 0, max = _battleList.Count; i < max; i++)
+        {
+            int waveNum = _stageData.battleData[i].waveData.Length;
+            _battleList[i] = new Battle(waveNum);
+        }
     }
 
     /// <summary>
@@ -41,20 +40,20 @@ public class StageManager : MonoBehaviour
     /// <param name="waveNum"></param>
     public void StartBattle(int waveNum)
     {
-        WaveData waveData = _stageData.waveData[waveNum];
-        int characterNum = waveData.generateCharacterData.Length;
-        for (int i = 0; i < characterNum; i++)
-        {
-            GameObject geneCharacter = waveData.generateCharacterData[i].characterPrefab;
-            int anchorNum = waveData.generateCharacterData[i].generateAnchorNum;
-            CharacterManager.instance.GenerateEnemy(geneCharacter, _battles[waveNum].anchors[anchorNum]);
-        }
+        //WaveData waveData = _stageData.waveData[waveNum];
+        //int characterNum = waveData.generateCharacterData.Length;
+        //for (int i = 0; i < characterNum; i++)
+        //{
+        //    GameObject geneCharacter = waveData.generateCharacterData[i].characterPrefab;
+        //    int anchorNum = waveData.generateCharacterData[i].generateAnchorNum;
+        //    CharacterManager.instance.GenerateEnemy(geneCharacter, _battles[waveNum].anchors[anchorNum]);
+        //}
     }
 
     /// <summary>
     /// ウェーブを次に進める
     /// </summary>
-    public void NextWave()
+    public void NextBattle()
     {
         // 敵のリストが空なら次のウェーブに進む
         //if (!IsEmpty(CharacterManager.instance.))
