@@ -66,19 +66,10 @@ public abstract class BaseCharacter : MonoBehaviour
     {
         float damage = damageSize * defence * multiplier;
 
-        if (damage > healthMax / 3)
-        {
-            // 例:大きくのけぞるアニメーションを再生
-        }
-        else if (damage > healthMax / 100)
-        {
-            // 例:のけぞるアニメーションを再生
-        }
-
-        // 負の数にならないように補正
-        health = Mathf.Max(0, health - damage);
-
         health -= damage;
+
+        if (health <= 0)
+            CharacterManager.instance.RemoveCharacterList(_ID);
     }
 
     /// <summary>
