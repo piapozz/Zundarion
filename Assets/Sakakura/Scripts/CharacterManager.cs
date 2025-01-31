@@ -18,14 +18,14 @@ public class CharacterManager : MonoBehaviour
     [SerializeField]
     private GameObject playerOrigin = null;
 
-    public GameObject playerObject { get; private set; } = null;
+    public BasePlayer playerObject { get; private set; } = null;
 
-    public List<GameObject> characterList { get; private set; } = null;
+    public List<BaseCharacter> characterList { get; private set; } = null;
 
     private void Awake()
     {
         instance = this;
-        characterList = new List<GameObject>(ENEMY_MAX + 1);
+        characterList = new List<BaseCharacter>(ENEMY_MAX + 1);
         for (int i = 0, max = ENEMY_MAX + 1; i < max; i++)
         {
             characterList.Add(null);
@@ -34,7 +34,7 @@ public class CharacterManager : MonoBehaviour
     
     private void Start()
     {
-        GeneratePlayer(playerOrigin, StageManager.instance._playerAnchor);
+        GeneratePlayer(playerOrigin, StageManager.instance._startTrasform);
     }
 
     /// <summary>
@@ -42,8 +42,8 @@ public class CharacterManager : MonoBehaviour
     /// </summary>
     public void GeneratePlayer(GameObject genBase, Transform genTransform)
     {
-        GameObject genCharacter = GenerateCharacter(genBase, genTransform);
-        playerObject = genCharacter;
+        BaseCharacter genCharacter = GenerateCharacter(genBase, genTransform);
+        playerObject = genCharacter as BasePlayer;
     }
 
     /// <summary>
@@ -52,7 +52,7 @@ public class CharacterManager : MonoBehaviour
     /// <param name="generateNum"></param>
     public void GenerateEnemy(GameObject genBase, Transform genTransform)
     {
-        GameObject genCharacter = GenerateCharacter(genBase, genTransform);
+        GenerateCharacter(genBase, genTransform);
     }
 
     /// <summary>
@@ -61,7 +61,7 @@ public class CharacterManager : MonoBehaviour
     /// <param name="genBase"></param>
     /// <param name="genTransform"></param>
     /// <returns></returns>
-    private GameObject GenerateCharacter(GameObject genBase, Transform genTransform)
+    private BaseCharacter GenerateCharacter(GameObject genBase, Transform genTransform)
     {
         GameObject genCharacter = null;
         BaseCharacter character = null;
@@ -72,17 +72,17 @@ public class CharacterManager : MonoBehaviour
             genCharacter = Instantiate(genBase);
             character = genCharacter.GetComponent<BaseCharacter>();
             character.Initialize(useID);
-            characterList.Add(genCharacter);
+            characterList.Add(character);
         }
         else
         {
             genCharacter = Instantiate(genBase);
             character = genCharacter.GetComponent<BaseCharacter>();
             character.Initialize(useID);
-            characterList[useID] = genCharacter;
+            characterList[useID] = character;
         }
         character.SetTransform(genTransform);
-        return genCharacter;
+        return character;
     }
 
     /// <summary>

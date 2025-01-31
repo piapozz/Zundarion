@@ -2,52 +2,47 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-using static CommonModule;
-
 public class StageManager : MonoBehaviour
 {
     public static StageManager instance { get; private set; } = null;
 
-    [SerializeField]
-    private StageData _stageData = null;
-
-    [SerializeField]
-    public Transform _playerAnchor = null;
-
     private int _nowBattle = -1;
 
-    private List<Battle> _battleList = null;
+    [SerializeField]
+    public StageObject _stageObject = null;
+
+    private StageData _stageData = null;
+
+    public Transform _startTrasform { get; private set; } = null;
 
     private void Awake()
     {
         instance = this;
+        Initialize();
     }
 
     private void Start()
     {
-        //StartBattle(0);
-        _battleList = new List<Battle>(_stageData.battleData.Length);
-        for (int i = 0, max = _battleList.Count; i < max; i++)
-        {
-            int waveNum = _stageData.battleData[i].waveData.Length;
-            _battleList[i] = new Battle(waveNum);
-        }
+        StartBattle(0);
     }
 
-    /// <summary>
-    /// wave‚Ì”Ô†‚ğw’è‚µ‚Ä“G‚ğoŒ»‚³‚¹‚é
-    /// </summary>
-    /// <param name="waveNum"></param>
-    public void StartBattle(int waveNum)
+    private void Initialize()
     {
-        //WaveData waveData = _stageData.waveData[waveNum];
-        //int characterNum = waveData.generateCharacterData.Length;
-        //for (int i = 0; i < characterNum; i++)
-        //{
-        //    GameObject geneCharacter = waveData.generateCharacterData[i].characterPrefab;
-        //    int anchorNum = waveData.generateCharacterData[i].generateAnchorNum;
-        //    CharacterManager.instance.GenerateEnemy(geneCharacter, _battles[waveNum].anchors[anchorNum]);
-        //}
+        _stageData = _stageObject.GetStageData();
+        _startTrasform = _stageObject.GetSpownTransform();
+    }
+
+    public void StartBattle(int battleNum)
+    {
+        WaveData waveData = _stageData.battleData[battleNum].waveData[0];
+        int waveCount = waveData.generateCharacterData.Length;
+        for (int i = 0; i < waveCount; i++)
+        {
+            GameObject genObject = waveData.generateCharacterData[i].characterPrefab;
+            int genAnchorNum = waveData.generateCharacterData[i].generateAnchorNum;
+            Transform genTransform = _stageObject.GetAnchors(battleNum)[genAnchorNum];
+            CharacterManager.instance.GenerateEnemy(genObject, genTransform);
+        }
     }
 
     /// <summary>
