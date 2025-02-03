@@ -214,6 +214,13 @@ public abstract class BasePlayer : BaseCharacter
 
     public override bool IsPlayer() { return true; }
 
+    public override void TakeDamage(float damageSize)
+    {
+        base.TakeDamage(damageSize);
+        if (health <= 0)
+            selfAnimator.SetTrigger(selfAnimationData.interruptPram[(int)InterruqtAnimation.DIE]);
+    }
+
 #if GUI_OUTPUT
 
     /// <summary>GUI出力用 インスタンスカウンタ</summary>

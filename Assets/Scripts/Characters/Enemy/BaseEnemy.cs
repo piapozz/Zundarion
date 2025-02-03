@@ -27,7 +27,7 @@ public class BaseEnemy : BaseCharacter
 
         selfAnimator = GetComponent<Animator>();
 
-        player = CharacterManager.instance.playerObject;
+        player = CharacterManager.instance.player;
 
     }
 
@@ -55,4 +55,11 @@ public class BaseEnemy : BaseCharacter
     public void ReceiveBreakPoint(float breakSize) { breakPoint -= breakSize; }
 
     public override bool IsPlayer() { return false; }
+
+    public override void TakeDamage(float damageSize)
+    {
+        base.TakeDamage(damageSize);
+        if (health <= 0)
+            selfAnimator.SetBool("Dying", true);
+    }
 }

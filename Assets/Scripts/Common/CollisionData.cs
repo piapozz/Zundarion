@@ -18,12 +18,15 @@ public class CollisionData : MonoBehaviour
     public float damage = -1;
     public float deleteTime = 0.1f;
 
+    private string thisTag = null;
+
     /// <summary>
     /// 制限時間を設定し、時間経過後にゲームオブジェクトを破壊します。
     /// </summary>
     /// <param name="time">制限時間（秒）</param>
     public void OnEnable()
     {
+        thisTag = transform.tag;
         UniTask task = WaitAction(deleteTime, LimitOver);
     }
 
@@ -35,5 +38,59 @@ public class CollisionData : MonoBehaviour
         CollisionManager.instance.UnuseCollision(gameObject);
         BaseCharacter parryTarget = CharacterManager.instance.GetCharacter(characterID);
         CollisionManager.instance.parryList.Remove(parryTarget);
+    }
+
+    private readonly string PLAYER_TAG = "Player";
+    private readonly string ENEMY_TAG = "Enemy";
+
+    private void OnTriggerEnter(Collider other)
+    {
+        // タグでチェック判定
+        GameObject hitObj = other.gameObject;
+        string hitTagName = hitObj.tag;
+        if (!JudgeHittable(hitTagName)) return;
+
+        // BaseCharacterを取得
+        BaseCharacter hitCharacter = hitObj.GetComponent<BaseCharacter>();
+        if (hitCharacter == null) return;
+
+        BaseCharacter sourceCharacter = CharacterManager.instance.GetCharacter(characterID);
+        if (isParry)
+            // リストに入れる
+            CollisionManager.instance.parryList.Add(sourceCharacter);
+        else
+            // ダメージ判定
+            hitCharacter.TakeDamage(damage);
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (!isParry) return;
+        // タグでチェック判定
+        GameObject hitObj = other.gameObject;
+        string hitTagName = hitObj.tag;
+        if (!JudgeHittable(hitTagName)) return;
+
+        // BaseCharacterを取得
+        BaseCharacter hitCharacter = hitObj.GetComponent<BaseCharacter>();
+        if (hitCharacter == null) return;
+
+        // リストから外す
+        BaseCharacter sourceCharacter = CharacterManager.instance.GetCharacter(characterID);
+        CollisionManager.instance.parryList.Remove(sourceCharacter);
+    }
+
+    /// <summary>
+    /// 敵のタグか判定する
+    /// </summary>
+    /// <param name="hitTag"></param>
+    /// <returns></returns>
+    private bool JudgeHittable(string hitTag)
+    {
+        if ((hitTag == ENEMY_TAG && thisTag == PLAYER_TAG) ||
+            (hitTag == PLAYER_TAG && thisTag == ENEMY_TAG))
+            return true;
+        else
+            return false;
     }
 }

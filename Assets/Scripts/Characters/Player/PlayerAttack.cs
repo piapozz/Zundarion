@@ -38,7 +38,7 @@ public class PlayerAttack : MonoBehaviour
     /// </summary>
     void Start()
     {
-        _player = GetComponent<BasePlayer>();       // プレイヤー取得
+        _player = CharacterManager.instance.player; // プレイヤー取得
         _animator = _player.selfAnimator;           // アニメーター取得
         _animationPram = _player.selfAnimationData; // アニメーションデータ取得
         _collisionPram = _player.selfCollisionData; // コリジョンデータ取得

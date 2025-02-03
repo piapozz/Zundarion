@@ -4767,7 +4767,6 @@ GameObject:
   - component: {fileID: 2892533442517954719}
   - component: {fileID: 2892533442517954716}
   - component: {fileID: 5128092972259059506}
-  - component: {fileID: 2387129500344483234}
   m_Layer: 0
   m_Name: Zundamon
   m_TagString: Player
@@ -4879,6 +4878,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   charaData: {fileID: 11400000, guid: 2682e0f7083dedc4ea653e2f1463900e, type: 2}
   _ID: 0
+  healthMax: -1
+  health: -1
   selfAnimator: {fileID: 2892533442517954711}
   playerAnimation: {fileID: 11400000, guid: f7c2d37f1ed27d946baa0f8d2390fafa, type: 2}
   occurrenceFrame: {fileID: 0}
@@ -5005,18 +5006,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!114 &2387129500344483234
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2892533442517954710}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d4a5eccd2a43aa40b2eaf82faaefc53, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2947803462297619137
 GameObject:
   m_ObjectHideFlags: 0
