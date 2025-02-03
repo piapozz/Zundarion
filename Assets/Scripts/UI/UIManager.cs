@@ -35,6 +35,7 @@ public class UIManager : MonoBehaviour
 
     private List<GameObject> useObjectList = null;
     private List<GameObject> unuseObjectList = null;
+    private List<GameObject> enemyUIList = null;
 
     Vector3 viewportPos;
 
@@ -66,50 +67,34 @@ public class UIManager : MonoBehaviour
 
     private void Update()
     {
-        List<BaseCharacter> characterList = characterManager.characterList;
-
-        for (int i = 0, max = characterList.Count; i < max; i++) 
-        {
-            //Debug.Log("temae");
-            //if (characterList[i].GetComponent<BasePlayer>()) break;
-            //Debug.Log("通った");
-            //viewportPos = mainCamera.WorldToViewportPoint(characterList[i].transform.position + Vector3.up * 2f);
-
-            //if (viewportPos.z > 0 && viewportPos.x >= 0 && viewportPos.x <= 1 && viewportPos.y >= 0 && viewportPos.y <= 1)
-            //{
-            //    Debug.Log("aaaaa");
-            //}
-            //else
-            //{
-            //    Debug.Log("iii");
-            //}
-        }
-
-        // 使用されるときに必要な情報を渡して表示する
-
         // もしUIがセットされていない敵が見つかったら
         if (true)
         {
+            // 
+
+
+
+            // useObjectList.Add(unuseObjectList.)
+
 
         }
 
-        // 使用されていないオブジェクトがあったら非表示にする
-        for (int i = 0, max = unuseObjectList.Count; i < max; i++) 
+        List<BaseCharacter> characterList = characterManager.characterList;
+
+        for (int i = 1, max = characterList.Count; i < max; i++)
         {
-            // 非表示にされていないオブジェクトがあったら
-            if(unuseObjectList[i].activeSelf != false)
+            if (characterList[i] == null) break;
+
+            viewportPos = mainCamera.WorldToViewportPoint(characterList[i].transform.position + Vector3.up * 2f);
+
+            if (viewportPos.z > 0 && viewportPos.x >= 0 && viewportPos.x <= 1 && viewportPos.y >= 0 && viewportPos.y <= 1)
             {
-                SetActive(unuseObjectList[i], false);
+                
             }
-        }
-
-        // UIを更新する
-        for (int i = 0, max = useObjectList.Count; i < max; i++)
-        {
-
-            if(useObjectList[i] != null)
+            else
             {
-
+                // 画面外に外れたら非表示にする
+                // SetActive(enemyUIList, false);
             }
         }
     }

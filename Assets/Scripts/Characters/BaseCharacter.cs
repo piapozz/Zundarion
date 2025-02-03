@@ -196,4 +196,6 @@ public abstract class BaseCharacter : MonoBehaviour
     /// <returns></returns>
     public float GetCharacterHealth() { return health; }
 
+    public abstract bool IsPlayer();
+
 }

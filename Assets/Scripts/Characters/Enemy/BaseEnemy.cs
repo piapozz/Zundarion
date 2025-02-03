@@ -53,4 +53,6 @@ public class BaseEnemy : BaseCharacter
 
     // ブレイク値を変動させる
     public void ReceiveBreakPoint(float breakSize) { breakPoint -= breakSize; }
+
+    public override bool IsPlayer() { return false; }
 }

@@ -13,7 +13,7 @@ using UnityEngine.UI;
 public class EnemyUI : MonoBehaviour 
 {
     private Image image = null;
-    private int characterID = -1;
+    public int characterID { get; protected set; } = -1;
 
     private void Start()
     {
