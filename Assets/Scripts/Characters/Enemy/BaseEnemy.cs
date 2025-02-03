@@ -14,7 +14,7 @@ using UnityEngine;
 
 public class BaseEnemy : BaseCharacter
 {
-    protected GameObject player;               // プレイヤー
+    protected BasePlayer player;               // プレイヤー
     protected float breakPoint;                 // ブレイク値
     protected float distance;
     public Vector3 targetVec;
@@ -28,6 +28,7 @@ public class BaseEnemy : BaseCharacter
         selfAnimator = GetComponent<Animator>();
 
         player = CharacterManager.instance.playerObject;
+
     }
 
     public virtual void Attack() { }

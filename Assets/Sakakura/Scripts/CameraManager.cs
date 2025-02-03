@@ -17,15 +17,24 @@ public class CameraManager : MonoBehaviour
     /// <summary>フリールックカメラ</summary>
     private CinemachineFreeLook _freeLookCam;
 
-    private void Start()
+    private void Awake()
     {
         instance = this;
-        selfCamera = Camera.main;
-        _stateCam = GetComponentInChildren<CinemachineStateDrivenCamera>();
-        _freeLookCam = GetComponentInChildren<CinemachineFreeLook>();
+        Initialize();
+    }
+
+    private void Start()
+    {
         Transform setTransform = CharacterManager.instance.playerObject.transform;
         Animator setAnimator = CharacterManager.instance.GetCharacter(0).selfAnimator;
         SetTransform(setTransform, setAnimator);
+    }
+
+    private void Initialize()
+    {
+        selfCamera = Camera.main;
+        _stateCam = GetComponentInChildren<CinemachineStateDrivenCamera>();
+        _freeLookCam = GetComponentInChildren<CinemachineFreeLook>();
     }
 
     private void SetTransform(Transform setTransform, Animator setAnimator)
