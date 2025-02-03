@@ -25,7 +25,7 @@ public class CameraManager : MonoBehaviour
 
     private void Start()
     {
-        Transform setTransform = CharacterManager.instance.playerObject.transform;
+        Transform setTransform = CharacterManager.instance.player.transform;
         Animator setAnimator = CharacterManager.instance.GetCharacter(0).selfAnimator;
         SetTransform(setTransform, setAnimator);
     }

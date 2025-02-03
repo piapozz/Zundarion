@@ -26,14 +26,14 @@ public abstract class BaseCharacter : MonoBehaviour
     private int _ID = -1;
 
     // キャラクターのステータス
-    [SerializeField] protected float healthMax = -1;         // 最大体力
-    [SerializeField] protected float health = -1;            // 現在の体力
-    protected float strength = -1;          // 攻撃力
-    protected float defence = -1;           // 防御力
-    protected float speed = -1;             // 速さ
+    [SerializeField] protected float healthMax = -1;    // 最大体力
+    [SerializeField] protected float health = -1;       // 現在の体力
+    protected float strength = -1;      // 攻撃力
+    protected float defence = -1;       // 防御力
+    protected float speed = -1;         // 速さ
 
-    protected Vector3 position;        // 座標
-    protected float multiplier;        // 倍率
+    protected Vector3 position;         // 座標
+    protected float multiplier = 1;     // 倍率
 
     /// <summary>アニメーターコンポーネント</summary>
     public Animator selfAnimator = null;
@@ -62,7 +62,7 @@ public abstract class BaseCharacter : MonoBehaviour
     /// ダメージを受ける処理
     /// </summary>
     /// <param name="damageSize"></param>
-    public void TakeDamage(float damageSize)
+    public virtual void TakeDamage(float damageSize)
     {
         float damage = damageSize * defence * multiplier;
 
@@ -117,6 +117,14 @@ public abstract class BaseCharacter : MonoBehaviour
             // 1フレーム待ち
             await UniTask.DelayFrame(1);
         }
+    }
+
+    /// <summary>
+    /// 死亡イベント
+    /// </summary>
+    public virtual void DeadEvent()
+    {
+        Destroy(gameObject);
     }
 
     //public async UniTask RotateEvent(RotateEventData eventData)

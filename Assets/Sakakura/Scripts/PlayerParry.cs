@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 using static CommonModule;
+using static PlayerAnimation;
 
 public class PlayerParry : MonoBehaviour
 {
@@ -13,6 +14,9 @@ public class PlayerParry : MonoBehaviour
 
     /// <summary>プレイヤーのアニメーター</summary>
     private Animator _animator = null;
+
+    /// <summary>アニメーションパラメーターの情報</summary>
+    private PlayerAnimation _animationPram = null;
 
     /// <summary>プレイヤーの当たり判定チェック</summary>
     private CheckCollision _checkCollision = null;
@@ -23,8 +27,9 @@ public class PlayerParry : MonoBehaviour
 
     private void Start()
     {
-        _player = GetComponent<BasePlayer>();           // プレイヤー取得
+        _player = CharacterManager.instance.player;     // プレイヤー取得
         _animator = _player.selfAnimator;               // アニメーター取得
+        _animationPram = _player.selfAnimationData;
         _checkCollision = _player.selfCheckCollision;
     }
 
@@ -38,9 +43,9 @@ public class PlayerParry : MonoBehaviour
         _isCoolDown = true;
         UniTask task = WaitAction(PARRY_COOL_DOWN, UpCoolDown);
         // アニメーションをセット
-        _animator.SetTrigger("Parry");
+        _animator.SetTrigger(_animationPram.changePram[(int)ChangeAnimation.PARRY]);
         // パリィ相手のアニメーションをひるみにする
-        parryList[0].selfAnimator.SetTrigger("Impact");
+        parryList[0].selfAnimator.SetTrigger(_animationPram.interruptPram[(int)InterruqtAnimation.IMPACT]);
         // プレイヤーを敵の方向に向ける
         _player.TurnAround(parryList[0].transform);
         // 通常カメラをリセット
