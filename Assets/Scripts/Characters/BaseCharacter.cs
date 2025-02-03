@@ -66,22 +66,11 @@ public abstract class BaseCharacter : MonoBehaviour
     {
         float damage = damageSize * defence * multiplier;
 
-        if (damage > healthMax / 3)
-        {
-            // 例:大きくのけぞるアニメーションを再生
-        }
-        else if (damage > healthMax / 100)
-        {
-            // 例:のけぞるアニメーションを再生
-        }
-
-        // 負の数にならないように補正
-        health = Mathf.Max(0, health - damage);
-
         health -= damage;
-    }
 
-    public float GetCharacterHealth() {  return health; }
+        if (health <= 0)
+            CharacterManager.instance.RemoveCharacterList(_ID);
+    }
 
     /// <summary>
     /// 当たり判定を生成する
@@ -108,61 +97,105 @@ public abstract class BaseCharacter : MonoBehaviour
     /// <summary>
     /// アクションイベントを使って細かい移動を行う
     /// </summary>
-    /// <param name="dir">移動させたい向き</param>
-    /// <param name="frame">どれくらいのフレーム移動させるか</param>
-    /// <param name="speed">移動させる速さ</param>
+    /// <param name="eventData">移動情報が入ったScriptObject</param>
     /// <returns></returns>
-    public async UniTask MoveFine(Vector3 dir, float frame, float speed)
+    public async UniTask MoveEvent(MoveEventData eventData)
     {
-        float frameCount = 0.0f;
-        Vector3 movePostion = transform.position;
+        int moveFrame = eventData.frame;
+        float speed = eventData.speed;
 
-        dir = dir.normalized;
+        // directionをローカル座標系に変換
+        Vector3 direction = transform.TransformDirection(eventData.dir.normalized);
 
-        while (true)
+        int frameCount = 0;
+        while (moveFrame > frameCount)
         {
-            // ループを抜ける処理
-            if (frameCount >= frame) break;
-            else { frameCount += Time.deltaTime; }
-
             // 指定された方向に移動
-            movePostion += dir * speed * Time.deltaTime;
-            transform.position = movePostion;
+            transform.position += direction * speed / moveFrame;
 
+            frameCount++;
             // 1フレーム待ち
             await UniTask.DelayFrame(1);
         }
     }
 
+    //public async UniTask RotateEvent(RotateEventData eventData)
+    //{
+    //    float frameCount = 0.0f;
+    //    Vector3 targetVec;
+    //    GameObject player = CharacterManager.instance.playerObject;
+
+    //    while (true)
+    //    {
+    //        Debug.Log("muiteru");
+    //        // ループを抜ける条件
+    //        if (frameCount >= eventData.frame) break;
+    //        else { frameCount += 1; }
+
+    //        targetVec = GetTargetVec(player.transform.position);
+
+    //        // 移動ベクトルがゼロでない場合のみ処理を進める
+    //        if (targetVec == Vector3.zero) break;
+
+    //        // 目標の角度を計算
+    //        float targetAngle = Mathf.Atan2(targetVec.z, targetVec.x) * Mathf.Rad2Deg;
+
+    //        // 現在の回転角度から目標の角度へ補間
+    //        Quaternion targetRotation = Quaternion.AngleAxis(targetAngle - 90, Vector3.down);
+    //        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, eventData.speed * Time.deltaTime);
+
+    //        // 1フレーム待ち
+    //        await UniTask.DelayFrame(1);
+
+    //    }
+    //}
+
     /// <summary>
     /// 前進させる
     /// </summary>
-    public void Move()
+    /// <param name="dir"></param>
+    /// <param name="speed"></param>
+    public void Move(Vector3 dir, float speed)
     {
         // 向いている方向に移動
         Vector3 movePosition = transform.position + (transform.forward * speed * Time.deltaTime);
+        // Vector3 movePosition = transform.position + (dir * speed * Time.deltaTime);
 
         transform.position = movePosition;
     }
 
     /// <summary>
-    /// 角度に応じて向きを変更
+    /// 向きたい方向に徐々に向かせる
     /// </summary>
-    /// <param name="moveVec">移動方向</param>
-    /// <param name="_transform">基準となる向き</param>
-    public float Rotate(Vector2 moveVec, Transform _transform)
+    /// <param name="dir"></param>
+    /// <param name="speed"></param>
+    public void Rotate(Vector3 dir, float speed)
     {
-        // 敵の前方と右方向を基準に移動ベクトルを計算
-        Vector3 forward = _transform.forward;
-        Vector3 right = _transform.right;
+        // 移動ベクトルがゼロでない場合のみ処理を進める
+        if (dir == Vector3.zero) return;
 
-        // 敵の向きに基づいた移動ベクトルを計算
-        Vector3 adjustedMove = (right * moveVec.x + forward * moveVec.y).normalized;
+        // 目標の角度を計算
+        float targetAngle = Mathf.Atan2(dir.z, dir.x) * Mathf.Rad2Deg;
 
-        // 向きを計算して更新
-        float angle = Mathf.Atan2(adjustedMove.z, adjustedMove.x) * Mathf.Rad2Deg;
+        // 現在の回転角度から目標の角度へ補間
+        Quaternion targetRotation = Quaternion.AngleAxis(targetAngle - 90, Vector3.down);
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, speed * Time.deltaTime);
 
-        return angle;
     }
+
+    /// <summary>
+    /// 目標への方向を取得
+    /// </summary>
+    /// <param name="targetPos"></param>
+    /// <returns></returns>
+    public Vector3 GetTargetVec(Vector3 targetPos) { return (targetPos - transform.position).normalized; }
+
+    /// <summary>
+    /// 体力を渡す
+    /// </summary>
+    /// <returns></returns>
+    public float GetCharacterHealth() { return health; }
+
+    public abstract bool IsPlayer();
 
 }

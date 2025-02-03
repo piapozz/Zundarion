@@ -173,6 +173,7 @@ public class CollisionManager : MonoBehaviour
         if (genObj == null) return;
 
         SetCollision(ref genObj, ID, attackData, setTransform);
+        genObj.transform.parent = useCollisionRoot;
     }
 
     /// <summary>
@@ -183,7 +184,6 @@ public class CollisionManager : MonoBehaviour
     {
         ReinsertListMember(ref _unuseCollisionList, ref _useCollisionList);
         GameObject useCollision = _useCollisionList[_useCollisionList.Count - 1];
-        useCollision.transform.parent = useCollisionRoot;
         return useCollision;
     }
 

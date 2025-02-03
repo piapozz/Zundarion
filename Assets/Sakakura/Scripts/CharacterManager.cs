@@ -13,73 +13,76 @@ public class CharacterManager : MonoBehaviour
 {
     public static CharacterManager instance { get; private set; } = null;
 
-    private static readonly int CHARACTER_MAX = 10;
+    private static readonly int ENEMY_MAX = 10;
 
     [SerializeField]
     private GameObject playerOrigin = null;
 
-    public GameObject playerObject { get; private set; } = null;
+    public BasePlayer playerObject { get; private set; } = null;
 
-    public List<GameObject> characterList { get; private set; } = null;
+    public List<BaseCharacter> characterList { get; private set; } = null;
 
     private void Awake()
     {
         instance = this;
-        characterList = new List<GameObject>(CHARACTER_MAX);
-        for (int i = 0, max = CHARACTER_MAX; i < max; i++)
+        characterList = new List<BaseCharacter>(ENEMY_MAX + 1);
+        for (int i = 0, max = ENEMY_MAX + 1; i < max; i++)
         {
             characterList.Add(null);
         }
     }
-
+    
     private void Start()
     {
-        playerObject = GeneratePlayer(playerOrigin, StageManager.instance._playerAnchor);
+        GeneratePlayer(playerOrigin, StageManager.instance._startTrasform);
     }
 
     /// <summary>
     /// プレイヤーを生成する
     /// </summary>
-    public GameObject GeneratePlayer(GameObject geneCharacter, Transform geneTransform)
+    public void GeneratePlayer(GameObject genBase, Transform genTransform)
     {
-        return GenerateCharacter(geneCharacter, geneTransform);
+        BaseCharacter genCharacter = GenerateCharacter(genBase, genTransform);
+        playerObject = genCharacter as BasePlayer;
     }
 
     /// <summary>
     /// 敵を生成する
     /// </summary>
     /// <param name="generateNum"></param>
-    public GameObject GenerateEnemy(GameObject geneCharacter, Transform geneTransform)
+    public void GenerateEnemy(GameObject genBase, Transform genTransform)
     {
-        return GenerateCharacter(geneCharacter, geneTransform);
+        GenerateCharacter(genBase, genTransform);
     }
 
     /// <summary>
-    /// キャラクターを生成する関数
+    /// キャラクターを生成する
     /// </summary>
-    /// <param name="character"></param>
-    private GameObject GenerateCharacter(GameObject geneCharacter, Transform geneTransform)
+    /// <param name="genBase"></param>
+    /// <param name="genTransform"></param>
+    /// <returns></returns>
+    private BaseCharacter GenerateCharacter(GameObject genBase, Transform genTransform)
     {
-        GameObject geneObj = null;
+        GameObject genCharacter = null;
         BaseCharacter character = null;
         int useID = GetEmptyID();
         if (useID < 0)
         {
             useID = characterList.Count;
-            geneObj = Instantiate(geneCharacter);
-            character = geneObj.GetComponent<BaseCharacter>();
+            genCharacter = Instantiate(genBase);
+            character = genCharacter.GetComponent<BaseCharacter>();
             character.Initialize(useID);
-            characterList.Add(geneObj);
+            characterList.Add(character);
         }
         else
         {
-            geneObj = Instantiate(geneCharacter);
-            character = geneObj.GetComponent<BaseCharacter>();
+            genCharacter = Instantiate(genBase);
+            character = genCharacter.GetComponent<BaseCharacter>();
             character.Initialize(useID);
-            characterList[useID] = geneObj;
+            characterList[useID] = character;
         }
-        character.SetTransform(geneTransform);
-        return geneObj;
+        character.SetTransform(genTransform);
+        return character;
     }
 
     /// <summary>
@@ -115,6 +118,8 @@ public class CharacterManager : MonoBehaviour
     /// <returns></returns>
     public BaseCharacter GetCharacter(int ID)
     {
+        if (characterList[ID] == null) return null;
+
         return characterList[ID].GetComponent<BaseCharacter>();
     }
 }

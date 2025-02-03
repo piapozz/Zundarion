@@ -212,6 +212,8 @@ public abstract class BasePlayer : BaseCharacter
         _selfParry.Parry();
     }
 
+    public override bool IsPlayer() { return true; }
+
 #if GUI_OUTPUT
 
     /// <summary>GUI出力用 インスタンスカウンタ</summary>

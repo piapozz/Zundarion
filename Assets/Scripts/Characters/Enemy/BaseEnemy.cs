@@ -14,11 +14,10 @@ using UnityEngine;
 
 public class BaseEnemy : BaseCharacter
 {
-    protected GameObject player;                // プレイヤー
+    protected BasePlayer player;               // プレイヤー
     protected float breakPoint;                 // ブレイク値
-    public Vector3 relativePosition;
-
-    public Vector3 enemyForward;
+    protected float distance;
+    public Vector3 targetVec;
 
     public GameConst.EnemyState nowState;                // 現在のステートを管理
 
@@ -29,6 +28,7 @@ public class BaseEnemy : BaseCharacter
         selfAnimator = GetComponent<Animator>();
 
         player = CharacterManager.instance.playerObject;
+
     }
 
     public virtual void Attack() { }
@@ -44,9 +44,6 @@ public class BaseEnemy : BaseCharacter
 
     public void SetAnimatorBool(string boolName, bool value) { selfAnimator?.SetBool(boolName, value); }
 
-    // アニメーションで更新されたオブジェクトの座標を保存
-    public void PositionUpdate() { position = gameObject.transform.position; }
-
     // プレイヤーとの相対距離を取得
     public Vector3 GetRelativePosition()
     {
@@ -54,30 +51,8 @@ public class BaseEnemy : BaseCharacter
          return player.transform.position - gameObject.transform.position;
     }
 
-    public Quaternion GetPlayerDirection()
-    {
-        Transform enemyTransform = transform;
-        Transform playerTransform = player.transform;
-
-        // プレイヤーの方向を計算
-        Vector3 directionToPlayer = (playerTransform.position - enemyTransform.position).normalized;
-
-        // プレイヤーの方向を向く
-        return Quaternion.LookRotation(new Vector3(directionToPlayer.x, 0, directionToPlayer.z));
-    }
-    public void SetRotation(Quaternion rotation)
-    {
-        rotation.x = 0f;
-        rotation.z = 0f;
-        gameObject.transform.rotation = rotation; 
-    }
-
-    // プレイヤーまでの距離
-    public float DistanceToPlayer() { return Vector3.Distance(transform.position, player.transform.position); }
-
     // ブレイク値を変動させる
     public void ReceiveBreakPoint(float breakSize) { breakPoint -= breakSize; }
 
-    // ステートの情報を更新
-    public void UpdataState(GameConst.EnemyState state) { nowState = state; }
+    public override bool IsPlayer() { return false; }
 }
