@@ -13,46 +13,49 @@ public class StageManager : MonoBehaviour
 
     private StageData _stageData = null;
 
+    private List<BattleProcessor> _battleList = null;
+
     public Transform _startTrasform { get; private set; } = null;
 
     private void Awake()
     {
         instance = this;
         Initialize();
-    }
-
-    private void Start()
-    {
-        StartBattle(0);
+        
     }
 
     private void Initialize()
     {
         _stageData = _stageObject.GetStageData();
         _startTrasform = _stageObject.GetSpownTransform();
-    }
-
-    public void StartBattle(int battleNum)
-    {
-        WaveData waveData = _stageData.battleData[battleNum].waveData[0];
-        int waveCount = waveData.generateCharacterData.Length;
-        for (int i = 0; i < waveCount; i++)
+        _battleList = new List<BattleProcessor>(_stageObject.GetBattle());
+        for (int i = 0, max = _battleList.Count; i < max; i++)
         {
-            GameObject genObject = waveData.generateCharacterData[i].characterPrefab;
-            int genAnchorNum = waveData.generateCharacterData[i].generateAnchorNum;
-            Transform genTransform = _stageObject.GetAnchors(battleNum)[genAnchorNum];
-            CharacterManager.instance.GenerateEnemy(genObject, genTransform);
+            _battleList[i].Initialize(i, _stageData.battleData[i]);
         }
     }
 
     /// <summary>
-    /// ウェーブを次に進める
+    /// 戦闘を次に進める
     /// </summary>
     public void NextBattle()
     {
-        // 敵のリストが空なら次のウェーブに進む
-        //if (!IsEmpty(CharacterManager.instance.))
         _nowBattle++;
-        StartBattle(_nowBattle);
+    }
+
+    /// <summary>
+    /// 次のバトルに行けるか判定
+    /// </summary>
+    /// <param name="battleNum"></param>
+    /// <returns></returns>
+    public bool CanNextBattle(int battleNum)
+    {
+        if (_nowBattle >= 0 && !_battleList[_nowBattle].isFinished)
+            return false;
+
+        if (battleNum != _nowBattle + 1)
+            return false;
+
+        return true;
     }
 }

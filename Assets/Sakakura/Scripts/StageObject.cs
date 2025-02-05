@@ -8,22 +8,10 @@ public class StageObject : MonoBehaviour
     private StageData _stageData = null;
 
     [SerializeField]
-    private Battle[] _battles = null;
+    private BattleProcessor[] _battles = null;
 
     [SerializeField]
     private Transform _spownAnchor = null;
-
-    [System.Serializable]
-    private class Battle
-    {
-        [SerializeField]
-        private Transform[] _anchors;
-
-        public Transform[] GetAnchors()
-        {
-            return _anchors;
-        }
-    }
 
     public StageData GetStageData()
     {
@@ -38,5 +26,10 @@ public class StageObject : MonoBehaviour
     public Transform[] GetAnchors(int battleNum)
     {
         return _battles[battleNum].GetAnchors();
+    }
+
+    public BattleProcessor[] GetBattle()
+    {
+        return _battles;
     }
 }

@@ -18,7 +18,7 @@ public class CharacterManager : MonoBehaviour
     [SerializeField]
     private GameObject playerOrigin = null;
 
-    public BasePlayer playerObject { get; private set; } = null;
+    public BasePlayer player { get; private set; } = null;
 
     public List<BaseCharacter> characterList { get; private set; } = null;
 
@@ -43,7 +43,7 @@ public class CharacterManager : MonoBehaviour
     public void GeneratePlayer(GameObject genBase, Transform genTransform)
     {
         BaseCharacter genCharacter = GenerateCharacter(genBase, genTransform);
-        playerObject = genCharacter as BasePlayer;
+        player = genCharacter as BasePlayer;
     }
 
     /// <summary>
@@ -121,5 +121,20 @@ public class CharacterManager : MonoBehaviour
         if (characterList[ID] == null) return null;
 
         return characterList[ID].GetComponent<BaseCharacter>();
+    }
+
+    /// <summary>
+    /// エネミーがいるか判定
+    /// </summary>
+    /// <returns></returns>
+    public bool IsAliveEnemy()
+    {
+        for (int i = 0, max = characterList.Count; i < max; i++)
+        {
+            if (characterList[i] == null || characterList[i].IsPlayer())
+                continue;
+            return true;
+        }
+        return false;
     }
 }
