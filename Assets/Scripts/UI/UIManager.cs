@@ -16,37 +16,31 @@ using UnityEngine.UI;
 
 // ※Canvasを敵の数だけ生成するのは描画コストが増え、負荷につながる
 
-public class UIManager : MonoBehaviour
+public class UIManager : SystemObject
 {
     public static UIManager instance { get; private set; } = null;
 
-    private readonly int INITIAL_COUNT = 5;
+    private readonly int INITIAL_COUNT = 3;
 
-    [SerializeField] private GameObject enemyUI;
+    [SerializeField] private GameObject enemyUIObject;
     [SerializeField] private GameObject canvasWorldSpace;
 
-    private CharacterManager characterManager = null;
     private Camera mainCamera = null;
+    private Transform parent = null;
 
-    // 使用中のキャラクターリスト
-    private List<BaseCharacter> useList = null;
-    private List<BasePlayer> unusePlayer = null;
-    private List<BaseEnemy> unuseEnemyList = null;
-
+    private List<EnemyUI> enemyUIList = null;
     private List<GameObject> useObjectList = null;
     private List<GameObject> unuseObjectList = null;
-    private List<GameObject> enemyUIList = null;
 
     Vector3 viewportPos;
 
-    private void Awake()
+    public override void Initialize()
     {
         instance = this;
-    }
 
-    private void Start()
-    {
-        characterManager = CharacterManager.instance;
+        // Canvasのtransformを取得
+        parent = canvasWorldSpace.transform;
+
         mainCamera = CameraManager.instance.selfCamera;
 
         // 全てが空だったらあらかじめ生成する
@@ -54,99 +48,79 @@ public class UIManager : MonoBehaviour
         {
             useObjectList = new List<GameObject>();
             unuseObjectList = new List<GameObject>();
-
-            // Canvasのtransformを取得
-            var parent = canvasWorldSpace.transform;
+            enemyUIList = new List<EnemyUI>();
 
             for (int i = 0, max = INITIAL_COUNT; i < max; i++)
             {
-                AddEnemyUI(parent);
+                unuseObjectList.Add(null);
+                // unuseObjectList.Add(Instantiate(enemyUIObject, new Vector3(0.0f, 0.0f, 0.0f), Quaternion.identity, parent));
             }
         }
     }
 
     private void Update()
     {
-        // もしUIがセットされていない敵が見つかったら
-        if (true)
+        // 不必要なUIを非表示にする
+        for (int i = 0, max = enemyUIList.Count; i < max; i++)
         {
-            // 
+            Debug.Log(i);
+            if (enemyUIList[i] == null) break;
 
+            viewportPos = mainCamera.WorldToViewportPoint(enemyUIList[i].baseEnemy.position + Vector3.up * 2f);
 
-
-            // useObjectList.Add(unuseObjectList.)
-
-
-        }
-
-        List<BaseCharacter> characterList = characterManager.characterList;
-
-        for (int i = 1, max = characterList.Count; i < max; i++)
-        {
-            if (characterList[i] == null) break;
-
-            viewportPos = mainCamera.WorldToViewportPoint(characterList[i].transform.position + Vector3.up * 2f);
-
+            // 画面に移ったら表示にする
             if (viewportPos.z > 0 && viewportPos.x >= 0 && viewportPos.x <= 1 && viewportPos.y >= 0 && viewportPos.y <= 1)
             {
-                
+                enemyUIList[i].SetActive(true);
             }
+
+            // 画面外に外れたら非表示にする
             else
             {
-                // 画面外に外れたら非表示にする
-                // SetActive(enemyUIList, false);
+                enemyUIList[i].SetActive(false);
             }
         }
     }
 
-    // リストにUIを追加する
-    private void AddEnemyUI(Transform transform)
+    public void AddEnemyUI(BaseEnemy baseEnemy)
     {
-        // 子として生成
-        unuseObjectList.Add(Instantiate(enemyUI, new Vector3(0.0f, 0.0f, 0.0f), Quaternion.identity, transform));
+        GenerateEnemyUI(baseEnemy);
+
+    }
+
+    public void RemoveEnemyUI(BaseEnemy baseEnemy)
+    {
+
     }
 
     /// <summary>
-    /// 指定されたオブジェクトのアクティブ切り替え関数
+    /// 敵とUIの結びつけを行う
     /// </summary>
-    /// <param name="active"></param>
-    public void SetActive(GameObject gameObj, bool active)
+    /// <param name="baseEnemy"></param>
+    private void GenerateEnemyUI(BaseEnemy baseEnemy)
     {
-        gameObj.SetActive(active);
+        Debug.Log("UI生成");
+
+        GameObject UIObject = null;
+        EnemyUI enemyUI = null;
+
+        // UIオブジェクトを再利用または生成する
+        if (unuseObjectList[0] != null)
+        {
+            UIObject = unuseObjectList[0];
+            unuseObjectList.RemoveAt(0);
+            Debug.Log("未使用なものを使用する");
+        }
+        else UIObject = Instantiate(enemyUIObject, new Vector3(0.0f, 0.0f, 0.0f), Quaternion.identity, parent);
+
+        // クラスを取得
+        enemyUI = UIObject.GetComponent<EnemyUI>();
+        
+        // 使用前のセットアップ 
+        enemyUI.Setup(baseEnemy, UIObject);
+
+        // 使用中リストに追加
+        useObjectList.Add(UIObject);
+        enemyUIList.Add(enemyUI);
     }
-
-    //// Update is called once per frame
-    //void Update()
-    //{
-    //    time += Time.deltaTime;
-
-    //    //// プレイヤーの体力をゲージで変動させる
-    //    for (int i = 0; i < playerHealthBar.Length; i++)
-    //    {
-    //        // VariableBar(playerHealthBar[i], MAX_TIME, basePlayer[i].selfCurrentHealth);
-    //        VariableBar(playerHealthBar[(int)TeamMember.MEMBER_1], zundaObject.selfCurrentHealth, 100.0f);
-    //        VariableBar(playerHealthBar[(int)TeamMember.MEMBER_2], zunkoObject.selfCurrentHealth, 100.0f);
-    //    }
-
-    //    //// プレイヤーのスキルゲージを変動させる
-    //    //for (int i = 0; i < playerSkillBar.Length; i++)
-    //    //{
-    //    //    VariableBar(playerSkillBar[i], MAX_TIME, MAX_TIME - time);
-    //    //}
-
-    //    //敵の体力をゲージで変動させる
-    //    for (int i = 0; i < enemyHealthBar.Length; i++)
-    //    {
-    //        //VariableBar(enemyHealthBar[i], enemyBear.status.m_health, enemyBear.status.m_healthMax);
-    //        //Debug.Log(enemyBear.status.m_health);
-    //        //Debug.Log(enemyBear.status.m_healthMax);
-    //    }
-
-    //    //// 敵のブレイク値の溜まり具合を変動させる
-    //    //for (int i = 0; i < enemyBreakBar.Length; i++)
-    //    //{
-
-    //    //}
-    //}
-
 }

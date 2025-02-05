@@ -1,9 +1,9 @@
 /*
-* @file EnemyUI.cs
-* @brief 敵UIの操作を行うクラス
-* @author sein
-* @date 2025/1/31
-*/
+ * @file EnemyUI.cs
+ * @brief 敵UIの操作を行うクラス
+ * @author sein
+ * @date 2025/1/31
+ */
 
 using System.Collections;
 using System.Collections.Generic;
@@ -12,25 +12,41 @@ using UnityEngine.UI;
 
 public class EnemyUI : MonoBehaviour 
 {
-    private Image image = null;
-    public int characterID { get; protected set; } = -1;
+    private Image image = null;                 // UIとなるImage
+    public BaseEnemy baseEnemy { get; protected set; } = null;         // 敵のクラス（情報）
+    public float health { get; protected set; } = -1;                  // 敵の現在体力
+    public float healthMax { get; protected set; } = -1;               // 敵の最大体力
 
     private void Start()
     {
-        Initialize();
+        image = null;
+        baseEnemy = null;
+        health = -1;
+        healthMax = -1;
+
+        SetActive(false);
     }
 
     private void Update()
     {
-        
+        if (baseEnemy == null) return;
+
+        UpdateUIPosition();
+        UpdateHealth();
+        UpdateImage();
     }
 
     /// <summary>
-    /// 初期化
+    /// セットアップを行う
     /// </summary>
-    public void Initialize()
+    /// <param name="_baseEnemy"></param>
+    /// <param name="_enemyUI"></param>
+    public void Setup(BaseEnemy _baseEnemy, GameObject _enemyUI)
     {
-        image = GetComponent<Image>();
+        image = _enemyUI.GetComponent<Image>();
+        baseEnemy = _baseEnemy.GetComponent<BaseEnemy>();
+        health = _baseEnemy.GetComponent<BaseCharacter>().health;
+        healthMax = _baseEnemy.GetComponent<BaseCharacter>().healthMax;
     }
 
     /// <summary>
@@ -38,14 +54,30 @@ public class EnemyUI : MonoBehaviour
     /// </summary>
     public void Teardown()
     {
-        characterID = -1;
+        image = null;
+        baseEnemy = null;
+        health = -1;
+        healthMax = -1;
+
+        SetActive(false);
     }
 
-    public void UpdateHealth()
+    public void UpdateImage()
     {
-
+        image.fillAmount = health / healthMax;
     }
 
-    public void SetScreenPosition(Vector3 screenPosition) { transform.position = screenPosition; }
-    public void SetCharacterID(int ID) {  characterID = ID; }
+    private void UpdateHealth()
+    {
+        health = baseEnemy.health;
+    }
+
+    private void UpdateUIPosition()
+    {
+        SetScreenPosition(transform.position);
+    }
+
+    private void SetScreenPosition(Vector3 screenPosition) { transform.position = screenPosition; }
+
+    public void SetActive(bool active) { gameObject.SetActive(active); }
 }
