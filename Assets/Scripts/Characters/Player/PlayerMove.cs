@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEditor.Animations;
 
-public class PlayerMove : MonoBehaviour
+public class PlayerMove : BaseAction
 {
     // private //////////////////////////////////////////////////////////////////
 
@@ -21,43 +21,21 @@ public class PlayerMove : MonoBehaviour
     /// <summary>回避の再生時間</summary>
     private float _avoidanceTime = 0f;
 
+    private System.Action<Vector3, float> _Move = null;
 
-    // Start is called before the first frame update
-    /// <summary>
-    /// 開始時に１度呼ばれる
-    /// </summary>
-    void Start()
+    public void SetCallback(System.Action<Vector3, float> action)
     {
-        _player = GetComponent<BasePlayer>();       // プレイヤー取得
-        _animator = _player.selfAnimator;           // アニメーター取得
-        _animationPram = _player.selfAnimationData; // アニメーションデータ取得
-        _collisionPram = _player.selfCollisionData; // コリジョンデータ取得
-
-        AnimatorController controller = _animator.runtimeAnimatorController as AnimatorController;
-        if (controller == null) return;
-
-        foreach (var layer in controller.layers)
-        {
-            foreach (var state in layer.stateMachine.states)
-            {
-                if (state.state.name == _animationPram.movePram[(int)PlayerAnimation.MoveAnimation.AVOIDANCE])
-                {
-                    Motion motion = state.state.motion;
-                    if (motion is AnimationClip clip)
-                    {
-                        _avoidanceTime = clip.length;
-                    }
-                }
-            }
-        }
+        _Move = action;
     }
 
-    // Update is called once per frame
-    /// <summary>
-    /// ゲームループで（1秒間に何回も）呼ばれる
-    /// </summary>
-    void Update()
+    public void Initialize()
     {
+
+    }
+
+    public void Execute()
+    {
+        /*
         // 0 レイヤーの再生されているアニメーション情報を呼び出す
         AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
 
@@ -65,9 +43,10 @@ public class PlayerMove : MonoBehaviour
         if (stateInfo.IsName(_animationPram.movePram[(int)PlayerAnimation.MoveAnimation.AVOIDANCE]) &&
             _player.selfMoveState != PlayerAnimation.MoveAnimation.RUN)
             _player.selfMoveState = PlayerAnimation.MoveAnimation.RUN;
-           
+        */
     }
 
+    /*
     /// <summary>
     /// 入力に応じて角度の変更とアニメーションの再生をする
     /// </summary>
@@ -104,9 +83,9 @@ public class PlayerMove : MonoBehaviour
         AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
 
         // 現在のアニメーションがIdle,Move,Run,Avoidならtrue
-        result = stateInfo.IsName(_animationPram.movePram[(int)PlayerAnimation.MoveAnimation.IDLE]) || 
-            stateInfo.IsName(_animationPram.movePram[(int)PlayerAnimation.MoveAnimation.WALK]) || 
-            stateInfo.IsName(_animationPram.movePram[(int)PlayerAnimation.MoveAnimation.AVOIDANCE]) || 
+        result = stateInfo.IsName(_animationPram.movePram[(int)PlayerAnimation.MoveAnimation.IDLE]) ||
+            stateInfo.IsName(_animationPram.movePram[(int)PlayerAnimation.MoveAnimation.WALK]) ||
+            stateInfo.IsName(_animationPram.movePram[(int)PlayerAnimation.MoveAnimation.AVOIDANCE]) ||
             stateInfo.IsName(_animationPram.movePram[(int)PlayerAnimation.MoveAnimation.RUN]);
 
         return result;
@@ -127,7 +106,7 @@ public class PlayerMove : MonoBehaviour
         // 現在のステートとアニメーションが違っていたら
         result = _animator.GetInteger("Move") != (int)state;
 
-        return result; 
+        return result;
     }
 
     /// <summary>
@@ -141,18 +120,19 @@ public class PlayerMove : MonoBehaviour
             case PlayerAnimation.MoveAnimation.IDLE:
             case PlayerAnimation.MoveAnimation.WALK:
             case PlayerAnimation.MoveAnimation.RUN:
-            {
-                _animator.SetInteger("Move", (int)state);
-                break;
-            }
+                {
+                    _animator.SetInteger("Move", (int)state);
+                    break;
+                }
 
 
             case PlayerAnimation.MoveAnimation.AVOIDANCE:
-            {
-                _animator.SetInteger("Move", (int)state);
-                break;
-            }
+                {
+                    _animator.SetInteger("Move", (int)state);
+                    break;
+                }
 
         }
     }
+    */
 }

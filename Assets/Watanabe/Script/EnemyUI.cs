@@ -7,33 +7,34 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class EnemyUI : MonoBehaviour 
 {
     private Image image = null;                 // UI‚Æ‚È‚éImage
+    private Camera mainCamera = null;
+    private RectTransform rectTransform;
     public BaseEnemy baseEnemy { get; protected set; } = null;         // “G‚ÌƒNƒ‰ƒXiî•ñj
+    public Vector3 enemyPosition { get; protected set; } = Vector3.zero;
     public float health { get; protected set; } = -1;                  // “G‚ÌŒ»İ‘Ì—Í
     public float healthMax { get; protected set; } = -1;               // “G‚ÌÅ‘å‘Ì—Í
 
-    private void Start()
-    {
-        image = null;
-        baseEnemy = null;
-        health = -1;
-        healthMax = -1;
-
-        SetActive(false);
-    }
+    private float heightOffset = 3.0f;
 
     private void Update()
     {
         if (baseEnemy == null) return;
+        Debug.Log(enemyPosition);
+        enemyPosition = baseEnemy.GetEnemyPosition();
 
-        UpdateUIPosition();
-        UpdateHealth();
-        UpdateImage();
+        Vector3 screenPosition = mainCamera.WorldToScreenPoint(baseEnemy.transform.position + Vector3.up * heightOffset);
+        rectTransform.position = screenPosition;
+
+        //UpdateUIPosition();
+        //UpdateHealth();
+        //UpdateImage();
     }
 
     /// <summary>
@@ -43,8 +44,11 @@ public class EnemyUI : MonoBehaviour
     /// <param name="_enemyUI"></param>
     public void Setup(BaseEnemy _baseEnemy, GameObject _enemyUI)
     {
+        rectTransform = GetComponent<RectTransform>();
+
         image = _enemyUI.GetComponent<Image>();
-        baseEnemy = _baseEnemy.GetComponent<BaseEnemy>();
+        mainCamera = UIManager.instance.mainCamera;
+        baseEnemy = _baseEnemy;
         health = _baseEnemy.GetComponent<BaseCharacter>().health;
         healthMax = _baseEnemy.GetComponent<BaseCharacter>().healthMax;
     }

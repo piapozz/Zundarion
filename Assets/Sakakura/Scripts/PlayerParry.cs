@@ -7,7 +7,7 @@ using UnityEngine;
 using static CommonModule;
 using static PlayerAnimation;
 
-public class PlayerParry : MonoBehaviour
+public class PlayerParry
 {
     /// <summary>プレイヤーの親コンボーネント</summary>
     private BasePlayer _player = null;
@@ -18,19 +18,15 @@ public class PlayerParry : MonoBehaviour
     /// <summary>アニメーションパラメーターの情報</summary>
     private PlayerAnimation _animationPram = null;
 
-    /// <summary>プレイヤーの当たり判定チェック</summary>
-    private CheckCollision _checkCollision = null;
-
     private bool _isCoolDown = false;
 
     public readonly float PARRY_COOL_DOWN = 0.0f;
 
-    private void Start()
+    private void Initialize()
     {
         _player = CharacterManager.instance.player;     // プレイヤー取得
         _animator = _player.selfAnimator;               // アニメーター取得
         _animationPram = _player.selfAnimationData;
-        _checkCollision = _player.selfCheckCollision;
     }
 
     public void Parry()
@@ -43,13 +39,13 @@ public class PlayerParry : MonoBehaviour
         _isCoolDown = true;
         UniTask task = WaitAction(PARRY_COOL_DOWN, UpCoolDown);
         // アニメーションをセット
-        _animator.SetTrigger(_animationPram.changePram[(int)ChangeAnimation.PARRY]);
+        _animator.SetTrigger(_animationPram.anyStatePram[(int)AnyStateAnimation.AVOID]);
         // パリィ相手のアニメーションをひるみにする
-        parryList[0].selfAnimator.SetTrigger(_animationPram.interruptPram[(int)InterruqtAnimation.IMPACT]);
+        parryList[0].selfAnimator.SetTrigger(_animationPram.anyStatePram[(int)AnyStateAnimation.IMPACT]);
         // プレイヤーを敵の方向に向ける
         _player.TurnAround(parryList[0].transform);
         // 通常カメラをリセット
-        CameraManager.instance.SetFreeCam(transform.eulerAngles.y, 0.5f);
+        //CameraManager.instance.SetFreeCam(transform.eulerAngles.y, 0.5f);
     }
 
     public void UpCoolDown()

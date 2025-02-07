@@ -26,7 +26,6 @@ public class Zunda : BasePlayer
     protected override void Init()
     {
         selfAnimationData = playerAnimation;
-        selfOccurrenceFrame = occurrenceFrame;
         selfComboCountMax = 3;
         selfCurrentHealth = MaxHP;
     }

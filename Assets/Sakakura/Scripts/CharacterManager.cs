@@ -52,7 +52,9 @@ public class CharacterManager : MonoBehaviour
     /// <param name="generateNum"></param>
     public void GenerateEnemy(GameObject genBase, Transform genTransform)
     {
-        GenerateCharacter(genBase, genTransform);
+        BaseCharacter genCharacter = GenerateCharacter(genBase, genTransform);
+
+        UIManager.instance.AddEnemyUI(genCharacter as BaseEnemy);
     }
 
     /// <summary>

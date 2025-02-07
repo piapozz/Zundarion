@@ -1,6 +1,6 @@
 /*
  * @file SystemObject.cs
- * @brief Bear‚ğŠÇ—‚·‚éƒNƒ‰ƒX
+ * @brief 
  * @author sein
  * @date 2025/2/5
  */
