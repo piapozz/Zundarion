@@ -816,7 +816,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!223 &264023250
 Canvas:
   m_ObjectHideFlags: 0
@@ -1418,7 +1418,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e115fb2d2b52d9c4d8c12b6c76747ee7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyUI: {fileID: 7522443382084497894, guid: 6f5e8cfc6147cf7409d3fb9460232425, type: 3}
+  enemyUIObject: {fileID: 7522443382084497894, guid: 6f5e8cfc6147cf7409d3fb9460232425, type: 3}
   canvasWorldSpace: {fileID: 264023247}
 --- !u!1 &987924668
 GameObject:

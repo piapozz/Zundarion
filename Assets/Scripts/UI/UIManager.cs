@@ -20,23 +20,32 @@ public class UIManager : SystemObject
 {
     public static UIManager instance { get; private set; } = null;
 
-    private readonly int INITIAL_COUNT = 3;
+    private readonly int INITIAL_COUNT = 1;
 
     [SerializeField] private GameObject enemyUIObject;
     [SerializeField] private GameObject canvasWorldSpace;
 
-    private Camera mainCamera = null;
+    public Camera mainCamera { get; private set; } = null;
     private Transform parent = null;
 
     private List<EnemyUI> enemyUIList = null;
     private List<GameObject> useObjectList = null;
     private List<GameObject> unuseObjectList = null;
 
-    Vector3 viewportPos;
+    Vector3 viewportPos ;
+
+    private void Awake()
+    {
+        instance = this;
+    }
+
+    private void Start()
+    {
+        Initialize();
+    }
 
     public override void Initialize()
     {
-        instance = this;
 
         // Canvasのtransformを取得
         parent = canvasWorldSpace.transform;
@@ -63,10 +72,11 @@ public class UIManager : SystemObject
         // 不必要なUIを非表示にする
         for (int i = 0, max = enemyUIList.Count; i < max; i++)
         {
-            Debug.Log(i);
             if (enemyUIList[i] == null) break;
 
-            viewportPos = mainCamera.WorldToViewportPoint(enemyUIList[i].baseEnemy.position + Vector3.up * 2f);
+            Vector3 enemyPosition = enemyUIList[i].enemyPosition;
+
+            viewportPos = mainCamera.WorldToViewportPoint(enemyPosition + Vector3.up * 2f);
 
             // 画面に移ったら表示にする
             if (viewportPos.z > 0 && viewportPos.x >= 0 && viewportPos.x <= 1 && viewportPos.y >= 0 && viewportPos.y <= 1)
@@ -99,8 +109,6 @@ public class UIManager : SystemObject
     /// <param name="baseEnemy"></param>
     private void GenerateEnemyUI(BaseEnemy baseEnemy)
     {
-        Debug.Log("UI生成");
-
         GameObject UIObject = null;
         EnemyUI enemyUI = null;
 
