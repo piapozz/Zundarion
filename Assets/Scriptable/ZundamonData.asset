@@ -16,4 +16,4 @@ MonoBehaviour:
   health: 100
   strength: 10
   defence: 10
-  speed: 10
+  speed: 3

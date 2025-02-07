@@ -87,8 +87,8 @@ public class EnemyBear : BaseEnemy
             SetAnimatorTrigger("Attack");
         }
 
-        Move(transform.forward, speed);
-        Rotate(targetVec, 300.0f);
+        Move(speed);
+        Rotate(targetVec);
 
         // ’ÇÕ”ÍˆÍ‚æ‚è‚à—£‚ê‚Ä‚¢‚½‚ç
         if (distance >= 15.0f)

@@ -1633,13 +1633,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e115fb2d2b52d9c4d8c12b6c76747ee7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerHealthBar:
-  - {fileID: 662501876}
-  - {fileID: 1276268432}
-  enemyHealthBar:
-  - {fileID: 1047886804}
-  playerSkillBar: []
-  enemyBreakBar: []
+  enemyUI: {fileID: 0}
+  canvasWorldSpace: {fileID: 0}
 --- !u!1 &944424582
 GameObject:
   m_ObjectHideFlags: 0

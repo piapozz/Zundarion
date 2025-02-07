@@ -4761,12 +4761,9 @@ GameObject:
   - component: {fileID: 5562822357019619391}
   - component: {fileID: 2892533442517954711}
   - component: {fileID: 2892533442517954714}
-  - component: {fileID: 2892533442517954713}
-  - component: {fileID: 2892533442517954718}
-  - component: {fileID: 2812111105665102077}
+  - component: {fileID: 5128092972259059506}
   - component: {fileID: 2892533442517954719}
   - component: {fileID: 2892533442517954716}
-  - component: {fileID: 5128092972259059506}
   m_Layer: 0
   m_Name: Zundamon
   m_TagString: Player
@@ -4806,7 +4803,7 @@ Animator:
   m_Controller: {fileID: 22100000, guid: 40d49a3b482dada4992461333fa1db54, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 1
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_WarningMessage: 
@@ -4828,42 +4825,22 @@ CapsuleCollider:
   m_Height: 1.4
   m_Direction: 1
   m_Center: {x: 0, y: 0.7, z: 0}
---- !u!114 &2892533442517954713
-MonoBehaviour:
+--- !u!54 &5128092972259059506
+Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2892533442517954710}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d7e387328db7574fbd41fc346b5121f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &2892533442517954718
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2892533442517954710}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b5a7242c46efd1e4f9af19bce826fdc2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &2812111105665102077
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2892533442517954710}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 887332ace94197641bd515752f8f23b5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 112
+  m_CollisionDetection: 0
 --- !u!114 &2892533442517954719
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4878,8 +4855,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   charaData: {fileID: 11400000, guid: 2682e0f7083dedc4ea653e2f1463900e, type: 2}
   _ID: 0
-  healthMax: -1
-  health: -1
   selfAnimator: {fileID: 2892533442517954711}
   playerAnimation: {fileID: 11400000, guid: f7c2d37f1ed27d946baa0f8d2390fafa, type: 2}
   occurrenceFrame: {fileID: 0}
@@ -4990,22 +4965,6 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!54 &5128092972259059506
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2892533442517954710}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 112
-  m_CollisionDetection: 0
 --- !u!1 &2947803462297619137
 GameObject:
   m_ObjectHideFlags: 0

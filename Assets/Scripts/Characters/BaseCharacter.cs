@@ -32,7 +32,6 @@ public abstract class BaseCharacter : MonoBehaviour
     public float defence { get; protected set; } = -1;       // 防御力
     public float speed { get; protected set; } = -1;         // 速さ
 
-    public Vector3 position { get; protected set; } = Vector3.zero;         // 座標
     public float multiplier { get; protected set; } = 1;     // 倍率
 
     /// <summary>アニメーターコンポーネント</summary>
@@ -89,7 +88,7 @@ public abstract class BaseCharacter : MonoBehaviour
     public void TurnAround(Transform target)
     {
         Vector3 dir = target.position - transform.position;
-        dir.y = position.y;
+        dir.y = transform.position.y;
         Quaternion dirRot = Quaternion.LookRotation(dir);
         transform.rotation = dirRot;
     }
@@ -163,7 +162,7 @@ public abstract class BaseCharacter : MonoBehaviour
     /// </summary>
     /// <param name="dir"></param>
     /// <param name="speed"></param>
-    public void Move(Vector3 dir, float speed)
+    public void Move(float speed)
     {
         // 向いている方向に移動
         Vector3 movePosition = transform.position + (transform.forward * speed * Time.deltaTime);
@@ -177,7 +176,7 @@ public abstract class BaseCharacter : MonoBehaviour
     /// </summary>
     /// <param name="dir"></param>
     /// <param name="speed"></param>
-    public void Rotate(Vector3 dir, float speed)
+    public void Rotate(Vector3 dir, float speed = GameConst.CHARACTER_ROTATE_SPEED)
     {
         // 移動ベクトルがゼロでない場合のみ処理を進める
         if (dir == Vector3.zero) return;

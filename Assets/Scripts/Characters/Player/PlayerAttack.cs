@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerAttack : MonoBehaviour
+public class PlayerAttack
 {
     // private //////////////////////////////////////////////////////////////////
 
@@ -41,7 +41,6 @@ public class PlayerAttack : MonoBehaviour
         _player = CharacterManager.instance.player; // プレイヤー取得
         _animator = _player.selfAnimator;           // アニメーター取得
         _animationPram = _player.selfAnimationData; // アニメーションデータ取得
-        _collisionPram = _player.selfCollisionData; // コリジョンデータ取得
     }
 
     // Update is called once per frame

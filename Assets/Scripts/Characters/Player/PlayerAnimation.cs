@@ -9,7 +9,6 @@ public class PlayerAnimation : ScriptableObject
     {
         IDLE = 0,
         WALK,
-        AVOIDANCE,
         RUN,
 
         MAX
@@ -22,19 +21,11 @@ public class PlayerAnimation : ScriptableObject
         MAX
     }
 
-    public enum ChangeAnimation
+    public enum AnyStateAnimation
     {
-        PARRY,
-        TRANS_FRONTLINE,
-        TRANS_DUPLICATE,
-
-        MAX
-    }
-
-    public enum InterruqtAnimation
-    {
-        TRANS_ENHANCED,
         IMPACT,
+        PARRY,
+        AVOID,
         VICTORY,
         DIE,
 
@@ -43,6 +34,5 @@ public class PlayerAnimation : ScriptableObject
 
     public string[] movePram;       // 移動アニメーション
     public string[] attackPram;     // アタックアニメーション
-    public string[] changePram;     // キャラ変更アニメーション
-    public string[] interruptPram;  // 割り込みアニメーション
+    public string[] anyStatePram;   // どこからでも遷移するアニメーション
 }
