@@ -115,7 +115,7 @@ public abstract class BasePlayer : BaseCharacter
     private void Update()
     {
 
-        Debug.Log(selfMoveState);
+        // Debug.Log(selfMoveState);
         MoveExecute();
 
         /*

@@ -4,20 +4,26 @@ using UnityEngine;
 
 public class SystemManager : MonoBehaviour
 {
-    [SerializeField] List<SystemObject> originSystemList = null; 
+    [SerializeField] private List<SystemObject> originSystemList = null; 
     private List<SystemObject> systemObjectList = null;
 
     private void Awake()
     {
-        for (int i = 0, max = originSystemList.Count; i < max; i++)
-        {
-            // ê∂ê¨Ç∑ÇÈ
-            var systemObject = Instantiate(originSystemList[i], transform.position, Quaternion.identity, transform);
-            systemObjectList.Add(systemObject);
+        //systemObjectList = new List<SystemObject>();
 
-            // é¿çsÇ∑ÇÈ
-            systemObjectList[i].Initialize();
-        }
+        //foreach(SystemObject _originSystemList in originSystemList)
+        //{
+        //    if (_originSystemList == null) return;
+        //    // ê∂ê¨Ç∑ÇÈ
+        //    var systemObject = Instantiate(_originSystemList, transform.position, Quaternion.identity, transform);
+        //    systemObjectList.Add(systemObject);
+        //}
+
+        //foreach(var systemObject in systemObjectList)
+        //{
+        //    // é¿çsÇ∑ÇÈ
+        //    systemObject.Initialize();
+        //}
     }
 
 

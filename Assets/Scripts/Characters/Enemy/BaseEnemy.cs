@@ -62,4 +62,6 @@ public class BaseEnemy : BaseCharacter
         if (health <= 0)
             selfAnimator.SetBool("Dying", true);
     }
+
+    public Vector3 GetEnemyPosition() { return transform.position; }
 }
