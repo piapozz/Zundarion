@@ -1,7 +1,8 @@
+using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEngine.EventSystems.StandaloneInputModule;
 using UnityEngine.InputSystem;
 using static PlayerAnimation;
 
@@ -25,10 +26,7 @@ public abstract class BasePlayer : BaseCharacter
     public int selfComboCount { get; protected set; }
 
     /// <summary>現在の移動ステート</summary>
-    public PlayerAnimation.MoveAnimation selfMoveState  { get; set; }
-
-    /// <summary>プレイヤーの移動速度</summary>
-    public float selfMoveSpeed { get; protected set; }
+    public MoveAnimation selfMoveState  { get; set; } = MoveAnimation.IDLE;
 
     /// <summary>アニメーションの再生速度</summary>
     public float selfAnimationSpeed { get; protected set; }
@@ -36,28 +34,16 @@ public abstract class BasePlayer : BaseCharacter
     /// <summary>アニメーションのパラメーター情報</summary>
     public PlayerAnimation selfAnimationData { get; protected set; }
 
-    /// <summary>当たり判定情報</summary>
-    public TagData selfCollisionData { get; protected set; }
-
-    /// <summary>当たり判定発生情報</summary>
-    public OccurrenceFrame selfOccurrenceFrame { get; protected set; }
-
     /// <summary>自身の前方アングル</summary>
     public float selfFrontAngleZ { get; set; }
 
     /// <summary>自身のゲームオブジェクト</summary>
     public GameObject selfGameObject { get; private set; }
 
-    /// <summary>プレイヤーの当たり判定チェック</summary>
-    public CheckCollision selfCheckCollision { get; protected set; }
-
     // protected //////////////////////////////////////////////////////////////////
 
     /// <summary>派生先による初期化</summary>
     protected abstract void Init();
-
-    /// <summary>毎フレーム呼ばれるAIによる操作</summary>
-    // protected abstract void UpdateAI();
 
     /// <summary>障害物のレイヤーマスク</summary>
     protected LayerMask obstacleLayerMask { get; private set; }
@@ -92,48 +78,47 @@ public abstract class BasePlayer : BaseCharacter
     private InputAction _inputAction;
 
     /// <summary>長押しを受け取る対象のAction</summary>
-    private InputActionReference hold;
-
-    /// <summary>戦車の砲弾発射コンポーネント</summary>
-    //private TankShooting selfTankShooting = null;
+    private InputActionReference _hold;
 
     /// <summary>ターゲットの前フレームでの座標</summary>
     private Vector3 _oldPosition = Vector3.zero;
 
-    // Start is called before the first frame update
-    /// <summary>
-    /// 開始時に１度呼ばれる
-    /// </summary>
+    /// <summary>操作可能かどうか</summary>
+    private bool _operable = true;
+
+    /// <summary>入力された移動方向</summary>
+    private Vector2 _inputMoveDir = Vector2.zero;
+
+    /// <summary>移動に掛かる倍率</summary>
+    private float _currentMultiplier = 1.0f;
+
+    private const float _RUN_SPEED_RATE = 1.5f;
+    private const float _AVOID_SPEED_RATE = 2.0f;
+
     void Awake()
     {
         obstacleLayerMask = LayerMask.GetMask("FieldObject");
         _playerInput = GetComponent<PlayerInput>();
         _inputAction = _playerInput.actions["Move"];
-        _selfMove = GetComponent<PlayerMove>();
-        _selfAttack = GetComponent<PlayerAttack>();
-        _selfParry = GetComponent<PlayerParry>();
-        selfMoveState = PlayerAnimation.MoveAnimation.IDLE;
-        selfGameObject = this.gameObject;
-        selfCheckCollision = GetComponent<CheckCollision>();
 
         Init();
 
-        if (hold == null) return;
+        if (_hold == null) return;
 
         // InputActionReferenceのholdにハンドラを登録する
-        hold.action.performed += OnRun;
+        _hold.action.performed += OnRun;
 
         // 入力を受け取るために有効化
-        hold.action.Enable();
+        _hold.action.Enable();
     }
 
-
-    // Update is called once per frame
-    /// <summary>
-    /// ゲームループで（1秒間に何回も）呼ばれる
-    /// </summary>
     private void Update()
     {
+
+        Debug.Log(selfMoveState);
+        MoveExecute();
+
+        /*
         // ターゲットの情報収集
         this.transform.position = new Vector3(transform.position.x, 0, transform.position.z);
 
@@ -144,9 +129,6 @@ public abstract class BasePlayer : BaseCharacter
 
         if(inputMove == Vector2.zero && selfMoveState != PlayerAnimation.MoveAnimation.AVOIDANCE) 
             selfMoveState = PlayerAnimation.MoveAnimation.IDLE;
-
-        // AIの更新
-        // UpdateAI();
 
         _selfMove.Move(inputMove, selfMoveState);
 
@@ -159,42 +141,32 @@ public abstract class BasePlayer : BaseCharacter
         // 出力の調整
         Quaternion q = Quaternion.AngleAxis(selfFrontAngleZ - 90, Vector3.down);
         this.transform.rotation = Quaternion.RotateTowards(this.transform.rotation,  q, 1.5f);
-
-        // 次フレームのために情報を残す
-
+        */
     }
 
     /// <summary>
-    /// プレイヤーにダメージを与える
+    /// アクションマップのMoveに登録されているキーが押されたときに入力値を取得
     /// </summary>
-    /*
-    public void TakeDamage(float damage)
-    {
-        // 回避中ならダメージを食らわない
-        // 0 レイヤーの再生されているアニメーション情報を呼び出す
-        AnimatorStateInfo stateInfo = selfAnimator.GetCurrentAnimatorStateInfo(0);
-
-        // 定期的にコンボ回数を初期化する
-        if (stateInfo.IsName("Avoidance") || stateInfo.IsName("Parry")) return;
-
-        selfAnimator.SetTrigger(selfAnimationData.interruptPram[(int)InterruqtAnimation.IMPACT]);
-        selfCurrentHealth -= damage;
-    }*/
-
-    // アクションマップのMoveに登録されているキーが押されたときに入力値を取得
+    /// <param name="context"></param>
     public void OnMove(InputAction.CallbackContext context)
     {
-        inputMove = context.ReadValue<Vector2>();
+        _inputMoveDir = context.ReadValue<Vector2>();
     }
 
-    // ActionsのRunに割り当てられている入力があったなら実行
+    /// <summary>
+    /// ActionsのRunに割り当てられている入力があったなら実行
+    /// </summary>
+    /// <param name="context"></param>
     public void OnRun(InputAction.CallbackContext context)
     {
-        if (context.ReadValue<float>() != 0) inputRun = true;
-        else inputRun = false;
+
+        UniTask task = RunExecute();
     }
 
-    // ActionsのAttakに割り当てられている入力があったなら実行
+    /// <summary>
+    /// ActionsのAttakに割り当てられている入力があったなら実行
+    /// </summary>
+    /// <param name="context"></param>
     public void OnAttack(InputAction.CallbackContext context)
     {
         if(context.ReadValue<float>() != 0) inputAttack = true;
@@ -218,7 +190,93 @@ public abstract class BasePlayer : BaseCharacter
     {
         base.TakeDamage(damageSize);
         if (health <= 0)
-            selfAnimator.SetTrigger(selfAnimationData.interruptPram[(int)InterruqtAnimation.DIE]);
+            selfAnimator.SetTrigger(selfAnimationData.anyStatePram[(int)AnyStateAnimation.DIE]);
+    }
+
+    /// <summary>
+    /// 移動実行処理
+    /// </summary>
+    private void MoveExecute()
+    {
+        if (!_operable) return;
+        if (_inputMoveDir.x == 0 && _inputMoveDir.y == 0)
+        {
+            // アニメーション設定
+            selfMoveState = MoveAnimation.IDLE;
+            _currentMultiplier = 0.0f;
+        }
+
+        else
+        {
+            selfMoveState = MoveAnimation.WALK;
+            _currentMultiplier = 1.0f;
+        }
+
+        // 回転し移動
+        Rotate(AdjustMoveDir());
+
+        // アニメーションを変更
+        selfAnimator.SetInteger("Move", (int)selfMoveState);
+
+        Move(speed * _currentMultiplier);
+    }
+
+    /// <summary>
+    /// 走りアクションを実行
+    /// </summary>
+    /// <returns></returns>
+    private async UniTask RunExecute()
+    {
+        if (!_operable) return;
+
+        SetAvoidState();
+        // 回避が終わるまで待機
+        while (CheckAnimation(selfAnimationData.anyStatePram[(int)AnyStateAnimation.AVOID]))
+        {
+            await UniTask.DelayFrame(1);
+        }
+        SetRunState();
+    }
+
+    /// <summary>
+    /// 入力情報から移動方向を調整
+    /// </summary>
+    /// <returns></returns>
+    private Vector3 AdjustMoveDir()
+    {
+        // カメラの方向に基づいて入力ベクトルを修正
+        Vector3 cameraForward = CameraManager.instance.selfCamera.transform.forward;
+        Vector3 cameraRight = CameraManager.instance.selfCamera.transform.right;
+        // カメラ方向に基づいた移動ベクトルを計算
+        Vector3 adjustedMove = (cameraRight * _inputMoveDir.x + cameraForward * _inputMoveDir.y).normalized;
+        return adjustedMove;
+    }
+
+    private void SetAvoidState()
+    {
+        selfAnimator.SetTrigger("Avoidance");
+        _currentMultiplier = _AVOID_SPEED_RATE;
+    }
+
+    private void SetIdleState()
+    {
+
+    }
+
+    private void SetRunState()
+    {
+        selfMoveState = MoveAnimation.RUN;
+        _currentMultiplier = _RUN_SPEED_RATE;
+    }
+
+    public void OperableEvent(bool setOperable)
+    {
+        _operable = setOperable;
+    }
+
+    private bool CheckAnimation(string animationName)
+    {
+        return selfAnimator.GetCurrentAnimatorStateInfo(0).IsName(animationName);
     }
 
 #if GUI_OUTPUT

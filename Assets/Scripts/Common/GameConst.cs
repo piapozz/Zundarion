@@ -23,5 +23,6 @@ public class GameConst
         DYING,
     }
 
-
+    // キャラクター関係
+    public const float CHARACTER_ROTATE_SPEED = 500.0f;
 }

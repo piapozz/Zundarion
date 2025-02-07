@@ -15,7 +15,6 @@ MonoBehaviour:
   movePram:
   - Idle
   - Walk
-  - Avoidance
   - Run
   attackPram:
   - Attack
