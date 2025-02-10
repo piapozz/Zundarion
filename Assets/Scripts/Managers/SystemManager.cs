@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,24 +8,20 @@ public class SystemManager : MonoBehaviour
     [SerializeField] private List<SystemObject> originSystemList = null; 
     private List<SystemObject> systemObjectList = null;
 
-    private void Awake()
+    void Start()
     {
-        //systemObjectList = new List<SystemObject>();
-
-        //foreach(SystemObject _originSystemList in originSystemList)
-        //{
-        //    if (_originSystemList == null) return;
-        //    // ê∂ê¨Ç∑ÇÈ
-        //    var systemObject = Instantiate(_originSystemList, transform.position, Quaternion.identity, transform);
-        //    systemObjectList.Add(systemObject);
-        //}
-
-        //foreach(var systemObject in systemObjectList)
-        //{
-        //    // é¿çsÇ∑ÇÈ
-        //    systemObject.Initialize();
-        //}
+        Initialize();
     }
 
+    private void Initialize()
+    {
+        for (int i = 0, max = originSystemList.Count; i < max; i++)
+        {
+            SystemObject origin = originSystemList[i];
+            if (origin == null) continue;
 
+            SystemObject createObj = Instantiate(origin, transform);
+            createObj.Initialize();
+        }
+    }
 }
