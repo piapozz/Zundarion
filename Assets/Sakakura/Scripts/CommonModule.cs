@@ -17,6 +17,17 @@ public class CommonModule
     }
 
     /// <summary>
+    /// キューが空か否か
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="checkQueue"></param>
+    /// <returns></returns>
+    public static bool IsEmpty<T>(Queue<T> checkQueue)
+    {
+        return checkQueue == null || checkQueue.Count == 0;
+    }
+
+    /// <summary>
     /// リスト1からリスト2に要素を移動させる
     /// </summary>
     /// <typeparam name="T"></typeparam>

@@ -10,6 +10,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+using static CommonModule;
+
 // 出来れば敵の最大体力を見てUIを伸ばす
 // 体力が減るまでラグを作る
 // Poolingで実装する
@@ -29,8 +31,8 @@ public class UIManager : SystemObject
     private Transform parent = null;
 
     private List<EnemyUI> enemyUIList = null;
-    private List<GameObject> useObjectList = null;
-    private List<GameObject> unuseObjectList = null;
+    private Queue<GameObject> useObjectQueue = null;
+    private Queue<GameObject> unuseObjectQueue = null;
 
     Vector3 viewportPos ;
 
@@ -46,23 +48,21 @@ public class UIManager : SystemObject
 
     public override void Initialize()
     {
-
         // Canvasのtransformを取得
         parent = canvasWorldSpace.transform;
 
         mainCamera = CameraManager.instance.selfCamera;
 
         // 全てが空だったらあらかじめ生成する
-        if (useObjectList == null && unuseObjectList == null)
+        if (useObjectQueue == null && unuseObjectQueue == null)
         {
-            useObjectList = new List<GameObject>();
-            unuseObjectList = new List<GameObject>();
+            useObjectQueue = new Queue<GameObject>();
+            unuseObjectQueue = new Queue<GameObject>();
             enemyUIList = new List<EnemyUI>();
 
             for (int i = 0, max = INITIAL_COUNT; i < max; i++)
             {
-                unuseObjectList.Add(null);
-                // unuseObjectList.Add(Instantiate(enemyUIObject, new Vector3(0.0f, 0.0f, 0.0f), Quaternion.identity, parent));
+                unuseObjectQueue.Enqueue(Instantiate(enemyUIObject, new Vector3(0.0f, 0.0f, 0.0f), Quaternion.identity, parent));
             }
         }
     }
@@ -113,13 +113,16 @@ public class UIManager : SystemObject
         EnemyUI enemyUI = null;
 
         // UIオブジェクトを再利用または生成する
-        if (unuseObjectList[0] != null)
+        if (IsEmpty(unuseObjectQueue) != true)
         {
-            UIObject = unuseObjectList[0];
-            unuseObjectList.RemoveAt(0);
-            Debug.Log("未使用なものを使用する");
+            UIObject = unuseObjectQueue.Dequeue();
+            Debug.Log("取り出して使用");
         }
-        else UIObject = Instantiate(enemyUIObject, new Vector3(0.0f, 0.0f, 0.0f), Quaternion.identity, parent);
+        else
+        {
+            UIObject = Instantiate(enemyUIObject, new Vector3(0.0f, 0.0f, 0.0f), Quaternion.identity, parent);
+            Debug.Log("生成して使用");
+        }
 
         // クラスを取得
         enemyUI = UIObject.GetComponent<EnemyUI>();
@@ -128,7 +131,7 @@ public class UIManager : SystemObject
         enemyUI.Setup(baseEnemy, UIObject);
 
         // 使用中リストに追加
-        useObjectList.Add(UIObject);
+        useObjectQueue.Enqueue(UIObject);
         enemyUIList.Add(enemyUI);
     }
 }
