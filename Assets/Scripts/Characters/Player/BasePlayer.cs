@@ -4,7 +4,10 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+
 using static PlayerAnimation;
+using static CommonModule;
+using static UnityEngine.InputSystem.LowLevel.InputStateHistory;
 
 public abstract class BasePlayer : BaseCharacter
 {
@@ -13,7 +16,7 @@ public abstract class BasePlayer : BaseCharacter
     /// <summary>プレイヤーの初期設定</summary>
     public virtual void Setup()
     {
-       
+
     }
 
     /// <summary>自身の現在の体力</summary>
@@ -26,7 +29,7 @@ public abstract class BasePlayer : BaseCharacter
     public int selfComboCount { get; protected set; }
 
     /// <summary>現在の移動ステート</summary>
-    public MoveAnimation selfMoveState  { get; set; } = MoveAnimation.IDLE;
+    public MoveAnimation selfMoveState { get; set; } = MoveAnimation.IDLE;
 
     /// <summary>アニメーションの再生速度</summary>
     public float selfAnimationSpeed { get; protected set; }
@@ -63,7 +66,7 @@ public abstract class BasePlayer : BaseCharacter
     // private //////////////////////////////////////////////////////////////////
 
     /// <summary>プレイヤーの移動コンポーネント</summary>
-    private PlayerMove _selfMove ;
+    private PlayerMove _selfMove;
 
     /// <summary>プレイヤーの攻撃コンポーネント</summary>
     private PlayerAttack _selfAttack;
@@ -72,7 +75,7 @@ public abstract class BasePlayer : BaseCharacter
     private PlayerParry _selfParry;
 
     /// <summary>プレイヤーの入力</summary>
-    private PlayerInput _playerInput ;
+    private PlayerInput _playerInput;
 
     /// <summary>プレイヤーの移動入力状態</summary>
     private InputAction _inputAction;
@@ -83,16 +86,22 @@ public abstract class BasePlayer : BaseCharacter
     /// <summary>ターゲットの前フレームでの座標</summary>
     private Vector3 _oldPosition = Vector3.zero;
 
-    /// <summary>操作可能かどうか</summary>
-    private bool _operable = true;
-
     /// <summary>入力された移動方向</summary>
     private Vector2 _inputMoveDir = Vector2.zero;
 
     /// <summary>移動に掛かる倍率</summary>
     private float _currentMultiplier = 1.0f;
 
-    private const float _RUN_SPEED_RATE = 1.5f;
+    /// <summary>移動硬直中かどうか</summary>
+    private bool _isMoveStiff = false;
+
+    /// <summary>硬直中かどうか</summary>
+    private bool _isAllStiff = false;
+
+    /// <summary>プレイヤーの先行入力情報</summary>
+    private PreInput _selfPreInput = null;
+
+    private const float _RUN_SPEED_RATE = 1.25f;
     private const float _AVOID_SPEED_RATE = 2.0f;
 
     void Awake()
@@ -100,48 +109,15 @@ public abstract class BasePlayer : BaseCharacter
         obstacleLayerMask = LayerMask.GetMask("FieldObject");
         _playerInput = GetComponent<PlayerInput>();
         _inputAction = _playerInput.actions["Move"];
+        _selfPreInput = GetComponent<PreInput>();
+        _selfPreInput.Initialize();
 
         Init();
-
-        if (_hold == null) return;
-
-        // InputActionReferenceのholdにハンドラを登録する
-        _hold.action.performed += OnRun;
-
-        // 入力を受け取るために有効化
-        _hold.action.Enable();
     }
 
     private void Update()
     {
-
-        // Debug.Log(selfMoveState);
         MoveExecute();
-
-        /*
-        // ターゲットの情報収集
-        this.transform.position = new Vector3(transform.position.x, 0, transform.position.z);
-
-        if(inputRun) 
-            selfMoveState = PlayerAnimation.MoveAnimation.AVOIDANCE;
-        else if(selfMoveState != PlayerAnimation.MoveAnimation.RUN) 
-            selfMoveState = PlayerAnimation.MoveAnimation.WALK;
-
-        if(inputMove == Vector2.zero && selfMoveState != PlayerAnimation.MoveAnimation.AVOIDANCE) 
-            selfMoveState = PlayerAnimation.MoveAnimation.IDLE;
-
-        _selfMove.Move(inputMove, selfMoveState);
-
-        if(inputAttack)
-            _selfAttack.Attack();
-
-        if (inputMove == Vector2.zero) 
-            return;
-
-        // 出力の調整
-        Quaternion q = Quaternion.AngleAxis(selfFrontAngleZ - 90, Vector3.down);
-        this.transform.rotation = Quaternion.RotateTowards(this.transform.rotation,  q, 1.5f);
-        */
     }
 
     /// <summary>
@@ -159,7 +135,8 @@ public abstract class BasePlayer : BaseCharacter
     /// <param name="context"></param>
     public void OnRun(InputAction.CallbackContext context)
     {
-
+        if (!context.performed) return;
+        if (_isAllStiff) return;
         UniTask task = RunExecute();
     }
 
@@ -169,8 +146,10 @@ public abstract class BasePlayer : BaseCharacter
     /// <param name="context"></param>
     public void OnAttack(InputAction.CallbackContext context)
     {
-        if(context.ReadValue<float>() != 0) inputAttack = true;
-        else inputAttack = false;
+        if (!context.performed) return;
+        if (_isAllStiff) return;
+
+        Attack();
     }
 
     /// <summary>
@@ -180,17 +159,8 @@ public abstract class BasePlayer : BaseCharacter
     public void OnParry(InputAction.CallbackContext context)
     {
         if (!context.performed) return;
-
-        _selfParry.Parry();
-    }
-
-    public override bool IsPlayer() { return true; }
-
-    public override void TakeDamage(float damageSize)
-    {
-        base.TakeDamage(damageSize);
-        if (health <= 0)
-            selfAnimator.SetTrigger(selfAnimationData.anyStatePram[(int)AnyStateAnimation.DIE]);
+        if (_isAllStiff) return;
+        Parry();
     }
 
     /// <summary>
@@ -198,26 +168,21 @@ public abstract class BasePlayer : BaseCharacter
     /// </summary>
     private void MoveExecute()
     {
-        if (!_operable) return;
+        // 移動できないなら処理を抜ける
+        if (_isAllStiff || _isMoveStiff) return;
+        // 移動方向が入力されていないなら処理を抜ける
         if (_inputMoveDir.x == 0 && _inputMoveDir.y == 0)
         {
-            // アニメーション設定
-            selfMoveState = MoveAnimation.IDLE;
-            _currentMultiplier = 0.0f;
+            selfAnimator.SetBool("Move", false);
+            return;
         }
+        selfAnimator.SetBool("Move", true);
 
-        else
-        {
-            selfMoveState = MoveAnimation.WALK;
-            _currentMultiplier = 1.0f;
-        }
+        if (selfMoveState == MoveAnimation.IDLE)
+            SetWalkState();
 
         // 回転し移動
         Rotate(AdjustMoveDir());
-
-        // アニメーションを変更
-        selfAnimator.SetInteger("Move", (int)selfMoveState);
-
         Move(speed * _currentMultiplier);
     }
 
@@ -227,12 +192,17 @@ public abstract class BasePlayer : BaseCharacter
     /// <returns></returns>
     private async UniTask RunExecute()
     {
-        if (!_operable) return;
+        if (_isAllStiff) return;
 
         SetAvoidState();
+        while (!CheckAnimation(selfAnimationData.anyStatePram[(int)AnyStateAnimation.AVOID]))
+        {
+            await UniTask.DelayFrame(1);
+        }
         // 回避が終わるまで待機
         while (CheckAnimation(selfAnimationData.anyStatePram[(int)AnyStateAnimation.AVOID]))
         {
+            Move(speed * _currentMultiplier);
             await UniTask.DelayFrame(1);
         }
         SetRunState();
@@ -254,29 +224,72 @@ public abstract class BasePlayer : BaseCharacter
 
     private void SetAvoidState()
     {
-        selfAnimator.SetTrigger("Avoidance");
+        selfAnimator.SetTrigger(selfAnimationData.anyStatePram[(int)AnyStateAnimation.AVOID]);
         _currentMultiplier = _AVOID_SPEED_RATE;
+        _isMoveStiff = true;
     }
 
-    private void SetIdleState()
+    private void SetWalkState()
     {
-
+        _currentMultiplier = 1.0f;
     }
 
     private void SetRunState()
     {
-        selfMoveState = MoveAnimation.RUN;
         _currentMultiplier = _RUN_SPEED_RATE;
+        _isMoveStiff = false;
     }
 
-    public void OperableEvent(bool setOperable)
+    /// <summary>
+    /// 攻撃する
+    /// </summary>
+    public void Attack()
     {
-        _operable = setOperable;
+        selfAnimator.SetTrigger(selfAnimationData.attackPram[(int)AttackAnimation.ATTACK]);
+    }
+
+    /// <summary>
+    /// パリィする
+    /// </summary>
+    public void Parry()
+    {
+        List<BaseCharacter> parryList = CollisionManager.instance.parryList;
+        // パリィになるか判定
+        if (parryList.Count == 0) return;
+        // アニメーションをセット
+        selfAnimator.SetTrigger(selfAnimationData.anyStatePram[(int)AnyStateAnimation.PARRY]);
+        // パリィ相手のアニメーションをひるみにする
+        parryList[0].selfAnimator.SetTrigger(selfAnimationData.anyStatePram[(int)AnyStateAnimation.IMPACT]);
+        // プレイヤーを敵の方向に向ける
+        TurnAround(parryList[0].transform);
+        // 通常カメラをリセット
+        CameraManager.instance.SetFreeCam(transform.eulerAngles.y, 0.5f);
     }
 
     private bool CheckAnimation(string animationName)
     {
         return selfAnimator.GetCurrentAnimatorStateInfo(0).IsName(animationName);
+    }
+
+    public void SetAllStiffEvent(float second)
+    {
+        _isAllStiff = true;
+        UniTask task = WaitAction(second, () => _isAllStiff = false);
+    }
+
+    public void SetMoveStiffEvent(float second)
+    {
+        _isMoveStiff = true;
+        UniTask task = WaitAction(second, () => _isMoveStiff = false);
+    }
+
+    public override bool IsPlayer() { return true; }
+
+    public override void TakeDamage(float damageSize)
+    {
+        base.TakeDamage(damageSize);
+        if (health <= 0)
+            selfAnimator.SetTrigger(selfAnimationData.anyStatePram[(int)AnyStateAnimation.DIE]);
     }
 
 #if GUI_OUTPUT
