@@ -18,6 +18,9 @@ public class CharacterManager : MonoBehaviour
     [SerializeField]
     private GameObject playerOrigin = null;
 
+    [SerializeField]
+    private DamageObserver _damageObserver = null;
+
     public BasePlayer player { get; private set; } = null;
 
     public List<BaseCharacter> characterList { get; private set; } = null;
@@ -84,6 +87,7 @@ public class CharacterManager : MonoBehaviour
             characterList[useID] = character;
         }
         character.SetTransform(genTransform);
+        character.SetDamageObserver(_damageObserver);
         return character;
     }
 

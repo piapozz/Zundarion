@@ -25,6 +25,10 @@ public abstract class BaseCharacter : MonoBehaviour
     [SerializeField]
     private int _ID = -1;
 
+    /// <summary>ダメージオブザーバー</summary>
+    [SerializeField]
+    private DamageObserver _damageObserver = null;
+
     // キャラクターのステータス
     public float healthMax { get; protected set; } = -1;    // 最大体力
     public float health { get; protected set; } = -1;       // 現在の体力
@@ -57,6 +61,11 @@ public abstract class BaseCharacter : MonoBehaviour
         transform.rotation = setTransform.rotation;
     }
 
+    public void SetDamageObserver(DamageObserver observer)
+    {
+        _damageObserver = observer;
+    }
+
     /// <summary>
     /// ダメージを受ける処理
     /// </summary>
@@ -66,6 +75,8 @@ public abstract class BaseCharacter : MonoBehaviour
         float damage = damageSize * defence * multiplier;
 
         health -= damage;
+
+        _damageObserver.OnDamage(transform.position);
 
         if (health <= 0)
             CharacterManager.instance.RemoveCharacterList(_ID);
