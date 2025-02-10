@@ -1579,8 +1579,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   charaData: {fileID: 11400000, guid: c92e7374c55531b43b89b8b40a3a9053, type: 2}
   _ID: 1
-  healthMax: -1
-  health: -1
   selfAnimator: {fileID: 2245784756199610559}
   targetVec: {x: 0, y: 0, z: 0}
   nowState: 0
@@ -1612,7 +1610,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 126
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!1 &5476105964476747022
 GameObject:

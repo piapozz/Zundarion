@@ -177,8 +177,18 @@ public abstract class BaseCharacter : MonoBehaviour
     {
         // Œü‚¢‚Ä‚¢‚é•ûŒü‚ÉˆÚ“®
         Vector3 movePosition = transform.position + (transform.forward * speed * Time.deltaTime);
-        // Vector3 movePosition = transform.position + (dir * speed * Time.deltaTime);
+        transform.position = movePosition;
+    }
 
+    /// <summary>
+    /// w’è‚µ‚½•ûŒü‚ÉˆÚ“®‚·‚é
+    /// </summary>
+    /// <param name="speed"></param>
+    /// <param name="dir"></param>
+    public void Move(float speed, Vector3 dir)
+    {
+        Vector3 localDir = transform.TransformDirection(dir);
+        Vector3 movePosition = transform.position + (localDir * speed * Time.deltaTime);
         transform.position = movePosition;
     }
 
@@ -198,7 +208,6 @@ public abstract class BaseCharacter : MonoBehaviour
         // Œ»İ‚Ì‰ñ“]Šp“x‚©‚ç–Ú•W‚ÌŠp“x‚Ö•âŠÔ
         Quaternion targetRotation = Quaternion.AngleAxis(targetAngle - 90, Vector3.down);
         transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, speed * Time.deltaTime);
-
     }
 
     /// <summary>

@@ -13,7 +13,12 @@ using UnityEngine.InputSystem;
 public class PreInput : MonoBehaviour
 {
     /// 先行入力を記録するリスト
-    private List<float> _preInputList = new List<float>((int)InputType.Max);
+    private float[] _preInputList = null;
+
+    public void Initialize()
+    {
+        _preInputList = new float[(int)InputType.Max];
+    }
 
     /// <summary>
     /// 入力記録を確認する 
