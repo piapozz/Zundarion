@@ -1,6 +1,7 @@
 using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 public class CommonModule
@@ -71,6 +72,18 @@ public class CommonModule
     /// <param name="action"></param>
     /// <returns></returns>
     public static async UniTask WaitAction(float sec, System.Action action)
+    {
+        float elapsedTime = 0.0f;
+        while (action != null &&
+            elapsedTime < sec)
+        {
+            elapsedTime += Time.deltaTime;
+            await UniTask.DelayFrame(1);
+        }
+        action();
+    }
+
+    public static async UniTask WaitAction(float sec, System.Action action, CancellationToken token)
     {
         float elapsedTime = 0.0f;
         while (action != null &&
