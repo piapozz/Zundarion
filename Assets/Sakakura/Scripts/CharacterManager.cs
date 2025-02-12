@@ -9,7 +9,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterManager : MonoBehaviour
+public class CharacterManager : SystemObject
 {
     public static CharacterManager instance { get; private set; } = null;
 
@@ -25,7 +25,7 @@ public class CharacterManager : MonoBehaviour
 
     public List<BaseCharacter> characterList { get; private set; } = null;
 
-    private void Awake()
+    public override void Initialize()
     {
         instance = this;
         characterList = new List<BaseCharacter>(ENEMY_MAX + 1);
@@ -33,10 +33,7 @@ public class CharacterManager : MonoBehaviour
         {
             characterList.Add(null);
         }
-    }
-    
-    private void Start()
-    {
+
         GeneratePlayer(playerOrigin, StageManager.instance._startTrasform);
     }
 

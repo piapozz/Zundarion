@@ -12,4 +12,5 @@ using UnityEngine;
 public abstract class SystemObject : MonoBehaviour
 {
     public abstract void Initialize();
+    public virtual void Proc() { }
 }

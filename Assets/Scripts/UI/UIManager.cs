@@ -37,20 +37,12 @@ public class UIManager : SystemObject
 
     Vector3 viewportPos ;
 
-    private void Awake()
-    {
-        instance = this;
-    }
-
-    private void Start()
-    {
-        Initialize();
-    }
-
     public override void Initialize()
     {
+        instance = this;
+
         // Canvasのtransformを取得
-        parent = canvasWorldSpace.transform;
+        parent = GameObject.Find("CanvasWorldSpace").transform;
 
         mainCamera = CameraManager.instance.selfCamera;
 
@@ -66,9 +58,10 @@ public class UIManager : SystemObject
                 unuseObjectQueue.Enqueue(Instantiate(enemyUIObject, new Vector3(0.0f, 0.0f, 0.0f), Quaternion.identity, parent));
             }
         }
+
     }
 
-    private void Update()
+    public override void Proc()
     {
         // 不必要なUIを非表示にする
         for (int i = 0, max = enemyUIList.Count; i < max; i++)
@@ -93,7 +86,7 @@ public class UIManager : SystemObject
 
         for (int i = 0, max = enemyUIList.Count; i < max; i++)
         {
-            if (IsEmpty(enemyUIList) != true) 
+            if (IsEmpty(enemyUIList) != true)
                 ;
             if (enemyUIList[i].health <= 0)
             {
