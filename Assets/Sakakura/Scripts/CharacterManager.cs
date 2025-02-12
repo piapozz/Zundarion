@@ -143,4 +143,38 @@ public class CharacterManager : MonoBehaviour
         }
         return false;
     }
+
+    /// <summary>
+    /// 指定の座標から感知範囲内のキャラクターを取得
+    /// </summary>
+    /// <param name="position"></param>
+    /// <param name="sensRange"></param>
+    /// <returns></returns>
+    public BaseCharacter GetNearCharacter(BaseCharacter character, float sensRange)
+    {
+        float minDistance = float.MaxValue;
+        Vector3 position = character.gameObject.transform.position;
+        BaseCharacter nearCharacter = null;
+        // キャラクターリストを走査
+        for (int i = 0, max = characterList.Count; i < max; i++)
+        {
+            // 自分自身は除外
+            if (character == characterList[i]) continue;
+
+            if (characterList[i] == null) continue;
+
+            GameObject target = characterList[i].gameObject;
+            if (target == null) continue;
+            float distanceToCharacter = Vector3.Distance(position, target.transform.position);
+            if (distanceToCharacter > sensRange) continue;
+            // 最小距離を更新
+            if (distanceToCharacter < minDistance)
+            {
+                minDistance = distanceToCharacter;
+                nearCharacter = characterList[i];
+            }
+        }
+
+        return nearCharacter;
+    }
 }

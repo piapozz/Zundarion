@@ -8,6 +8,7 @@ using UnityEngine.InputSystem;
 using static PlayerAnimation;
 using static CommonModule;
 using static UnityEngine.InputSystem.LowLevel.InputStateHistory;
+using System.Threading;
 
 public abstract class BasePlayer : BaseCharacter
 {
@@ -101,8 +102,27 @@ public abstract class BasePlayer : BaseCharacter
     /// <summary>プレイヤーの先行入力情報</summary>
     private PreInput _selfPreInput = null;
 
+    /// <summary>パリィのストック</summary>
+    private int _parryStock = 0;
+
+    /// <summary>回避のストック</summary>
+    private int _avoidStock = 0;
+
+    /// <summary>パリィのクールダウンタスク</summary>
+    private UniTask _parryCoolDownTask;
+
+    /// <summary>回避のクールダウンタスク</summary>
+    private UniTask _avoidCoolDownTask;
+
+    private CancellationTokenSource _cts = null;
+
     private const float _RUN_SPEED_RATE = 1.25f;
     private const float _AVOID_SPEED_RATE = 2.0f;
+    private const float _ATTACK_SENS_RANGE = 10.0f;
+    private const int _PARRY_COOL_DOWN_STOCK = 2;
+    private const float _PARRY_COOL_DOWN_SECOND = 2.0f;
+    private const int _AVOID_COOL_DOWN_STOCK = 2;
+    private const float _AVOID_COOL_DOWN_SECOND = 2.0f;
 
     void Awake()
     {
@@ -111,6 +131,10 @@ public abstract class BasePlayer : BaseCharacter
         _inputAction = _playerInput.actions["Move"];
         _selfPreInput = GetComponent<PreInput>();
         _selfPreInput.Initialize();
+
+        _parryStock = _PARRY_COOL_DOWN_STOCK;
+        _avoidStock = _AVOID_COOL_DOWN_STOCK;
+        _cts = new CancellationTokenSource();
 
         Init();
     }
@@ -135,8 +159,7 @@ public abstract class BasePlayer : BaseCharacter
     /// <param name="context"></param>
     public void OnRun(InputAction.CallbackContext context)
     {
-        if (!context.performed) return;
-        if (_isAllStiff) return;
+        if (!context.performed || _isAllStiff) return;
         UniTask task = RunExecute();
     }
 
@@ -146,8 +169,7 @@ public abstract class BasePlayer : BaseCharacter
     /// <param name="context"></param>
     public void OnAttack(InputAction.CallbackContext context)
     {
-        if (!context.performed) return;
-        if (_isAllStiff) return;
+        if (!context.performed || _isAllStiff) return;
 
         Attack();
     }
@@ -158,8 +180,7 @@ public abstract class BasePlayer : BaseCharacter
     /// <param name="context"></param>
     public void OnParry(InputAction.CallbackContext context)
     {
-        if (!context.performed) return;
-        if (_isAllStiff) return;
+        if (!context.performed || _isAllStiff) return;
         Parry();
     }
 
@@ -193,6 +214,9 @@ public abstract class BasePlayer : BaseCharacter
     private async UniTask RunExecute()
     {
         if (_isAllStiff) return;
+
+        // クールダウン中なら処理を抜ける
+        if (CheckCoolDown(_isAvoidCoolDown, _AVOID_COOL_DOWN_SECOND)) return;
 
         SetAvoidState();
         while (!CheckAnimation(selfAnimationData.anyStatePram[(int)AnyStateAnimation.AVOID]))
@@ -245,7 +269,12 @@ public abstract class BasePlayer : BaseCharacter
     /// </summary>
     public void Attack()
     {
+        // アニメーション設定
         selfAnimator.SetTrigger(selfAnimationData.attackPram[(int)AttackAnimation.ATTACK]);
+        // 敵の方向を向く
+        BaseCharacter character = CharacterManager.instance.GetNearCharacter(this, _ATTACK_SENS_RANGE);
+        if (character == null) return;
+        TurnAround(character.gameObject.transform);
     }
 
     /// <summary>
@@ -253,9 +282,11 @@ public abstract class BasePlayer : BaseCharacter
     /// </summary>
     public void Parry()
     {
-        List<BaseCharacter> parryList = CollisionManager.instance.parryList;
         // パリィになるか判定
+        List<BaseCharacter> parryList = CollisionManager.instance.parryList;
         if (parryList.Count == 0) return;
+        // パリィクールダウン中なら処理を抜ける
+        if (CheckCoolDown(_isParryCoolDown, _PARRY_COOL_DOWN_SECOND)) return;
         // アニメーションをセット
         selfAnimator.SetTrigger(selfAnimationData.anyStatePram[(int)AnyStateAnimation.PARRY]);
         // パリィ相手のアニメーションをひるみにする
@@ -264,6 +295,18 @@ public abstract class BasePlayer : BaseCharacter
         TurnAround(parryList[0].transform);
         // 通常カメラをリセット
         CameraManager.instance.SetFreeCam(transform.eulerAngles.y, 0.5f);
+    }
+
+    
+    private bool CheckParryCoolDown()
+    {
+        if (_parryStock <= 0) return true;
+
+        // クールダウン中ならキャンセル
+        if (!_parryTask.Status.IsCompleted())
+            _parryTask
+
+        _parryTask = WaitAction(_PARRY_COOL_DOWN_SECOND, () => _parryStock = _PARRY_COOL_DOWN_STOCK);
     }
 
     private bool CheckAnimation(string animationName)
