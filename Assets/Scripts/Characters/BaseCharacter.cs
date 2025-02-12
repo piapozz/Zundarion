@@ -72,11 +72,11 @@ public abstract class BaseCharacter : MonoBehaviour
     /// <param name="damageSize"></param>
     public virtual void TakeDamage(float damageSize)
     {
-        float damage = damageSize * defence * multiplier;
+        int damage = (int)(damageSize * multiplier);
 
         health -= damage;
 
-        _damageObserver.OnDamage(transform.position);
+        _damageObserver.OnDamage(transform.position, damage);
 
         if (health <= 0)
             CharacterManager.instance.RemoveCharacterList(_ID);

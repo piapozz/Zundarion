@@ -11,5 +11,6 @@ using UnityEngine;
 
 public interface DamageObserver
 {
-    public void OnDamage(Vector3 position);
+    public void Initialize(GameObject prefab, GameObject prent);
+    public void OnDamage(Vector3 position, int damage);
 }
