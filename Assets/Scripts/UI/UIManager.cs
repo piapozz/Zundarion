@@ -70,10 +70,6 @@ public class UIManager : SystemObject
 
     private void Update()
     {
-        Debug.Log("enemyUIList" + enemyUIList.Count);
-        Debug.Log("unuseObjectQueue" + unuseObjectQueue.Count);
-        Debug.Log("useObjectList" + useObjectList.Count);
-
         // 不必要なUIを非表示にする
         for (int i = 0, max = enemyUIList.Count; i < max; i++)
         {
