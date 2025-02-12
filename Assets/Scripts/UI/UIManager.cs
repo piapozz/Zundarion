@@ -5,6 +5,7 @@
 * @date 2025/1/31
 */
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -31,7 +32,7 @@ public class UIManager : SystemObject
     private Transform parent = null;
 
     private List<EnemyUI> enemyUIList = null;
-    private Queue<GameObject> useObjectQueue = null;
+    private List<GameObject> useObjectList = null;
     private Queue<GameObject> unuseObjectQueue = null;
 
     Vector3 viewportPos ;
@@ -54,9 +55,9 @@ public class UIManager : SystemObject
         mainCamera = CameraManager.instance.selfCamera;
 
         // 全てが空だったらあらかじめ生成する
-        if (useObjectQueue == null && unuseObjectQueue == null)
+        if (useObjectList == null && unuseObjectQueue == null)
         {
-            useObjectQueue = new Queue<GameObject>();
+            useObjectList = new List<GameObject>();
             unuseObjectQueue = new Queue<GameObject>();
             enemyUIList = new List<EnemyUI>();
 
@@ -69,6 +70,10 @@ public class UIManager : SystemObject
 
     private void Update()
     {
+        Debug.Log("enemyUIList" + enemyUIList.Count);
+        Debug.Log("unuseObjectQueue" + unuseObjectQueue.Count);
+        Debug.Log("useObjectList" + useObjectList.Count);
+
         // 不必要なUIを非表示にする
         for (int i = 0, max = enemyUIList.Count; i < max; i++)
         {
@@ -83,11 +88,21 @@ public class UIManager : SystemObject
             {
                 enemyUIList[i].SetActive(true);
             }
-
             // 画面外に外れたら非表示にする
             else
             {
                 enemyUIList[i].SetActive(false);
+            }
+        }
+
+        for (int i = 0, max = enemyUIList.Count; i < max; i++)
+        {
+            if (IsEmpty(enemyUIList) != true) 
+                ;
+            if (enemyUIList[i].health <= 0)
+            {
+                RemoveEnemyUI(i);
+                max -= 1;
             }
         }
     }
@@ -95,12 +110,15 @@ public class UIManager : SystemObject
     public void AddEnemyUI(BaseEnemy baseEnemy)
     {
         GenerateEnemyUI(baseEnemy);
-
     }
 
-    public void RemoveEnemyUI(BaseEnemy baseEnemy)
+    public void RemoveEnemyUI(int index)
     {
+        enemyUIList[index].Teardown();
 
+        unuseObjectQueue.Enqueue(useObjectList[index]);
+        useObjectList.RemoveAt(index);
+        enemyUIList.RemoveAt(index);
     }
 
     /// <summary>
@@ -116,12 +134,10 @@ public class UIManager : SystemObject
         if (IsEmpty(unuseObjectQueue) != true)
         {
             UIObject = unuseObjectQueue.Dequeue();
-            Debug.Log("取り出して使用");
         }
         else
         {
             UIObject = Instantiate(enemyUIObject, new Vector3(0.0f, 0.0f, 0.0f), Quaternion.identity, parent);
-            Debug.Log("生成して使用");
         }
 
         // クラスを取得
@@ -131,7 +147,7 @@ public class UIManager : SystemObject
         enemyUI.Setup(baseEnemy, UIObject);
 
         // 使用中リストに追加
-        useObjectQueue.Enqueue(UIObject);
+        useObjectList.Add(UIObject);
         enemyUIList.Add(enemyUI);
     }
 }
