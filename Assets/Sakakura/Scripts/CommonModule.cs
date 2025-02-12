@@ -73,7 +73,8 @@ public class CommonModule
     public static async UniTask WaitAction(float sec, System.Action action)
     {
         float elapsedTime = 0.0f;
-        while (elapsedTime < sec)
+        while (action != null &&
+            elapsedTime < sec)
         {
             elapsedTime += Time.deltaTime;
             await UniTask.DelayFrame(1);
@@ -90,7 +91,9 @@ public class CommonModule
     public static async UniTask WaitAction<T>(float sec, System.Action<T> action, T pram)
     {
         float elapsedTime = 0.0f;
-        while (elapsedTime < sec)
+        while (action != null &&
+            pram != null &&
+            elapsedTime < sec)
         {
             elapsedTime += Time.deltaTime;
             await UniTask.DelayFrame(1);
@@ -107,7 +110,8 @@ public class CommonModule
     public static async UniTask<T> WaitAction<T>(float sec, System.Func<T> action)
     {
         float elapsedTime = 0.0f;
-        while (elapsedTime < sec)
+        while (action != null &&
+            elapsedTime < sec)
         {
             elapsedTime += Time.deltaTime;
             await UniTask.DelayFrame(1);
@@ -124,7 +128,9 @@ public class CommonModule
     public static async UniTask<T> WaitAction<T>(float sec, System.Func<T, T> action, T pram)
     {
         float elapsedTime = 0.0f;
-        while (elapsedTime < sec)
+        while (action != null &&
+            pram != null &&
+            elapsedTime < sec)
         {
             elapsedTime += Time.deltaTime;
             await UniTask.DelayFrame(1);
@@ -145,7 +151,8 @@ public class CommonModule
     public static async UniTask WaitAction(int frame, System.Action action)
     {
         float elapsedTime = 0;
-        while (elapsedTime < frame)
+        while (action != null &&
+            elapsedTime < frame)
         {
             elapsedTime++;
             await UniTask.DelayFrame(1);
@@ -162,7 +169,9 @@ public class CommonModule
     public static async UniTask WaitAction<T>(int frame, System.Action<T> action, T pram)
     {
         float elapsedTime = 0;
-        while (elapsedTime < frame)
+        while (action != null &&
+            pram != null &&
+            elapsedTime < frame)
         {
             elapsedTime++;
             await UniTask.DelayFrame(1);
@@ -179,7 +188,8 @@ public class CommonModule
     public static async UniTask<T> WaitAction<T>(int frame, System.Func<T> action)
     {
         float elapsedTime = 0;
-        while (elapsedTime < frame)
+        while (action != null &&
+            elapsedTime < frame)
         {
             elapsedTime++;
             await UniTask.DelayFrame(1);
@@ -196,7 +206,9 @@ public class CommonModule
     public static async UniTask<T> WaitAction<T>(int frame, System.Func<T, T> action, T pram)
     {
         float elapsedTime = 0;
-        while (elapsedTime < frame)
+        while (action != null &&
+            pram != null &&
+            elapsedTime < frame)
         {
             elapsedTime++;
             await UniTask.DelayFrame(1);
