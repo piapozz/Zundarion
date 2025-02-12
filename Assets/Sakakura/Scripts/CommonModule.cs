@@ -83,6 +83,13 @@ public class CommonModule
         action();
     }
 
+    /// <summary>
+    /// 指定した秒数後に関数を実行する(キャンセル可)
+    /// </summary>
+    /// <param name="sec"></param>
+    /// <param name="action"></param>
+    /// <param name="token"></param>
+    /// <returns></returns>
     public static async UniTask WaitAction(float sec, System.Action action, CancellationToken token)
     {
         float elapsedTime = 0.0f;
@@ -90,7 +97,7 @@ public class CommonModule
             elapsedTime < sec)
         {
             elapsedTime += Time.deltaTime;
-            await UniTask.DelayFrame(1);
+            await UniTask.DelayFrame(1, cancellationToken: token);
         }
         action();
     }

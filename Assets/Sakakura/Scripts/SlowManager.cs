@@ -10,7 +10,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SlowManager : MonoBehaviour
+public class SlowManager : SystemObject
 {
     public static SlowManager instance = null;
 
@@ -21,7 +21,7 @@ public class SlowManager : MonoBehaviour
 
     private float _currentTimeScale = 0;
 
-    public void Initialize()
+    public override void Initialize()
     {
         instance = this;
         _currentTimeScale = _DEFAULT_TIME_SCALE;

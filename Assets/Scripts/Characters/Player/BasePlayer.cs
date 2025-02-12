@@ -7,7 +7,6 @@ using UnityEngine.InputSystem;
 
 using static PlayerAnimation;
 using static CommonModule;
-using static UnityEngine.InputSystem.LowLevel.InputStateHistory;
 using System.Threading;
 
 public abstract class BasePlayer : BaseCharacter
@@ -111,10 +110,12 @@ public abstract class BasePlayer : BaseCharacter
     /// <summary>パリィのクールダウンタスク</summary>
     private UniTask _parryCoolDownTask;
 
+    private CancellationTokenSource _parryCTS = null;
+
     /// <summary>回避のクールダウンタスク</summary>
     private UniTask _avoidCoolDownTask;
 
-    private CancellationTokenSource _cts = null;
+    private CancellationTokenSource _avoidCTS = null;
 
     private const float _RUN_SPEED_RATE = 1.25f;
     private const float _AVOID_SPEED_RATE = 2.0f;
@@ -134,7 +135,6 @@ public abstract class BasePlayer : BaseCharacter
 
         _parryStock = _PARRY_COOL_DOWN_STOCK;
         _avoidStock = _AVOID_COOL_DOWN_STOCK;
-        _cts = new CancellationTokenSource();
 
         Init();
     }
@@ -170,7 +170,6 @@ public abstract class BasePlayer : BaseCharacter
     public void OnAttack(InputAction.CallbackContext context)
     {
         if (!context.performed || _isAllStiff) return;
-
         Attack();
     }
 
@@ -216,7 +215,7 @@ public abstract class BasePlayer : BaseCharacter
         if (_isAllStiff) return;
 
         // クールダウン中なら処理を抜ける
-        if (CheckCoolDown(_isAvoidCoolDown, _AVOID_COOL_DOWN_SECOND)) return;
+        if (CheckAvoidCoolDown()) return;
 
         SetAvoidState();
         while (!CheckAnimation(selfAnimationData.anyStatePram[(int)AnyStateAnimation.AVOID]))
@@ -230,6 +229,21 @@ public abstract class BasePlayer : BaseCharacter
             await UniTask.DelayFrame(1);
         }
         SetRunState();
+    }
+
+    private bool CheckAvoidCoolDown()
+    {
+        if (_avoidStock <= 0) return true;
+
+        _avoidStock--;
+        _avoidCTS = new CancellationTokenSource();
+        // クールダウン中ならキャンセル
+        if (!_avoidCoolDownTask.Status.IsCompleted())
+            _avoidCTS.Cancel();
+
+        _avoidCoolDownTask = WaitAction(_AVOID_COOL_DOWN_SECOND, () => _avoidStock = _AVOID_COOL_DOWN_STOCK, _avoidCTS.Token);
+
+        return false;
     }
 
     /// <summary>
@@ -286,7 +300,7 @@ public abstract class BasePlayer : BaseCharacter
         List<BaseCharacter> parryList = CollisionManager.instance.parryList;
         if (parryList.Count == 0) return;
         // パリィクールダウン中なら処理を抜ける
-        if (CheckCoolDown(_isParryCoolDown, _PARRY_COOL_DOWN_SECOND)) return;
+        if (CheckParryCoolDown()) return;
         // アニメーションをセット
         selfAnimator.SetTrigger(selfAnimationData.anyStatePram[(int)AnyStateAnimation.PARRY]);
         // パリィ相手のアニメーションをひるみにする
@@ -297,16 +311,22 @@ public abstract class BasePlayer : BaseCharacter
         CameraManager.instance.SetFreeCam(transform.eulerAngles.y, 0.5f);
     }
 
-    
+    /// <summary>
+    /// パリィクールダウン処理
+    /// </summary>
+    /// <returns></returns>
     private bool CheckParryCoolDown()
     {
         if (_parryStock <= 0) return true;
 
+        _parryStock--;
+        _parryCTS = new CancellationTokenSource();
         // クールダウン中ならキャンセル
-        if (!_parryTask.Status.IsCompleted())
-            _parryTask
+        if (!_parryCoolDownTask.Status.IsCompleted())
+            _parryCTS.Cancel();
 
-        _parryTask = WaitAction(_PARRY_COOL_DOWN_SECOND, () => _parryStock = _PARRY_COOL_DOWN_STOCK);
+        _parryCoolDownTask = WaitAction(_PARRY_COOL_DOWN_SECOND, () => _parryStock = _PARRY_COOL_DOWN_STOCK, _parryCTS.Token);
+        return false;
     }
 
     private bool CheckAnimation(string animationName)
