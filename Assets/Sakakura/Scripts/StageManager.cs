@@ -2,14 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StageManager : MonoBehaviour
+public class StageManager : SystemObject
 {
     public static StageManager instance { get; private set; } = null;
 
     private int _nowBattle = -1;
 
     [SerializeField]
-    public StageObject _stageObject = null;
+    private GameObject _stageOrigin = null;
+
+    private StageObject _stageObject = null;
 
     private StageData _stageData = null;
 
@@ -17,15 +19,12 @@ public class StageManager : MonoBehaviour
 
     public Transform _startTrasform { get; private set; } = null;
 
-    private void Awake()
+    public override void Initialize()
     {
         instance = this;
-        Initialize();
-        
-    }
 
-    private void Initialize()
-    {
+        GameObject genObj = Instantiate(_stageOrigin);
+        _stageObject = genObj.GetComponent<StageObject>();
         _stageData = _stageObject.GetStageData();
         _startTrasform = _stageObject.GetSpownTransform();
         _battleList = new List<BattleProcessor>(_stageObject.GetBattle());
