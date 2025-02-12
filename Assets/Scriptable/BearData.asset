@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: BearData
   m_EditorClassIdentifier: 
   characterName: Bear
-  health: 100
+  health: 200
   strength: 10
   defence: 10
   speed: 5
