@@ -16,8 +16,8 @@ public class EnemyUI : MonoBehaviour
     private Image image = null;                                             // UIとなるImage
     private Camera mainCamera = null;                                       // メインカメラ
     private RectTransform rectTransform;                                    // オブジェクトの座標
-    public BaseEnemy baseEnemy { get; protected set; } = null;              // 敵のクラス（情報）
-    public Vector3 enemyPosition { get; protected set; } = Vector3.zero;    // 敵の座標を管理 
+    public BaseEnemy baseEnemy { get; private set; } = null;              // 敵のクラス（情報）
+    public Vector3 enemyPosition { get; private set; } = Vector3.zero;    // 敵の座標を管理 
     public float health { get; protected set; } = -1;                       // 敵の現在体力
     public float healthMax { get; protected set; } = -1;                    // 敵の最大体力
 
