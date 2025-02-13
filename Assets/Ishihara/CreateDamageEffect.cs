@@ -1,5 +1,5 @@
 /*
-* @file CrteateDamageEffect.cs
+* @file CreateDamageEffect.cs
 * @brief ダメージのエフェクトを生成する
 * @author ishihara
 * @date 2025/2/02
@@ -10,48 +10,24 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class CrteateDamageEffect : MonoBehaviour
+public class CreateDamageEffect : MonoBehaviour, DamageObserver
 {
-    [SerializeField]
-    private GameObject _damageEffect;
-
-    [SerializeField]
-    private GameObject _prent;
-
-    float elapsedTime = 0.0f;
-
     public static readonly int POOL_COUNT = 100;
     List<GameObject> _effectList = null;
 
-    // Start is called before the first frame update
-    void Start()
+    public void Initialize(GameObject prefab, GameObject prent)
     {
         _effectList = new List<GameObject>(POOL_COUNT);
         // プール
         for (int i = 0; i < POOL_COUNT; i++)
         {
-            var effect = Instantiate(_damageEffect, new Vector3(0, 0, 0), Quaternion.identity, _prent.transform);
+            var effect = Instantiate(prefab, new Vector3(0, 0, 0), Quaternion.identity, prent.transform);
             effect.SetActive(false);
             _effectList.Add(effect);
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-        if (elapsedTime > 0.1f) 
-        {
-            elapsedTime = 0.0f;
-            int damage = Random.Range(50000, 10000000);
-
-            // 生成
-            Create(new Vector3(500.0f,200.0f,0.0f), damage);
-        }
-        elapsedTime += Time.deltaTime;
-    }
-
-    private void Create(Vector3 position, int damage)
+    public void OnDamage(Vector3 position, int damage)
     {
         Camera.main.WorldToViewportPoint(position);
         int activeNumber = -1; 
