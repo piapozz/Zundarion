@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "CharacterAttack", menuName = "CharacterAttack")]
+[CreateAssetMenu(fileName = "CharacterAttack", menuName = "ScriptableObjects/CharacterAttack")]
 public class CharacterAttackData : ScriptableObject
 {
     public bool isParry;        // ƒpƒŠƒB‚©‚Ç‚¤‚©

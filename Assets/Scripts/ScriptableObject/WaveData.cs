@@ -9,7 +9,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "WaveData", menuName = "Stage/WaveData")]
+[CreateAssetMenu(fileName = "WaveData", menuName = "ScriptableObjects/Stage/WaveData")]
 public class WaveData : ScriptableObject
 {
     [System.Serializable]

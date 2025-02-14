@@ -18,3 +18,20 @@ public enum InputType
     Max
 };
 
+// プレイヤーのアニメーション
+public enum PlayerAnimation
+{
+    Invalid = -1,
+    IDLE,
+    WALK,
+    RUN,
+    ATTACK,
+    IMPACT,
+    PARRY,
+    PARRY_MISS,
+    AVOID,
+    VICTORY,
+    DIE,
+
+    MAX
+}

@@ -4857,7 +4857,7 @@ MonoBehaviour:
   charaData: {fileID: 11400000, guid: 2682e0f7083dedc4ea653e2f1463900e, type: 2}
   _ID: 0
   selfAnimator: {fileID: 2892533442517954711}
-  playerAnimation: {fileID: 11400000, guid: f7c2d37f1ed27d946baa0f8d2390fafa, type: 2}
+  playerAnimation: {fileID: 11400000, guid: f03e0162b8d9cbe4180198f9a6d7de7d, type: 2}
   occurrenceFrame: {fileID: 0}
   MaxHP: 100
 --- !u!114 &2892533442517954716

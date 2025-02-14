@@ -20,23 +20,17 @@ public abstract class BasePlayer : BaseCharacter
 
     }
 
-    /// <summary>自身の現在の体力</summary>
-    public float selfCurrentHealth { get; protected set; }
-
     /// <summary>攻撃コンボの最大数</summary>
     public int selfComboCountMax { get; protected set; }
 
     /// <summary>攻撃コンボ数</summary>
     public int selfComboCount { get; protected set; }
 
-    /// <summary>現在の移動ステート</summary>
-    public MoveAnimation selfMoveState { get; set; } = MoveAnimation.IDLE;
-
     /// <summary>アニメーションの再生速度</summary>
     public float selfAnimationSpeed { get; protected set; }
 
     /// <summary>アニメーションのパラメーター情報</summary>
-    public PlayerAnimation selfAnimationData { get; protected set; }
+    public AnimationData selfAnimationData { get; protected set; }
 
     /// <summary>自身の前方アングル</summary>
     public float selfFrontAngleZ { get; set; }
@@ -65,15 +59,6 @@ public abstract class BasePlayer : BaseCharacter
     protected bool inputParry = false;
 
     // private //////////////////////////////////////////////////////////////////
-
-    /// <summary>プレイヤーの移動コンポーネント</summary>
-    private PlayerMove _selfMove;
-
-    /// <summary>プレイヤーの攻撃コンポーネント</summary>
-    private PlayerAttack _selfAttack;
-
-    /// <summary>プレイヤーのパリィコンポーネント</summary>
-    private PlayerParry _selfParry;
 
     /// <summary>プレイヤーの入力</summary>
     private PlayerInput _playerInput;
@@ -189,18 +174,20 @@ public abstract class BasePlayer : BaseCharacter
     /// </summary>
     private void MoveExecute()
     {
+        selfAnimator.SetBool("Move", false);
+
         // 移動できないなら処理を抜ける
         if (_isAllStiff || _isMoveStiff) return;
-        // 移動方向が入力されていないなら処理を抜ける
-        if (_inputMoveDir.x == 0 && _inputMoveDir.y == 0)
-        {
-            selfAnimator.SetBool("Move", false);
-            return;
-        }
-        selfAnimator.SetBool("Move", true);
 
-        if (selfMoveState == MoveAnimation.IDLE)
-            SetWalkState();
+        // 移動方向が入力されているなら
+        if (_inputMoveDir.x != 0 || _inputMoveDir.y != 0)
+        {
+            selfAnimator.SetBool("Move", true);
+        }
+        else
+            return;
+
+        SetWalkState();
 
         // 回転し移動
         Rotate(AdjustMoveDir());
@@ -219,12 +206,12 @@ public abstract class BasePlayer : BaseCharacter
         if (CheckAvoidCoolDown()) return;
 
         SetAvoidState();
-        while (!CheckAnimation(selfAnimationData.anyStatePram[(int)AnyStateAnimation.AVOID]))
+        while (!CheckAnimation(selfAnimationData.animationName[(int)PlayerAnimation.AVOID]))
         {
             await UniTask.DelayFrame(1);
         }
         // 回避が終わるまで待機
-        while (CheckAnimation(selfAnimationData.anyStatePram[(int)AnyStateAnimation.AVOID]))
+        while (CheckAnimation(selfAnimationData.animationName[(int)PlayerAnimation.AVOID]))
         {
             Move(speed * _currentMultiplier);
             await UniTask.DelayFrame(1);
@@ -263,7 +250,7 @@ public abstract class BasePlayer : BaseCharacter
 
     private void SetAvoidState()
     {
-        selfAnimator.SetTrigger(selfAnimationData.anyStatePram[(int)AnyStateAnimation.AVOID]);
+        selfAnimator.SetTrigger(selfAnimationData.animationName[(int)PlayerAnimation.AVOID]);
         _currentMultiplier = _AVOID_SPEED_RATE;
         _isMoveStiff = true;
     }
@@ -285,7 +272,7 @@ public abstract class BasePlayer : BaseCharacter
     public void Attack()
     {
         // アニメーション設定
-        selfAnimator.SetTrigger(selfAnimationData.attackPram[(int)AttackAnimation.ATTACK]);
+        selfAnimator.SetTrigger(selfAnimationData.animationName[(int)PlayerAnimation.ATTACK]);
         // 敵の方向を向く
         BaseCharacter character = CharacterManager.instance.GetNearCharacter(this, _ATTACK_SENS_RANGE);
         if (character == null) return;
@@ -304,14 +291,14 @@ public abstract class BasePlayer : BaseCharacter
         if (parryList.Count <= 0)
         {
             // アニメーションをセット
-            selfAnimator.SetTrigger(selfAnimationData.anyStatePram[(int)AnyStateAnimation.PARRY_MISS]);
+            selfAnimator.SetTrigger(selfAnimationData.animationName[(int)PlayerAnimation.PARRY_MISS]);
         }
         else
         {
             // アニメーションをセット
-            selfAnimator.SetTrigger(selfAnimationData.anyStatePram[(int)AnyStateAnimation.PARRY]);
+            selfAnimator.SetTrigger(selfAnimationData.animationName[(int)PlayerAnimation.PARRY]);
             // パリィ相手のアニメーションをひるみにする
-            parryList[0].selfAnimator.SetTrigger(selfAnimationData.anyStatePram[(int)AnyStateAnimation.IMPACT]);
+            parryList[0].selfAnimator.SetTrigger(selfAnimationData.animationName[(int)PlayerAnimation.IMPACT]);
             // プレイヤーを敵の方向に向ける
             TurnAround(parryList[0].transform);
             // 通常カメラをリセット
@@ -376,7 +363,7 @@ public abstract class BasePlayer : BaseCharacter
     {
         base.TakeDamage(damageSize);
         if (health <= 0)
-            selfAnimator.SetTrigger(selfAnimationData.anyStatePram[(int)AnyStateAnimation.DIE]);
+            selfAnimator.SetTrigger(selfAnimationData.animationName[(int)PlayerAnimation.DIE]);
     }
 
 #if GUI_OUTPUT
