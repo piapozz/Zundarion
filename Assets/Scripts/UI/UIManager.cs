@@ -1,9 +1,9 @@
 /*
-* @file UIManager.cs
-* @brief ゲームのUIを管理するクラス
-* @author sein
-* @date 2025/1/31
-*/
+ * @file UIManager.cs
+ * @brief ゲームのUIを管理するクラス
+ * @author sein
+ * @date 2025/1/31
+ */
 
 using System;
 using System.Collections;
@@ -26,12 +26,16 @@ public class UIManager : SystemObject
 
     private readonly int INITIAL_COUNT = 1;
 
+    [SerializeField] private GameObject damageEffect;
+
     [SerializeField] private GameObject enemyUIObject;
     [SerializeField] private GameObject canvasWorldSpace;
     [SerializeField] private LayerMask obstacleLayer;
 
     public Camera mainCamera { get; private set; } = null;
     private Transform parent = null;
+
+    private DamageObserver damageObserver = null;
 
     private List<EnemyUI> enemyUIList = null;
     private List<GameObject> useObjectList = null;
@@ -62,7 +66,9 @@ public class UIManager : SystemObject
                 unuseObjectQueue.Enqueue(Instantiate(enemyUIObject, new Vector3(0.0f, 0.0f, 0.0f), Quaternion.identity, parent));
             }
         }
-
+            
+        damageObserver = CharacterManager.instance._damageObserver;
+        damageObserver.Initialize(damageEffect, canvas);
     }
 
     public override void Proc()
