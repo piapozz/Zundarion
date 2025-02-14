@@ -12,6 +12,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 using static CommonModule;
+using static UnityEngine.EventSystems.EventTrigger;
 
 // 出来れば敵の最大体力を見てUIを伸ばす
 // 体力が減るまでラグを作る
@@ -27,6 +28,7 @@ public class UIManager : SystemObject
 
     [SerializeField] private GameObject enemyUIObject;
     [SerializeField] private GameObject canvasWorldSpace;
+    [SerializeField] private LayerMask obstacleLayer;
 
     public Camera mainCamera { get; private set; } = null;
     private Transform parent = null;
@@ -41,8 +43,10 @@ public class UIManager : SystemObject
     {
         instance = this;
 
+        GameObject canvas = Instantiate(canvasWorldSpace, new Vector3(0.0f, 0.0f, 0.0f), Quaternion.identity);
+
         // Canvasのtransformを取得
-        parent = GameObject.Find("CanvasWorldSpace").transform;
+        parent = canvas.transform;
 
         mainCamera = CameraManager.instance.selfCamera;
 
@@ -81,7 +85,24 @@ public class UIManager : SystemObject
             else
             {
                 enemyUIList[i].SetActive(false);
+                return;
             }
+        }
+
+        // オブジェクトでUIが非表示になる
+        for (int i = 0, max = enemyUIList.Count; i < max; i++)
+        {
+
+            Vector3 enemyPosition = enemyUIList[i].enemyPosition + Vector3.up * 1f;
+
+            Vector3 direction = (enemyPosition - mainCamera.transform.position).normalized;
+            float distance = Vector3.Distance(mainCamera.transform.position, enemyPosition);
+
+            bool isObstructed = Physics.Raycast(mainCamera.transform.position, direction, distance, obstacleLayer);
+
+            // Debug.DrawRay(mainCamera.transform.position, direction * distance, isObstructed ? Color.red : Color.green, 0.1f);
+
+            enemyUIList[i].SetActive(!isObstructed);
         }
 
         for (int i = 0, max = enemyUIList.Count; i < max; i++)
