@@ -45,4 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyUIObject: {fileID: 2140908724248844690, guid: d7bf03d82b3ebb04f9cc37ea1e3467a2, type: 3}
-  canvasWorldSpace: {fileID: 0}
+  canvasWorldSpace: {fileID: 2355519898346420178, guid: e82cd1bfbd746e9498fef0f63c951a37, type: 3}
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 64

@@ -70,7 +70,6 @@ public class EnemyUI : MonoBehaviour
         SetActive(false);
     }
 
-
     /// <summary>
     /// 体力などのバーを更新する
     /// </summary>
