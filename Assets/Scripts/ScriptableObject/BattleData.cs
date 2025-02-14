@@ -9,7 +9,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "BattleData", menuName = "Stage/BattleData")]
+[CreateAssetMenu(fileName = "BattleData", menuName = "ScriptableObjects/Stage/BattleData")]
 public class BattleData : ScriptableObject
 {
     public WaveData[] waveData;
