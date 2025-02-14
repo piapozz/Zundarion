@@ -8,56 +8,71 @@
 using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
+
+using static CommonModule;
 
 public class SlowManager : SystemObject
 {
     public static SlowManager instance = null;
 
-    /// <summary>
-    /// 標準のタイムスケール
-    /// </summary>
+    /// <summary>標準のタイムスケール</summary>
     private float _DEFAULT_TIME_SCALE = 1.0f;
 
+    /// <summary>現在のタイムスケール</summary>
     private float _currentTimeScale = 0;
+
+    private CancellationTokenSource _slowCTS = null;
+
+    private UniTask _slowTask;
 
     public override void Initialize()
     {
         instance = this;
-        _currentTimeScale = _DEFAULT_TIME_SCALE;
+        _slowCTS = new CancellationTokenSource();
+        StartTime();
     }
 
     /// <summary>
-    /// スローを設定する
+    /// 一定時間のスローを設定する
     /// </summary>
     /// <param name="setScale"></param>
     /// <param name="setSecond"></param>
     /// <returns></returns>
-    public async UniTask SetSlow(float setScale, float setSecond)
+    public void SetSlow(float setScale, float setSecond)
     {
-        SetTimeScale(setScale);
+        if (!SetTimeScale(setScale)) return;
 
-        float elapsedTime = 0;
-        while (elapsedTime < setSecond)
-        {
-            elapsedTime += Time.deltaTime;
-
-            await UniTask.WaitForSeconds(setScale);
-        }
-
-        SetTimeScale(_DEFAULT_TIME_SCALE);
+        _slowTask = WaitAction(setSecond, StartTime);
     }
 
     /// <summary>
     /// 指定のタイムスケールを設定する
     /// </summary>
     /// <param name="setScale"></param>
-    private void SetTimeScale(float setScale)
+    private bool SetTimeScale(float setScale)
     {
-        /// タイムスケールが標準以外の場合
-        if (_currentTimeScale != _DEFAULT_TIME_SCALE) return;
+        // デフォルト設定でないかつ現在の時間が設定よりも遅い場合は処理しない
+        if (setScale != _DEFAULT_TIME_SCALE && _currentTimeScale < setScale) return false;
+
+        // スロー中のタスクが終了していない場合はキャンセル
+        if (!_slowTask.Status.IsCompleted())
+            CancelSlowTask();
 
         Time.timeScale = setScale;
+        _currentTimeScale = setScale;
+        
+        return true;
+    }
+
+    /// <summary>
+    /// スロータスクのキャンセル
+    /// </summary>
+    private void CancelSlowTask()
+    {
+        _slowCTS.Cancel();
+        _slowCTS = new CancellationTokenSource();
     }
 
     public void StopTime()

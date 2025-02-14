@@ -61,11 +61,11 @@ ModelImporter:
       curves: []
       events:
       - time: 0
-        functionName: SetAllStiffEvent
+        functionName: SetMoveStiffEvent
         data: 
         objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0.4
-        intParameter: 0
+        floatParameter: 0
+        intParameter: 45
         messageOptions: 0
       - time: 0.738198
         functionName: CreateCollisionEvent
@@ -201,10 +201,17 @@ ModelImporter:
         functionName: SetAllStiffEvent
         data: 
         objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0.5
+        floatParameter: 0
+        intParameter: 50
+        messageOptions: 0
+      - time: 0.40713382
+        functionName: SetSlowEvent
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.50843376
+      - time: 0.52048194
         functionName: MoveEvent
         data: 
         objectReferenceParameter: {fileID: 11400000, guid: b7eb82c765f0bd3408ddb131dbe2c3b1, type: 2}

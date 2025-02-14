@@ -25,6 +25,7 @@ public class PlayerAnimation : ScriptableObject
     {
         IMPACT,
         PARRY,
+        PARRY_MISS,
         AVOID,
         VICTORY,
         DIE,

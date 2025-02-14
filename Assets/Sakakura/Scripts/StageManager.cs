@@ -17,7 +17,7 @@ public class StageManager : SystemObject
 
     private List<BattleProcessor> _battleList = null;
 
-    public Transform _startTrasform { get; private set; } = null;
+    public Transform startTrasform { get; private set; } = null;
 
     public override void Initialize()
     {
@@ -26,7 +26,7 @@ public class StageManager : SystemObject
         GameObject genObj = Instantiate(_stageOrigin);
         _stageObject = genObj.GetComponent<StageObject>();
         _stageData = _stageObject.GetStageData();
-        _startTrasform = _stageObject.GetSpownTransform();
+        startTrasform = _stageObject.GetSpownTransform();
         _battleList = new List<BattleProcessor>(_stageObject.GetBattle());
         for (int i = 0, max = _battleList.Count; i < max; i++)
         {
