@@ -21,6 +21,7 @@ MonoBehaviour:
   anyStatePram:
   - Impact
   - Parry
+  - ParryMiss
   - Avoid
   - Victory
   - Die

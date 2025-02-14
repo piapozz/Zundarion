@@ -25,4 +25,8 @@ public class GameConst
 
     // キャラクター関係
     public const float CHARACTER_ROTATE_SPEED = 500.0f;
+
+    // プレイヤー関係
+    public const float PARRY_SLOW_SPEED = 0.25f;
+    public const float PARRY_SLOW_TIME = 0.5f;
 }

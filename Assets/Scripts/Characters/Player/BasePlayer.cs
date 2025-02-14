@@ -4,10 +4,11 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Threading;
 
 using static PlayerAnimation;
 using static CommonModule;
-using System.Threading;
+using static GameConst;
 
 public abstract class BasePlayer : BaseCharacter
 {
@@ -296,19 +297,26 @@ public abstract class BasePlayer : BaseCharacter
     /// </summary>
     public void Parry()
     {
-        // パリィになるか判定
-        List<BaseCharacter> parryList = CollisionManager.instance.parryList;
-        if (parryList.Count == 0) return;
         // パリィクールダウン中なら処理を抜ける
         if (CheckParryCoolDown()) return;
-        // アニメーションをセット
-        selfAnimator.SetTrigger(selfAnimationData.anyStatePram[(int)AnyStateAnimation.PARRY]);
-        // パリィ相手のアニメーションをひるみにする
-        parryList[0].selfAnimator.SetTrigger(selfAnimationData.anyStatePram[(int)AnyStateAnimation.IMPACT]);
-        // プレイヤーを敵の方向に向ける
-        TurnAround(parryList[0].transform);
-        // 通常カメラをリセット
-        CameraManager.instance.SetFreeCam(transform.eulerAngles.y, 0.5f);
+        // パリィになるか判定
+        List<BaseCharacter> parryList = CollisionManager.instance.parryList;
+        if (parryList.Count <= 0)
+        {
+            // アニメーションをセット
+            selfAnimator.SetTrigger(selfAnimationData.anyStatePram[(int)AnyStateAnimation.PARRY_MISS]);
+        }
+        else
+        {
+            // アニメーションをセット
+            selfAnimator.SetTrigger(selfAnimationData.anyStatePram[(int)AnyStateAnimation.PARRY]);
+            // パリィ相手のアニメーションをひるみにする
+            parryList[0].selfAnimator.SetTrigger(selfAnimationData.anyStatePram[(int)AnyStateAnimation.IMPACT]);
+            // プレイヤーを敵の方向に向ける
+            TurnAround(parryList[0].transform);
+            // 通常カメラをリセット
+            CameraManager.instance.SetFreeCam(transform.eulerAngles.y, 0.5f);
+        }
     }
 
     /// <summary>
@@ -334,16 +342,32 @@ public abstract class BasePlayer : BaseCharacter
         return selfAnimator.GetCurrentAnimatorStateInfo(0).IsName(animationName);
     }
 
-    public void SetAllStiffEvent(float second)
+    /// <summary>
+    /// 完全硬直を設定
+    /// </summary>
+    /// <param name="second"></param>
+    public void SetAllStiffEvent(int frame)
     {
         _isAllStiff = true;
-        UniTask task = WaitAction(second, () => _isAllStiff = false);
+        UniTask task = WaitAction(frame, () => _isAllStiff = false);
     }
 
-    public void SetMoveStiffEvent(float second)
+    /// <summary>
+    /// 移動硬直を設定
+    /// </summary>
+    /// <param name="second"></param>
+    public void SetMoveStiffEvent(int frame)
     {
         _isMoveStiff = true;
-        UniTask task = WaitAction(second, () => _isMoveStiff = false);
+        UniTask task = WaitAction(frame, () => _isMoveStiff = false);
+    }
+
+    /// <summary>
+    /// パリィ時のスローを設定
+    /// </summary>
+    public void SetSlowEvent()
+    {
+        SlowManager.instance.SetSlow(PARRY_SLOW_SPEED, PARRY_SLOW_TIME);
     }
 
     public override bool IsPlayer() { return true; }

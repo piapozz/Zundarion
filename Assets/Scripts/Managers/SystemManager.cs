@@ -5,8 +5,10 @@ using UnityEngine;
 
 public class SystemManager : MonoBehaviour
 {
-    [SerializeField] private List<SystemObject> originSystemList = null; 
+    [SerializeField] private List<SystemObject> originSystemList = null;
     private List<SystemObject> systemList = null;
+
+    private const int _FRAME_RATE = 60;
 
     private void Awake()
     {
@@ -15,6 +17,7 @@ public class SystemManager : MonoBehaviour
 
     private void Initialize()
     {
+        Application.targetFrameRate = _FRAME_RATE;
         systemList = new List<SystemObject>();
 
         for (int i = 0, max = originSystemList.Count; i < max; i++)

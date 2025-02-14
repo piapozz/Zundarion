@@ -36,7 +36,7 @@ public class CharacterManager : SystemObject
 
         _damageObserver = new CreateDamageEffect();
 
-        GeneratePlayer(playerOrigin, StageManager.instance._startTrasform);
+        GeneratePlayer(playerOrigin, StageManager.instance.startTrasform);
     }
 
     /// <summary>
