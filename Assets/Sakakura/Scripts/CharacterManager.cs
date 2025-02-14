@@ -19,7 +19,7 @@ public class CharacterManager : SystemObject
     private GameObject playerOrigin = null;
 
     [SerializeField]
-    private DamageObserver _damageObserver = null;
+    public DamageObserver _damageObserver = null;
 
     public BasePlayer player { get; private set; } = null;
 
@@ -33,6 +33,8 @@ public class CharacterManager : SystemObject
         {
             characterList.Add(null);
         }
+
+        _damageObserver = new CreateDamageEffect();
 
         GeneratePlayer(playerOrigin, StageManager.instance._startTrasform);
     }
