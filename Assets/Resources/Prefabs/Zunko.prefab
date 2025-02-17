@@ -10779,10 +10779,7 @@ GameObject:
   - component: {fileID: 5836668183366505257}
   - component: {fileID: 3423510600292888733}
   - component: {fileID: 3423510600292888731}
-  - component: {fileID: 3423510600292888730}
-  - component: {fileID: 3423510600292888729}
   - component: {fileID: 3423510600292888728}
-  - component: {fileID: 3027454330762297403}
   m_Layer: 0
   m_Name: Zunko
   m_TagString: Player
@@ -10870,35 +10867,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec5093543b35da84cb277f180bb73504, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  charaData: {fileID: 0}
+  _ID: -1
   selfAnimator: {fileID: 3423510600292888725}
-  selfCamera: {fileID: 0}
   playerAnimation: {fileID: 11400000, guid: f7c2d37f1ed27d946baa0f8d2390fafa, type: 2}
-  collisionAction: {fileID: 11400000, guid: ee9c9448eb08cf449b03ba2affff0bb5, type: 2}
   occurrenceFrame: {fileID: 0}
---- !u!114 &3423510600292888730
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3423510600292888726}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b5a7242c46efd1e4f9af19bce826fdc2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &3423510600292888729
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3423510600292888726}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d7e387328db7574fbd41fc346b5121f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  MaxHP: 100
 --- !u!114 &3423510600292888728
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10984,24 +10958,15 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: dfac235f-2db5-4b5f-b0ea-6331be3c7315
     m_ActionName: PlayerManaer/ChangeBeforeChara[/Keyboard/q]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 222c7a96-034a-44ca-9825-82b045db55ae
+    m_ActionName: Player/Parry[/Keyboard/e]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!114 &3027454330762297403
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3423510600292888726}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d4a5eccd2a43aa40b2eaf82faaefc53, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  collisionAction: {fileID: 11400000, guid: ee9c9448eb08cf449b03ba2affff0bb5, type: 2}
 --- !u!1 &3459703884816288342
 GameObject:
   m_ObjectHideFlags: 0
