@@ -4857,9 +4857,8 @@ MonoBehaviour:
   charaData: {fileID: 11400000, guid: 2682e0f7083dedc4ea653e2f1463900e, type: 2}
   _ID: 0
   selfAnimator: {fileID: 2892533442517954711}
+  _selfPreInput: {fileID: -6303804835468985887}
   playerAnimation: {fileID: 11400000, guid: f03e0162b8d9cbe4180198f9a6d7de7d, type: 2}
-  occurrenceFrame: {fileID: 0}
-  MaxHP: 100
 --- !u!114 &2892533442517954716
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4903,34 +4902,10 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: -6303804835468985887}
-        m_TargetAssemblyTypeName: PreInput, Assembly-CSharp
-        m_MethodName: RecordMove
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
     m_ActionId: 38268f0e-4696-4181-a98f-530853dd74af
     m_ActionName: Player/Move[/XInputControllerWindows/leftStick,/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2892533442517954719}
-        m_TargetAssemblyTypeName: BasePlayer, Assembly-CSharp
-        m_MethodName: OnRun
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: -6303804835468985887}
         m_TargetAssemblyTypeName: PreInput, Assembly-CSharp
         m_MethodName: RecordRun
@@ -4947,18 +4922,6 @@ MonoBehaviour:
     m_ActionName: Player/Run[/Keyboard/shift,/XInputControllerWindows/buttonSouth]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2892533442517954719}
-        m_TargetAssemblyTypeName: BasePlayer, Assembly-CSharp
-        m_MethodName: OnAttack
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: -6303804835468985887}
         m_TargetAssemblyTypeName: PreInput, Assembly-CSharp
         m_MethodName: RecordAttack
@@ -4983,18 +4946,6 @@ MonoBehaviour:
     m_ActionName: PlayerManaer/New action
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2892533442517954719}
-        m_TargetAssemblyTypeName: BasePlayer, Assembly-CSharp
-        m_MethodName: OnParry
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: -6303804835468985887}
         m_TargetAssemblyTypeName: PreInput, Assembly-CSharp
         m_MethodName: RecordParry

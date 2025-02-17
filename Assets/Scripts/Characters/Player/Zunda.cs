@@ -2,8 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.AI;
-using static UnityEngine.EventSystems.StandaloneInputModule;
 using UnityEngine.InputSystem;
 
 public class Zunda : BasePlayer

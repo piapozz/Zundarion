@@ -6,7 +6,6 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Threading;
 
-using static PlayerAnimation;
 using static CommonModule;
 using static GameConst;
 
@@ -43,34 +42,7 @@ public abstract class BasePlayer : BaseCharacter
     /// <summary>派生先による初期化</summary>
     protected abstract void Init();
 
-    /// <summary>障害物のレイヤーマスク</summary>
-    protected LayerMask obstacleLayerMask { get; private set; }
-
-    /// <summary>プレイヤーの入力方向</summary>
-    protected Vector2 inputMove = Vector3.zero;
-
-    /// <summary>走る入力</summary>
-    protected bool inputRun = false;
-
-    /// <summary>攻撃入力</summary>
-    protected bool inputAttack = false;
-
-    /// <summary>パリィ入力</summary>
-    protected bool inputParry = false;
-
     // private //////////////////////////////////////////////////////////////////
-
-    /// <summary>プレイヤーの入力</summary>
-    private PlayerInput _playerInput;
-
-    /// <summary>プレイヤーの移動入力状態</summary>
-    private InputAction _inputAction;
-
-    /// <summary>長押しを受け取る対象のAction</summary>
-    private InputActionReference _hold;
-
-    /// <summary>ターゲットの前フレームでの座標</summary>
-    private Vector3 _oldPosition = Vector3.zero;
 
     /// <summary>入力された移動方向</summary>
     private Vector2 _inputMoveDir = Vector2.zero;
@@ -78,13 +50,11 @@ public abstract class BasePlayer : BaseCharacter
     /// <summary>移動に掛かる倍率</summary>
     private float _currentMultiplier = 1.0f;
 
-    /// <summary>移動硬直中かどうか</summary>
-    private bool _isMoveStiff = false;
-
     /// <summary>硬直中かどうか</summary>
-    private bool _isAllStiff = false;
+    private bool _isStiff = false;
 
     /// <summary>プレイヤーの先行入力情報</summary>
+    [SerializeField]
     private PreInput _selfPreInput = null;
 
     /// <summary>パリィのストック</summary>
@@ -96,11 +66,13 @@ public abstract class BasePlayer : BaseCharacter
     /// <summary>パリィのクールダウンタスク</summary>
     private UniTask _parryCoolDownTask;
 
+    /// <summary>パリィのクールダウンキャンセルトークン</summary>
     private CancellationTokenSource _parryCTS = null;
 
     /// <summary>回避のクールダウンタスク</summary>
     private UniTask _avoidCoolDownTask;
 
+    /// 回避のクールダウンキャンセルトークン
     private CancellationTokenSource _avoidCTS = null;
 
     private const float _RUN_SPEED_RATE = 1.25f;
@@ -113,10 +85,6 @@ public abstract class BasePlayer : BaseCharacter
 
     void Awake()
     {
-        obstacleLayerMask = LayerMask.GetMask("FieldObject");
-        _playerInput = GetComponent<PlayerInput>();
-        _inputAction = _playerInput.actions["Move"];
-        _selfPreInput = GetComponent<PreInput>();
         _selfPreInput.Initialize();
 
         _parryStock = _PARRY_COOL_DOWN_STOCK;
@@ -127,6 +95,10 @@ public abstract class BasePlayer : BaseCharacter
 
     private void Update()
     {
+        Debug.Log("硬直:" + _isStiff);
+
+        PreInputExecute();
+
         MoveExecute();
     }
 
@@ -145,8 +117,7 @@ public abstract class BasePlayer : BaseCharacter
     /// <param name="context"></param>
     public void OnRun(InputAction.CallbackContext context)
     {
-        if (!context.performed || _isAllStiff) return;
-        UniTask task = RunExecute();
+
     }
 
     /// <summary>
@@ -155,8 +126,7 @@ public abstract class BasePlayer : BaseCharacter
     /// <param name="context"></param>
     public void OnAttack(InputAction.CallbackContext context)
     {
-        if (!context.performed || _isAllStiff) return;
-        Attack();
+
     }
 
     /// <summary>
@@ -165,8 +135,7 @@ public abstract class BasePlayer : BaseCharacter
     /// <param name="context"></param>
     public void OnParry(InputAction.CallbackContext context)
     {
-        if (!context.performed || _isAllStiff) return;
-        Parry();
+
     }
 
     /// <summary>
@@ -177,7 +146,7 @@ public abstract class BasePlayer : BaseCharacter
         selfAnimator.SetBool("Move", false);
 
         // 移動できないなら処理を抜ける
-        if (_isAllStiff || _isMoveStiff) return;
+        if (_isStiff) return;
 
         // 移動方向が入力されているなら
         if (_inputMoveDir.x != 0 || _inputMoveDir.y != 0)
@@ -195,12 +164,37 @@ public abstract class BasePlayer : BaseCharacter
     }
 
     /// <summary>
-    /// 走りアクションを実行
+    /// 先行入力に応じて処理
+    /// </summary>
+    private void PreInputExecute()
+    {
+        InputType input = _selfPreInput.preInputType;
+        // 硬直中か入力されてないなら処理しない
+        if (_isStiff || input == InputType.None) return;
+
+        // 各入力の処理
+        switch (input)
+        {
+            case InputType.Run:
+                UniTask task = AvoidExecute();
+                break;
+            case InputType.Attack:
+                AttackExecute();
+                break;
+            case InputType.Parry:
+                ParryExecute();
+                break;
+        }
+        _selfPreInput.ClearRecord();
+    }
+
+    /// <summary>
+    /// 回避アクションを実行
     /// </summary>
     /// <returns></returns>
-    private async UniTask RunExecute()
+    private async UniTask AvoidExecute()
     {
-        if (_isAllStiff) return;
+        if (_isStiff) return;
 
         // クールダウン中なら処理を抜ける
         if (CheckAvoidCoolDown()) return;
@@ -252,7 +246,7 @@ public abstract class BasePlayer : BaseCharacter
     {
         selfAnimator.SetTrigger(selfAnimationData.animationName[(int)PlayerAnimation.AVOID]);
         _currentMultiplier = _AVOID_SPEED_RATE;
-        _isMoveStiff = true;
+        _isStiff = true;
     }
 
     private void SetWalkState()
@@ -263,13 +257,13 @@ public abstract class BasePlayer : BaseCharacter
     private void SetRunState()
     {
         _currentMultiplier = _RUN_SPEED_RATE;
-        _isMoveStiff = false;
+        _isStiff = false;
     }
 
     /// <summary>
     /// 攻撃する
     /// </summary>
-    public void Attack()
+    public void AttackExecute()
     {
         // アニメーション設定
         selfAnimator.SetTrigger(selfAnimationData.animationName[(int)PlayerAnimation.ATTACK]);
@@ -282,7 +276,7 @@ public abstract class BasePlayer : BaseCharacter
     /// <summary>
     /// パリィする
     /// </summary>
-    public void Parry()
+    public void ParryExecute()
     {
         // パリィクールダウン中なら処理を抜ける
         if (CheckParryCoolDown()) return;
@@ -333,20 +327,10 @@ public abstract class BasePlayer : BaseCharacter
     /// 完全硬直を設定
     /// </summary>
     /// <param name="second"></param>
-    public void SetAllStiffEvent(int frame)
+    public void SetStiffEvent(int frame)
     {
-        _isAllStiff = true;
-        UniTask task = WaitAction(frame, () => _isAllStiff = false);
-    }
-
-    /// <summary>
-    /// 移動硬直を設定
-    /// </summary>
-    /// <param name="second"></param>
-    public void SetMoveStiffEvent(int frame)
-    {
-        _isMoveStiff = true;
-        UniTask task = WaitAction(frame, () => _isMoveStiff = false);
+        _isStiff = true;
+        UniTask task = WaitAction(frame, () => _isStiff = false);
     }
 
     /// <summary>

@@ -21,7 +21,7 @@ public enum InputType
 // プレイヤーのアニメーション
 public enum PlayerAnimation
 {
-    Invalid = -1,
+    INVALID = -1,
     IDLE,
     WALK,
     RUN,

@@ -170,11 +170,11 @@ public class CommonModule
     /// <returns></returns>
     public static async UniTask WaitAction(int frame, System.Action action)
     {
-        float elapsedTime = 0;
+        float elapsedFrame = 0;
         while (action != null &&
-            elapsedTime < frame)
+            elapsedFrame < frame)
         {
-            elapsedTime++;
+            elapsedFrame += Time.timeScale;
             await UniTask.DelayFrame(1);
         }
         action();
@@ -188,12 +188,12 @@ public class CommonModule
     /// <returns></returns>
     public static async UniTask WaitAction<T>(int frame, System.Action<T> action, T pram)
     {
-        float elapsedTime = 0;
+        float elapsedFrame = 0;
         while (action != null &&
             pram != null &&
-            elapsedTime < frame)
+            elapsedFrame < frame)
         {
-            elapsedTime++;
+            elapsedFrame += Time.timeScale;
             await UniTask.DelayFrame(1);
         }
         action(pram);
@@ -207,11 +207,11 @@ public class CommonModule
     /// <returns></returns>
     public static async UniTask<T> WaitAction<T>(int frame, System.Func<T> action)
     {
-        float elapsedTime = 0;
+        float elapsedFrame = 0;
         while (action != null &&
-            elapsedTime < frame)
+            elapsedFrame < frame)
         {
-            elapsedTime++;
+            elapsedFrame += Time.timeScale;
             await UniTask.DelayFrame(1);
         }
         return action();
@@ -225,12 +225,12 @@ public class CommonModule
     /// <returns></returns>
     public static async UniTask<T> WaitAction<T>(int frame, System.Func<T, T> action, T pram)
     {
-        float elapsedTime = 0;
+        float elapsedFrame = 0;
         while (action != null &&
             pram != null &&
-            elapsedTime < frame)
+            elapsedFrame < frame)
         {
-            elapsedTime++;
+            elapsedFrame += Time.timeScale;
             await UniTask.DelayFrame(1);
         }
         return action(pram);

@@ -12,3 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cecc731725d765b45bd38a0f08375874, type: 3}
   m_Name: PlayerAnimationData
   m_EditorClassIdentifier: 
+  animationName:
+  - Idle
+  - Walk
+  - Run
+  - Attack
+  - Impact
+  - Parry
+  - ParryMiss
+  - Avoid
+  - Victory
+  - Die

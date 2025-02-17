@@ -1,7 +1,7 @@
 /*
 * @file PreInput.cs
 * @brief 先行入力を記録
-* @author ishihara
+* @author sakakura
 * @date 2025/2/7
 */
 
@@ -12,12 +12,15 @@ using UnityEngine.InputSystem;
 
 public class PreInput : MonoBehaviour
 {
-    /// 先行入力を記録するリスト
-    private float[] _preInputList = null;
+    /// <summary>入力の種類</summary>
+    public InputType preInputType { get; private set; } = InputType.None;
+
+    /// <summary>入力時間</summary>
+    private float _preInputTime = 0.0f;
 
     public void Initialize()
     {
-        _preInputList = new float[(int)InputType.Max];
+
     }
 
     /// <summary>
@@ -28,42 +31,67 @@ public class PreInput : MonoBehaviour
     /// <returns></returns>
     public bool IsPreInput(InputType inputType, float sec)
     {
-        return (Time.time - _preInputList[(int)inputType]) < sec;
+        if (inputType != preInputType) return false;
+
+        return (Time.time - _preInputTime) < sec;
     }
 
     /// <summary>
-    /// ActionsのMoveに割り当てられている入力があったなら実行
+    /// ActionsのMoveに割り当てられている入力があったなら記録する
     /// </summary>
     /// <param name="context"></param>
     public void RecordMove(InputAction.CallbackContext context)
     {
-        _preInputList[(int)InputType.Move] = Time.time;
+        RecordPreInput(InputType.Move, Time.time);
     }
 
     /// <summary>
-    /// ActionsのRunに割り当てられている入力があったなら実行
+    /// ActionsのRunに割り当てられている入力があったなら記録する
     /// </summary>
     /// <param name="context"></param>
     public void RecordRun(InputAction.CallbackContext context)
     {
-        _preInputList[(int)InputType.Run] = Time.time;
+        if (!context.performed) return;
+        RecordPreInput(InputType.Run, Time.time);
     }
 
     /// <summary>
-    /// ActionsのAttakに割り当てられている入力があったなら実行
+    /// ActionsのAttakに割り当てられている入力があったなら記録する
     /// </summary>
     /// <param name="context"></param>
     public void RecordAttack(InputAction.CallbackContext context)
     {
-        _preInputList[(int)InputType.Attack] = Time.time;
+        if (!context.performed) return;
+        RecordPreInput(InputType.Attack, Time.time);
     }
 
     /// <summary>
-    /// ActionsのParryに割り当てられている入力があったなら実行
+    /// ActionsのParryに割り当てられている入力があったなら記録する
     /// </summary>
     /// <param name="context"></param>
     public void RecordParry(InputAction.CallbackContext context)
     {
-        _preInputList[(int)InputType.Parry] = Time.time;
+        if (!context.performed) return;
+        RecordPreInput(InputType.Parry, Time.time);
+    }
+
+    /// <summary>
+    /// 先行入力を記録する
+    /// </summary>
+    /// <param name="setInput"></param>
+    /// <param name="setTime"></param>
+    private void RecordPreInput(InputType setInput, float setTime)
+    {
+        preInputType = setInput;
+        _preInputTime = setTime;
+    }
+
+    /// <summary>
+    /// 先行入力の記録をクリアする
+    /// </summary>
+    public void ClearRecord()
+    {
+        preInputType = InputType.None;
+        _preInputTime = 0;
     }
 }
