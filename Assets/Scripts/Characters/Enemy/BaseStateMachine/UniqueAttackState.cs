@@ -5,15 +5,14 @@ using UnityEngine;
 public class UniqueAttackState : StateMachineBehaviour
 {
     private BaseEnemy enemy = null;
-
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        animator.GetComponent<BaseEnemy>();
+        enemy = animator.GetComponent<BaseEnemy>();
     }
 
     public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        // enemy.UniqueAttack();
+        enemy.EnemyAction();
     }
 
     public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
