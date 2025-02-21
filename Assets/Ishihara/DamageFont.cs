@@ -10,7 +10,7 @@ using TMPro;
 using UnityEngine;
 using System.Collections.Generic;
 
-public class DamageFont : MonoBehaviour
+public class DamageFont : FontEffect
 {
     [SerializeField]
     private TMP_Text _textMeshPro;
@@ -48,7 +48,7 @@ public class DamageFont : MonoBehaviour
     private async void FadeOutFont()
     {
         Move();
-        _ = CommonModule.WaitAction(_fadeOutTime + 0.3f, gameObject.SetActive, false);
+        //_ = CommonModule.WaitAction(_fadeOutTime + 0.3f, SetActive, false);
     }
 
     private async UniTask Move()
