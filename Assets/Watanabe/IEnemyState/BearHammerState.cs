@@ -16,19 +16,19 @@ public class BearHammerState : BaseEnemyState
         // レイヤーの情報を更新 
         stateInfo = enemy.selfAnimator.GetCurrentAnimatorStateInfo(0);
 
-
-        Debug.Log(stateInfo.normalizedTime);
+        // Debug.Log(stateInfo.normalizedTime);
+        Debug.Log(stateInfo.normalizedTime * stateInfo.length);
 
         // アニメーションが再生され終わったかを見てステートを変更する
-        if (stateInfo.normalizedTime >= 1.0f)
+        if (stateInfo.normalizedTime * stateInfo.length >= stateInfo.length)
         {
-            enemy.ChangeState(new BearDecideState());
+
         }
 
     }
 
     public override void Exit(BaseEnemy enemy)
     {
-
+        enemy.ChangeState(new BearWaitState());
     }
 }

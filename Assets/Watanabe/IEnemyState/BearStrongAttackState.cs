@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BearJumpAttackState : BaseEnemyState
+public class BearStrongAttackState : BaseEnemyState
 {
     private AnimatorStateInfo stateInfo;            // StateInfo
 
     public override void Enter(BaseEnemy enemy)
     {
-        enemy.SetAnimatorTrigger("JumpAttack");
+        enemy.SetAnimatorTrigger("StrongAttack");
     }
 
     public override void Execute(BaseEnemy enemy)
@@ -19,9 +19,8 @@ public class BearJumpAttackState : BaseEnemyState
         // アニメーションが再生され終わったかを見てステートを変更する
         if (stateInfo.normalizedTime >= 1.0f)
         {
-            enemy.ChangeState(new BearWaitState());
+            enemy.ChangeState(new BearIdleState());
         }
-
     }
 
     public override void Exit(BaseEnemy enemy)
@@ -29,4 +28,3 @@ public class BearJumpAttackState : BaseEnemyState
 
     }
 }
-

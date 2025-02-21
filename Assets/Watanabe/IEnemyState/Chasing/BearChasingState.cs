@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Xml;
 using UnityEngine;
 
 public class BearChasingState : BaseEnemyState
@@ -15,7 +16,14 @@ public class BearChasingState : BaseEnemyState
         enemy.Rotate(enemy.targetVec);
         if (enemy.GetRelativePosition(enemy.player.transform).magnitude <= 2.0f)
         {
-            enemy.ChangeState(new BearRestraintState());
+            if(RandomNumber(2) == 0)
+            {
+                enemy.ChangeState(new BearUpperState());
+            }
+            else
+            {
+                enemy.ChangeState(new BearStrongAttackState());
+            }
             return;
         }
     }

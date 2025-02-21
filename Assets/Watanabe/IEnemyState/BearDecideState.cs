@@ -7,7 +7,8 @@ public class BearDecideState : BaseEnemyState
 {
     public override void Enter(BaseEnemy enemy)
     {
-        enemy.SetAnimatorBool("Restraint", true);
+        enemy.SetAnimatorBool("Decide", true);
+        SetEnemy(enemy);
     }
 
     public override void Execute(BaseEnemy enemy)
@@ -16,13 +17,13 @@ public class BearDecideState : BaseEnemyState
         float distance = enemy.GetRelativePosition(playerTransform).magnitude;
 
         // 遠すぎたら追いかける
-        if(distance >= 20.0f)
+        if(GetDistance(playerTransform) >= 20.0f)
         {
             // 追いかける
             enemy.ChangeState(new BearChasingState());
         }
 
-        if(distance <= 3.0f)
+        if(GetDistance(playerTransform) <= 5.0f)
         {
             // 怒りポイントを見て好戦的だったら攻撃
             if(enemy.GetComponent<EnemyBear>().fury >= 50.0f)
@@ -35,12 +36,11 @@ public class BearDecideState : BaseEnemyState
             else
             {
                 // 下がる
-                enemy.ChangeState(new BearHammerState());
+                enemy.ChangeState(new BearJumpState());
             }
         }
 
-
-        if(distance >= 3.0f)
+        if(GetDistance(playerTransform) >= 10.0f)
         {
             // 好戦的だったら直接ジャンプ攻撃する
             if (enemy.GetComponent<EnemyBear>().fury >= 50.0f)
@@ -53,7 +53,7 @@ public class BearDecideState : BaseEnemyState
             else
             {
                 // 様子見を行う
-                // enemy.ChangeState(new BearUpperState());
+                enemy.ChangeState(new BearVigilanceState());
             }
         }
 
@@ -61,6 +61,6 @@ public class BearDecideState : BaseEnemyState
 
     public override void Exit(BaseEnemy enemy)
     {
-        enemy.SetAnimatorBool("Restraint", false);
+        enemy.SetAnimatorBool("Decide", false);
     }
 }

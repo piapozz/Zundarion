@@ -9,9 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d4eaeb36f7dfd1f47be611666ef7fe71, type: 3}
-  m_Name: Stage1Wave1
+  m_Script: {fileID: 11500000, guid: f5a1829107be98146aa83b0c557333d4, type: 3}
+  m_Name: BearBackJump
   m_EditorClassIdentifier: 
-  generateCharacterData:
-  - characterPrefab: {fileID: 4792213932067412095, guid: b081f34ba393707489de6fa5739088b1, type: 3}
-    generateAnchorNum: 0
+  dir: {x: 0, y: 0, z: -1}
+  frame: 60
+  speed: 10

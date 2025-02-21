@@ -22,6 +22,7 @@ public class EnemyBear : BaseEnemy
 
     private void Update()
     {
-        // Debug.Log(enemyState);
+        Debug.Log(enemyState);
+        position = transform.position;
     }
 }

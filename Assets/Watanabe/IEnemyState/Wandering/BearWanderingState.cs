@@ -14,10 +14,8 @@ public class BearWanderingState : BaseEnemyState
     public override void Execute(BaseEnemy enemy)
     {
         Transform playerTransform = CharacterManager.instance.characterList[0].transform;
-        float distance = enemy.GetRelativePosition(playerTransform).magnitude;
 
         // 距離を見てステートを変更
-        // if (GetDistance(playerTransform) <= 3.0f)
         if (GetDistance(playerTransform) <= 3.0f)
         {
             enemy.ChangeState(new BearFoundState());
