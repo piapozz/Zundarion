@@ -15,7 +15,3 @@ MonoBehaviour:
   generateCharacterData:
   - characterPrefab: {fileID: 4792213932067412095, guid: b081f34ba393707489de6fa5739088b1, type: 3}
     generateAnchorNum: 0
-  - characterPrefab: {fileID: 4792213932067412095, guid: b081f34ba393707489de6fa5739088b1, type: 3}
-    generateAnchorNum: 1
-  - characterPrefab: {fileID: 4792213932067412095, guid: b081f34ba393707489de6fa5739088b1, type: 3}
-    generateAnchorNum: 2

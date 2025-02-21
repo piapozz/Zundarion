@@ -14,42 +14,24 @@ using UnityEngine;
 
 public class BaseEnemy : BaseCharacter
 {
-    protected BasePlayer player;               // プレイヤー
-    protected float breakPoint;                 // ブレイク値
-    protected float distance;
+    public BasePlayer player { get; protected set; } = null;    // プレイヤー
+    public float breakPoint { get; protected set; } = -1;       // ブレイク値
+
+    public Vector3 position;
+
     public Vector3 targetVec;
 
-    public GameConst.EnemyState nowState;                // 現在のステートを管理
+    public IEnemyState enemyState = null;
 
     private void Start()
     {
-        nowState = GameConst.EnemyState.INVALID;
-
         selfAnimator = GetComponent<Animator>();
-
         player = CharacterManager.instance.player;
-
     }
-
-    public virtual void Attack() { }
-    public virtual void StrongAttack() { }
-    public virtual void UniqueAttack() { }
-    public virtual void Restraint() { }
-    public virtual void Wandering() { }
-    public virtual void Found() { }
-    public virtual void Chasing() { }
-    public virtual void Dying() { }
 
     public void SetAnimatorTrigger(string triggerName) { selfAnimator?.SetTrigger(triggerName); }
 
     public void SetAnimatorBool(string boolName, bool value) { selfAnimator?.SetBool(boolName, value); }
-
-    // プレイヤーとの相対距離を取得
-    public Vector3 GetRelativePosition()
-    {
-        Vector3 playerPos = player.transform.position;
-         return player.transform.position - gameObject.transform.position;
-    }
 
     // ブレイク値を変動させる
     public void ReceiveBreakPoint(float breakSize) { breakPoint -= breakSize; }
@@ -61,6 +43,25 @@ public class BaseEnemy : BaseCharacter
         base.TakeDamage(damageSize);
         if (health <= 0)
             selfAnimator.SetBool("Dying", true);
+    }
+    public void ChangeState(IEnemyState newState)
+    {
+        if (enemyState == newState || newState == null) return;
+        enemyState = newState;
+        enemyState.Enter(this);
+    }
+
+    public void EnemyAction()
+    {
+        if (enemyState != null)
+        {
+            enemyState.Execute(this);
+        }
+    }
+
+    public void EnemyExit()
+    {
+        enemyState.Exit(this);
     }
 
     public Vector3 GetEnemyPosition() { return transform.position; }

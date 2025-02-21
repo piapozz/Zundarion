@@ -12,100 +12,17 @@ using UnityEngine;
 
 public class EnemyBear : BaseEnemy
 {
+    // ì{ÇËÉQÅ[ÉW
+    public float fury = -1;
+
+    private void Start()
+    {
+        ChangeState(new BearWanderingState());
+    }
+
     private void Update()
     {
-        // ñ⁄ïWÇ…å¸Ç©Ç§å¸Ç´ÇéÊìæ
-        targetVec = GetTargetVec(player.transform.position);
-
-        // ãóó£ÇéÊìæ
-        distance = GetRelativePosition().magnitude;
+        Debug.Log(enemyState);
+        position = transform.position;
     }
-
-    #region Action
-    public override void Attack()
-    {
-
-    }
-
-    public override void StrongAttack()
-    {
-
-    }
-
-    public override void UniqueAttack()
-    {
-
-    }
-
-    public override void Restraint()
-    {
-        // í«ê’îÕàÕÇÊÇËÇ‡ó£ÇÍÇƒÇ¢ÇΩÇÁ
-        if (distance >= 15.0f)
-        {
-            // å©é∏Ç§
-            SetAnimatorBool("Found", false);
-            SetAnimatorBool("Restraint", false);
-            return;
-        }
-
-        // é„çUåÇÇ©ã≠çUåÇÇÇ∑ÇÈ
-        if (distance <= 3.0f)
-        {
-            int attackType = Random.Range(0, 2);
-
-            if (attackType == 0) SetAnimatorTrigger("Attack");
-            if (attackType == 1) SetAnimatorTrigger("StrongAttack");
-        }
-        // ÉWÉÉÉìÉvçUåÇÇ…ëJà⁄
-        else if (distance >= 6.0f && distance <= 10.0f)
-        {
-            SetAnimatorTrigger("UniqueAttack");
-        }
-        // í«ê’Ç…ëJà⁄
-        else
-        {
-            SetAnimatorBool("Chasing", true);
-        }
-    }
-
-    public override void Wandering()
-    {
-        // î≠å©
-        if (distance <= 7.0f) SetAnimatorBool("Found", true);
-    }
-
-    public override void Found()
-    {
-        Rotate(targetVec, 200.0f);
-    }
-
-    public override void Chasing()
-    {
-        if (distance <= 2.0f)
-        {
-            SetAnimatorBool("Chasing", false);
-            SetAnimatorTrigger("Attack");
-        }
-
-        Move(speed);
-        Rotate(targetVec);
-
-        // í«ê’îÕàÕÇÊÇËÇ‡ó£ÇÍÇƒÇ¢ÇΩÇÁ
-        if (distance >= 15.0f)
-        {
-            // å©é∏Ç§
-            SetAnimatorBool("Chasing", false);
-            SetAnimatorBool("Found", false);
-            SetAnimatorBool("Restraint", false);
-            return;
-        }
-
-    }
-
-    public override void Dying()
-    {
-
-    }
-
-    #endregion
 }

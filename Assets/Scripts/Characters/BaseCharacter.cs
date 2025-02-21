@@ -137,37 +137,6 @@ public abstract class BaseCharacter : MonoBehaviour
         Destroy(gameObject);
     }
 
-    //public async UniTask RotateEvent(RotateEventData eventData)
-    //{
-    //    float frameCount = 0.0f;
-    //    Vector3 targetVec;
-    //    GameObject player = CharacterManager.instance.playerObject;
-
-    //    while (true)
-    //    {
-    //        Debug.Log("muiteru");
-    //        // ループを抜ける条件
-    //        if (frameCount >= eventData.frame) break;
-    //        else { frameCount += 1; }
-
-    //        targetVec = GetTargetVec(player.transform.position);
-
-    //        // 移動ベクトルがゼロでない場合のみ処理を進める
-    //        if (targetVec == Vector3.zero) break;
-
-    //        // 目標の角度を計算
-    //        float targetAngle = Mathf.Atan2(targetVec.z, targetVec.x) * Mathf.Rad2Deg;
-
-    //        // 現在の回転角度から目標の角度へ補間
-    //        Quaternion targetRotation = Quaternion.AngleAxis(targetAngle - 90, Vector3.down);
-    //        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, eventData.speed * Time.deltaTime);
-
-    //        // 1フレーム待ち
-    //        await UniTask.DelayFrame(1);
-
-    //    }
-    //}
-
     /// <summary>
     /// 前進させる
     /// </summary>
@@ -216,6 +185,13 @@ public abstract class BaseCharacter : MonoBehaviour
     /// <param name="targetPos"></param>
     /// <returns></returns>
     public Vector3 GetTargetVec(Vector3 targetPos) { return (targetPos - transform.position).normalized; }
+
+    /// <summary>
+    /// 対象との相対距離を取得
+    /// </summary>
+    /// <param name="target"></param>
+    /// <returns></returns>
+    public Vector3 GetRelativePosition(Transform target) { return target.position - gameObject.transform.position; }
 
     /// <summary>
     /// 体力を渡す
