@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WanderingState : StateMachineBehaviour
+public class EnemyStateMachine : StateMachineBehaviour
 {
     private BaseEnemy enemy = null;
+
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         enemy = animator.GetComponent<BaseEnemy>();
@@ -17,6 +18,6 @@ public class WanderingState : StateMachineBehaviour
 
     public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-
+        enemy.EnemyExit();
     }
 }

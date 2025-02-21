@@ -19,13 +19,13 @@ public class BearFoundState : BaseEnemyState
         // アニメーションが再生され終わったかを見てステートを変更する
         if (stateInfo.normalizedTime >= 1.0f)
         {
-            enemy.ChangeState(new BearDecideState());
+            enemy.ChangeState(new BearIdleState());
         }
 
     }
 
     public override void Exit(BaseEnemy enemy)
     {
-        enemy.SetAnimatorBool("Found", false);
+
     }
 }

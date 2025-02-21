@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BearJumpAttackState : BaseEnemyState
+public class BearJumpState : BaseEnemyState
 {
     private AnimatorStateInfo stateInfo;            // StateInfo
 
     public override void Enter(BaseEnemy enemy)
     {
-        enemy.SetAnimatorTrigger("JumpAttack");
+        enemy.SetAnimatorTrigger("Jump");
     }
 
     public override void Execute(BaseEnemy enemy)
@@ -29,4 +29,3 @@ public class BearJumpAttackState : BaseEnemyState
 
     }
 }
-

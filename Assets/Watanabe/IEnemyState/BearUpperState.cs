@@ -19,13 +19,13 @@ public class BearUpperState : BaseEnemyState
         // アニメーションが再生され終わったかを見てステートを変更する
         if (stateInfo.normalizedTime >= 1.0f)
         {
-            enemy.ChangeState(new BearDecideState());
+            enemy.ChangeState(new BearWaitState());
         }
 
     }
 
     public override void Exit(BaseEnemy enemy)
     {
-        enemy.SetAnimatorTrigger("Upper");
+
     }
 }
