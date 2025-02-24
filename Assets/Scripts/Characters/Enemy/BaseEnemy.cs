@@ -47,6 +47,7 @@ public class BaseEnemy : BaseCharacter
     public void ChangeState(IEnemyState newState)
     {
         if (enemyState == newState || newState == null) return;
+        if(enemyState != null)enemyState.Exit(this);
         enemyState = newState;
         enemyState.Enter(this);
     }

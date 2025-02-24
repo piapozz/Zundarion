@@ -12,6 +12,9 @@ public class SystemManager : MonoBehaviour
 
     private void Awake()
     {
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+
         Initialize();
     }
 

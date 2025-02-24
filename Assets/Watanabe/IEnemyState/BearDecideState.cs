@@ -1,10 +1,13 @@
 using Cysharp.Threading.Tasks.Triggers;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class BearDecideState : BaseEnemyState
 {
+    float count = 0;
+
     public override void Enter(BaseEnemy enemy)
     {
         enemy.SetAnimatorBool("Decide", true);
@@ -13,20 +16,24 @@ public class BearDecideState : BaseEnemyState
 
     public override void Execute(BaseEnemy enemy)
     {
+        count += Time.deltaTime;
+
+        if (count < 3) return;
+
         Transform playerTransform = CharacterManager.instance.characterList[0].transform;
         float distance = enemy.GetRelativePosition(playerTransform).magnitude;
 
         // 遠すぎたら追いかける
-        if(GetDistance(playerTransform) >= 20.0f)
+        if (GetDistance(playerTransform) >= 20.0f)
         {
             // 追いかける
             enemy.ChangeState(new BearChasingState());
         }
 
-        if(GetDistance(playerTransform) <= 5.0f)
+        if (GetDistance(playerTransform) <= 5.0f)
         {
             // 怒りポイントを見て好戦的だったら攻撃
-            if(enemy.GetComponent<EnemyBear>().fury >= 50.0f)
+            if (enemy.GetComponent<EnemyBear>().fury >= 50.0f)
             {
                 // 攻撃する
                 enemy.ChangeState(new BearUpperState());
@@ -40,7 +47,7 @@ public class BearDecideState : BaseEnemyState
             }
         }
 
-        if(GetDistance(playerTransform) >= 10.0f)
+        if (GetDistance(playerTransform) >= 10.0f)
         {
             // 好戦的だったら直接ジャンプ攻撃する
             if (enemy.GetComponent<EnemyBear>().fury >= 50.0f)
@@ -56,7 +63,6 @@ public class BearDecideState : BaseEnemyState
                 enemy.ChangeState(new BearVigilanceState());
             }
         }
-
     }
 
     public override void Exit(BaseEnemy enemy)
