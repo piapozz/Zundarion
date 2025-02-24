@@ -94,9 +94,7 @@ public abstract class BasePlayer : BaseCharacter
     }
 
     private void Update()
-    {
-        Debug.Log("çdíº:" + _isStiff);
-
+    { 
         PreInputExecute();
 
         MoveExecute();
