@@ -138,6 +138,15 @@ public abstract class BaseCharacter : MonoBehaviour
     }
 
     /// <summary>
+    /// エフェクトを出すイベント
+    /// </summary>
+    /// <param name="ID"></param>
+    public void EffectEvent(int ID)
+    {
+        EffectManager.instance.GenerateEffect(ID, transform.position);
+    }
+
+    /// <summary>
     /// 前進させる
     /// </summary>
     /// <param name="dir"></param>
