@@ -17,11 +17,7 @@ public class BearFoundState : BaseEnemyState
         stateInfo = enemy.selfAnimator.GetCurrentAnimatorStateInfo(0);
 
         // アニメーションが再生され終わったかを見てステートを変更する
-        if (stateInfo.normalizedTime >= 1.0f)
-        {
-            enemy.ChangeState(new BearIdleState());
-        }
-
+        if (stateInfo.normalizedTime >= 1.0f) { enemy.ChangeState(new BearIdleState()); }
     }
 
     public override void Exit(BaseEnemy enemy)

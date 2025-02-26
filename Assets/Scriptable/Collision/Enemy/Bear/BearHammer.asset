@@ -9,9 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f5a1829107be98146aa83b0c557333d4, type: 3}
-  m_Name: BearUnique_JumpDown
+  m_Script: {fileID: 11500000, guid: 26598dd705daf2f409c55aeb49e8e735, type: 3}
+  m_Name: BearHammer
   m_EditorClassIdentifier: 
-  dir: {x: 0, y: -1, z: 0}
-  frame: 50
-  speed: 10
+  isParry: 0
+  distance: 0
+  scale: 2.5
+  damage: 20
+  generateTime: 0.5

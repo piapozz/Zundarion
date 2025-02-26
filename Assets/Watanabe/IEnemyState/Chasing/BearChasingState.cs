@@ -5,18 +5,30 @@ using UnityEngine;
 
 public class BearChasingState : BaseEnemyState
 {
+    private float _count = 0;
+    private Vector3 targetVec;
+
     public override void Enter(BaseEnemy enemy)
     {
         enemy.SetAnimatorBool("Chasing", true);
+        SetEnemy(enemy);
     }
 
     public override void Execute(BaseEnemy enemy)
     {
+        Transform playerTransform = CharacterManager.instance.characterList[0].transform;
+        targetVec = GetTargetVec(playerTransform);
+
         enemy.Move(enemy.speed);
-        enemy.Rotate(enemy.targetVec);
-        if (enemy.GetRelativePosition(enemy.player.transform).magnitude <= 2.0f)
+        enemy.Rotate(targetVec);
+
+        _count += Time.deltaTime;
+        if (_count < _TRANITION_TIME) return;
+
+        float distance = GetDistance(playerTransform);
+        if (distance <= _ENEMY_DISTANCE_NEAR)
         {
-            if(RandomNumber(2) == 0)
+            if (RandomNumber(2) == 1)
             {
                 enemy.ChangeState(new BearUpperState());
             }
@@ -24,7 +36,6 @@ public class BearChasingState : BaseEnemyState
             {
                 enemy.ChangeState(new BearStrongAttackState());
             }
-            return;
         }
     }
 

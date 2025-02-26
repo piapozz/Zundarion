@@ -14,6 +14,7 @@ public class EnemyBear : BaseEnemy
 {
     // ì{ÇËÉQÅ[ÉW
     public float fury = -1;
+    private readonly float _ENEMY_INCREASE_FURY = 10.0f;
 
     private void Start()
     {
@@ -24,5 +25,12 @@ public class EnemyBear : BaseEnemy
     {
         Debug.Log(enemyState);
         position = transform.position;
+    }
+
+    public override void TakeDamage(float damageSize)
+    {
+        base.TakeDamage(damageSize);
+        fury += _ENEMY_INCREASE_FURY;
+
     }
 }

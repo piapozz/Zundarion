@@ -6,19 +6,24 @@ using UnityEngine;
 public class BearIdleState : BaseEnemyState
 {
     private AnimatorStateInfo stateInfo;            // StateInfo
-    float count = 0;
+    private float _count = 0;
+    private Vector3 targetVec;
 
     public override void Enter(BaseEnemy enemy)
     {
         enemy.SetAnimatorBool("Idle", true);
+        SetEnemy(enemy);
     }
 
     public override void Execute(BaseEnemy enemy)
     {
-        count += Time.deltaTime;
+        Transform playerTransform = CharacterManager.instance.characterList[0].transform;
+        targetVec = GetTargetVec(playerTransform);
 
-        if (count < 1) return;
+        enemy.Rotate(targetVec);
 
+        _count += Time.deltaTime;
+        if (_count < 1) return;
         enemy.ChangeState(new BearDecideState());
 
         //// レイヤーの情報を更新 
