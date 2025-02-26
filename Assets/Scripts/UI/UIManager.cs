@@ -8,6 +8,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Xml.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -28,12 +29,15 @@ public class UIManager : SystemObject
 
     [SerializeField] private GameObject damageEffect;
 
+    [SerializeField] private GameObject playerUIObject;
     [SerializeField] private GameObject enemyUIObject;
     [SerializeField] private GameObject canvasWorldSpace;
+    [SerializeField] private GameObject canvasOverlay;
     [SerializeField] private LayerMask obstacleLayer;
 
     public Camera mainCamera { get; private set; } = null;
     private Transform parent = null;
+    private Transform parentOverlay = null;
 
     private DamageObserver damageObserver = null;
 
@@ -41,18 +45,22 @@ public class UIManager : SystemObject
     private List<GameObject> useObjectList = null;
     private Queue<GameObject> unuseObjectQueue = null;
 
-    Vector3 viewportPos ;
+    Vector3 viewportPos;
 
     public override void Initialize()
     {
         instance = this;
 
-        GameObject canvas = Instantiate(canvasWorldSpace, new Vector3(0.0f, 0.0f, 0.0f), Quaternion.identity);
+        GameObject worldSpace = Instantiate(canvasWorldSpace, new Vector3(0.0f, 0.0f, 0.0f), Quaternion.identity);
+        GameObject spaceOverlay = Instantiate(canvasOverlay, new Vector3(0.0f, 0.0f, 0.0f), Quaternion.identity);
 
         // Canvasのtransformを取得
-        parent = canvas.transform;
-
         mainCamera = CameraManager.instance.selfCamera;
+
+        parent = worldSpace.transform;
+        parentOverlay = spaceOverlay.transform;
+
+        AddPlayerUI(CharacterManager.instance.characterList[0].GetComponent<BasePlayer>());
 
         // 全てが空だったらあらかじめ生成する
         if (useObjectList == null && unuseObjectQueue == null)
@@ -66,9 +74,9 @@ public class UIManager : SystemObject
                 unuseObjectQueue.Enqueue(Instantiate(enemyUIObject, new Vector3(0.0f, 0.0f, 0.0f), Quaternion.identity, parent));
             }
         }
-            
+
         damageObserver = CharacterManager.instance._damageObserver;
-        damageObserver.Initialize(damageEffect, canvas);
+        damageObserver.Initialize(damageEffect, worldSpace);
     }
 
     public override void Proc()
@@ -121,13 +129,16 @@ public class UIManager : SystemObject
                 max -= 1;
             }
         }
-
-
     }
 
     public void AddEnemyUI(BaseEnemy baseEnemy)
     {
         GenerateEnemyUI(baseEnemy);
+    }
+
+    public void AddPlayerUI(BasePlayer basePlayer)
+    {
+        GeneratePlayerUI(basePlayer);
     }
 
     public void RemoveEnemyUI(int index)
@@ -137,6 +148,24 @@ public class UIManager : SystemObject
         unuseObjectQueue.Enqueue(useObjectList[index]);
         useObjectList.RemoveAt(index);
         enemyUIList.RemoveAt(index);
+    }
+
+    private void GeneratePlayerUI(BasePlayer basePlayer)
+    {
+        PlayerUI playerUI = null;
+        GameObject UIObject = Instantiate(playerUIObject, new Vector3(-150.0f, 80.0f, 0.0f), Quaternion.identity, parentOverlay);
+
+        // クラスを取得
+        playerUI = UIObject.GetComponent<PlayerUI>();
+        playerUI.Setup(basePlayer);
+
+        RectTransform rectTransform = UIObject.GetComponent<RectTransform>();
+
+        // 左上に配置するための設定
+        rectTransform.anchorMin = new Vector2(0, 1);  // 左上基準
+        rectTransform.anchorMax = new Vector2(0, 1);
+        rectTransform.pivot = new Vector2(0, 1);      // 左上ピボット
+        rectTransform.anchoredPosition = new Vector2(50, -30); // 左上から少しオフセット
     }
 
     /// <summary>
@@ -160,8 +189,6 @@ public class UIManager : SystemObject
 
         // クラスを取得
         enemyUI = UIObject.GetComponent<EnemyUI>();
-        
-        // 使用前のセットアップ 
         enemyUI.Setup(baseEnemy, UIObject);
 
         // 使用中リストに追加
