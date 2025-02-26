@@ -77,7 +77,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4294958848
-  m_fontColor: {r: 0, g: 0.8727238, b: 1, a: 1}
+  m_fontColor: {r: 0.83597493, g: 0.8490566, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -148,6 +148,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37cf0ac398e495649b476b01a1774171, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fadeInFont:
+    rid: -2
+  fadeOutFont:
+    rid: -2
   _textMeshPro: {fileID: 4769409175254973727}
   _delayFrame: 45
   _bounceTime: 0.15
@@ -269,3 +273,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }

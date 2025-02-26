@@ -10,13 +10,9 @@ public class FadeInBounce : FadeInFont
     [SerializeField]
     private TMP_Text _textMeshPro;
 
-    [SerializeField]
     private int _delayFrame = 5;
-    [SerializeField]
     private float _bounceTime = 1f;
-    [SerializeField]
     private float _bounceHeight = 1;
-    [SerializeField]
     private float _scaleUpValue = 1;
 
     [SerializeField]

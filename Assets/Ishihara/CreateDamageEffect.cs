@@ -29,7 +29,7 @@ public class CreateDamageEffect : MonoBehaviour, DamageObserver
 
     public void OnDamage(Vector3 position, int damage)
     {
-        Camera.main.WorldToViewportPoint(position);
+        position = Camera.main.WorldToScreenPoint(position);
         int activeNumber = -1; 
         for (int i = 0; i < POOL_COUNT; i++)
         {
