@@ -114,13 +114,15 @@ public class UIManager : SystemObject
         for (int i = 0, max = enemyUIList.Count; i < max; i++)
         {
             if (IsEmpty(enemyUIList) != true)
-                ;
+                
             if (enemyUIList[i].health <= 0)
             {
                 RemoveEnemyUI(i);
                 max -= 1;
             }
         }
+
+
     }
 
     public void AddEnemyUI(BaseEnemy baseEnemy)
