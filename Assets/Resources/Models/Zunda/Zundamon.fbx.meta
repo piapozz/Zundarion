@@ -311,7 +311,7 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.20833334
+      - time: 0.25131327
         functionName: EffectEvent
         data: 
         objectReferenceParameter: {instanceID: 0}
