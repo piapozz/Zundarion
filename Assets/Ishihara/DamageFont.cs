@@ -48,7 +48,6 @@ public class DamageFont : FontEffect
     private async void FadeOutFont()
     {
         Move();
-        //_ = CommonModule.WaitAction(_fadeOutTime + 0.3f, SetActive, false);
     }
 
     private async UniTask Move()

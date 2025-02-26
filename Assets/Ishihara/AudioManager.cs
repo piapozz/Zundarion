@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Audio;
-using static UnityEngine.Rendering.VolumeComponent;
 
-public class AudioManager : MonoBehaviour
+public class AudioManager : SystemObject
 {
     public enum BGM
     {
@@ -31,42 +30,26 @@ public class AudioManager : MonoBehaviour
 
     AudioMixer audioMixer;
 
-    [SerializeField] GameObject BGMSourceOrigin;
-    [SerializeField] GameObject SESourceOrigin;
+    [SerializeField]
+    private GameObject _bgmSourceOrigin;
+
+    [SerializeField]
+    private GameObject _seSourceOrigin;
+
+    [SerializeField]
+    private BGMClip _bgmClip;
 
     public static AudioManager instance = null;
 
     private List<AudioSource> BGMSourceList;
     private List<AudioSource> SESourceList;
 
-    private List<AudioClip> BGMClip = new List<AudioClip>();
-    private List<AudioClip> SEClip = new List<AudioClip>();
-
-    void Awake()
+    public override void Initialize()
     {
         instance = this;
 
         BGMSourceList = new List<AudioSource>();
         SESourceList = new List<AudioSource>();
-
-        // BGMのclipを取得する
-        BGMClip.Add(Resources.Load<AudioClip>("Sounds/BGM/SHOUTING_ON_THE_EDGE"));
-        BGMClip.Add(Resources.Load<AudioClip>("Sounds/BGM/take_me_high"));
-        BGMClip.Add(Resources.Load<AudioClip>("Sounds/BGM/オール・オール・グリーン・サイコ"));
-
-        // SEのclipを取得する
-        SEClip.Add(Resources.Load<AudioClip>("enter"));
-        SEClip.Add(Resources.Load<AudioClip>("select"));
-        SEClip.Add(Resources.Load<AudioClip>("return"));
-        SEClip.Add(Resources.Load<AudioClip>("clear"));
-        SEClip.Add(Resources.Load<AudioClip>("gameover"));
-        SEClip.Add(Resources.Load<AudioClip>("juingle"));
-        SEClip.Add(Resources.Load<AudioClip>("uiDisplay"));
-    }
-
-    private void Update()
-    {
-
     }
 
     // BGMを流す関数
@@ -74,7 +57,7 @@ public class AudioManager : MonoBehaviour
     {
         AudioSource source = GetUnusedBGMSource(BGMSourceList);
 
-        source.clip = BGMClip[(int)num];
+        source.clip = _bgmClip.bgmClips[(int)num];
 
         source.Play();
     }
@@ -84,7 +67,7 @@ public class AudioManager : MonoBehaviour
     {
         AudioSource source = GetUnusedSESource(SESourceList);
 
-        source.PlayOneShot(SEClip[(int)num], volume);
+        source.PlayOneShot(_bgmClip.bgmClips[(int)num], volume);
     }
 
     // 未使用のソースを取得する
@@ -105,7 +88,7 @@ public class AudioManager : MonoBehaviour
 
         if(number == -1)
         {
-            source.Add(Instantiate(BGMSourceOrigin, transform).GetComponent<AudioSource>());
+            source.Add(Instantiate(_bgmSourceOrigin, transform).GetComponent<AudioSource>());
             number = source.Count - 1;
         }
 
@@ -130,7 +113,7 @@ public class AudioManager : MonoBehaviour
 
         if (number == -1)
         {
-            source.Add(Instantiate(SESourceOrigin, transform).GetComponent<AudioSource>());
+            source.Add(Instantiate(_seSourceOrigin, transform).GetComponent<AudioSource>());
             number = source.Count - 1;
         }
 

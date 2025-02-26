@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class FadeManager : MonoBehaviour
+public class FadeManager : SystemObject
 {
     public static FadeManager instance = null;
 
@@ -14,7 +14,7 @@ public class FadeManager : MonoBehaviour
     private GameObject _fadeImage;
     private Material _fadeMaterial;
 
-    public void Awake()
+    public override void Initialize()
     {
         if (instance == null)
         {

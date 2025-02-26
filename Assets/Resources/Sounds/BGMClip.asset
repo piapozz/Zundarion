@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85eb4c4185aebd14d90c0ed2a9a5ce75, type: 3}
+  m_Name: BGMClip
+  m_EditorClassIdentifier: 
+  bgmClips:
+  - {fileID: 8300000, guid: 17f64290eaf18bf4ea950ba8b8135840, type: 3}
+  - {fileID: 8300000, guid: 25f0f38fa390f064bad8b57f77d1f1e6, type: 3}
+  - {fileID: 8300000, guid: 3c2cdecd9ccb5674283293e07a9cbd1a, type: 3}
