@@ -132,6 +132,20 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
+      - time: 0.04187552
+        functionName: CreateCollisionEvent
+        data: 
+        objectReferenceParameter: {fileID: 11400000, guid: 9f5766af2c9511e4c9c4cfb3bf99bb08, type: 2}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.125
+        functionName: CreateCollisionEvent
+        data: 
+        objectReferenceParameter: {fileID: 11400000, guid: 9f5766af2c9511e4c9c4cfb3bf99bb08, type: 2}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
@@ -175,6 +189,20 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
+      - time: 0.11111111
+        functionName: CreateCollisionEvent
+        data: 
+        objectReferenceParameter: {fileID: 11400000, guid: e5f95af8dfa92f4438a3ce4204dddcda, type: 2}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.25347224
+        functionName: CreateCollisionEvent
+        data: 
+        objectReferenceParameter: {fileID: 11400000, guid: e5f95af8dfa92f4438a3ce4204dddcda, type: 2}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
@@ -215,6 +243,20 @@ ModelImporter:
         functionName: MoveEvent
         data: 
         objectReferenceParameter: {fileID: 11400000, guid: 1e5278c1ce98b43449d047b4ac87f38a, type: 2}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.07638889
+        functionName: CreateCollisionEvent
+        data: 
+        objectReferenceParameter: {fileID: 11400000, guid: a596f533c27e48141be28dd7fdc4686b, type: 2}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.20138888
+        functionName: CreateCollisionEvent
+        data: 
+        objectReferenceParameter: {fileID: 11400000, guid: a596f533c27e48141be28dd7fdc4686b, type: 2}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
@@ -268,6 +310,20 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
+      - time: 0.17708333
+        functionName: CreateCollisionEvent
+        data: 
+        objectReferenceParameter: {fileID: 11400000, guid: f286472cf778b374e9ab8fe9c15ee54a, type: 2}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.40277776
+        functionName: CreateCollisionEvent
+        data: 
+        objectReferenceParameter: {fileID: 11400000, guid: f286472cf778b374e9ab8fe9c15ee54a, type: 2}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
@@ -304,17 +360,52 @@ ModelImporter:
         floatParameter: 0
         intParameter: 35
         messageOptions: 0
-      - time: 0.10763889
-        functionName: MoveEvent
+      - time: 0.22625062
+        functionName: EffectEvent
         data: 
-        objectReferenceParameter: {fileID: 11400000, guid: 642c6356d0f62d442875407a3528d95a, type: 2}
+        objectReferenceParameter: {fileID: 11400000, guid: 4cc9595011a09304ea3c032e424e0cf2, type: 2}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.25131327
-        functionName: EffectEvent
+      - time: 0.25
+        functionName: CreateCollisionEvent
         data: 
-        objectReferenceParameter: {instanceID: 0}
+        objectReferenceParameter: {fileID: 11400000, guid: 1deb8355977330b45bff1122526d7f77, type: 2}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.2777778
+        functionName: CreateCollisionEvent
+        data: 
+        objectReferenceParameter: {fileID: 11400000, guid: 1deb8355977330b45bff1122526d7f77, type: 2}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.2986111
+        functionName: CreateCollisionEvent
+        data: 
+        objectReferenceParameter: {fileID: 11400000, guid: 1deb8355977330b45bff1122526d7f77, type: 2}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.3784722
+        functionName: CreateCollisionEvent
+        data: 
+        objectReferenceParameter: {fileID: 11400000, guid: 1deb8355977330b45bff1122526d7f77, type: 2}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.3983396
+        functionName: CreateCollisionEvent
+        data: 
+        objectReferenceParameter: {fileID: 11400000, guid: 1deb8355977330b45bff1122526d7f77, type: 2}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.42361113
+        functionName: CreateCollisionEvent
+        data: 
+        objectReferenceParameter: {fileID: 11400000, guid: 1deb8355977330b45bff1122526d7f77, type: 2}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0

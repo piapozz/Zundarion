@@ -21,8 +21,16 @@ public class EffectManager : SystemObject
         instance = this;
     }
 
-    public void GenerateEffect(int ID, Vector3 position)
+    public void GenerateEffect(EffectGenerateData data, Transform setTransform)
     {
-        Instantiate(_effectObject[ID], position, Quaternion.identity);
+        GameObject geneffect = Instantiate(_effectObject[data.ID], data.dir * data.length, Quaternion.identity);
+
+        // ç¿ïWê›íË
+        Vector3 genPos = setTransform.position;
+        float angle = setTransform.rotation.eulerAngles.y * Mathf.Deg2Rad;
+        float length = data.length;
+        Vector3 offset = new Vector3(Mathf.Sin(angle) * length, 1, Mathf.Cos(angle) * length);
+        genPos += offset;
+        geneffect.transform.position = genPos;
     }
 }
