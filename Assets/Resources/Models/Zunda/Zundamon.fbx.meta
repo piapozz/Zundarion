@@ -360,6 +360,20 @@ ModelImporter:
         floatParameter: 0
         intParameter: 35
         messageOptions: 0
+      - time: 0.10069444
+        functionName: MoveEvent
+        data: 
+        objectReferenceParameter: {fileID: 11400000, guid: 642c6356d0f62d442875407a3528d95a, type: 2}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.19097222
+        functionName: InvisibleEvent
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 20
+        messageOptions: 0
       - time: 0.22625062
         functionName: EffectEvent
         data: 
@@ -388,21 +402,28 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.3784722
+      - time: 0.40504906
+        functionName: MoveEvent
+        data: 
+        objectReferenceParameter: {fileID: 11400000, guid: b9eccb3cae678a44daeac95a4791f8bb, type: 2}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.4285975
         functionName: CreateCollisionEvent
         data: 
         objectReferenceParameter: {fileID: 11400000, guid: 1deb8355977330b45bff1122526d7f77, type: 2}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.3983396
+      - time: 0.45848998
         functionName: CreateCollisionEvent
         data: 
         objectReferenceParameter: {fileID: 11400000, guid: 1deb8355977330b45bff1122526d7f77, type: 2}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.42361113
+      - time: 0.48376152
         functionName: CreateCollisionEvent
         data: 
         objectReferenceParameter: {fileID: 11400000, guid: 1deb8355977330b45bff1122526d7f77, type: 2}
@@ -437,7 +458,56 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0.22222222
+        functionName: MoveEvent
+        data: 
+        objectReferenceParameter: {fileID: 11400000, guid: dc447a34886ed8044a5a84bfb0e4e607, type: 2}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.25694445
+        functionName: CreateCollisionEvent
+        data: 
+        objectReferenceParameter: {fileID: 11400000, guid: 4ef170765380c0e489889714de725303, type: 2}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.5868056
+        functionName: MoveEvent
+        data: 
+        objectReferenceParameter: {fileID: 11400000, guid: a0f30c9131f5d254fbfcad03fe666139, type: 2}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.34375
+        functionName: CreateCollisionEvent
+        data: 
+        objectReferenceParameter: {fileID: 11400000, guid: 4ef170765380c0e489889714de725303, type: 2}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.43749997
+        functionName: CreateCollisionEvent
+        data: 
+        objectReferenceParameter: {fileID: 11400000, guid: 4ef170765380c0e489889714de725303, type: 2}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.5381944
+        functionName: CreateCollisionEvent
+        data: 
+        objectReferenceParameter: {fileID: 11400000, guid: 4ef170765380c0e489889714de725303, type: 2}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.6388889
+        functionName: CreateCollisionEvent
+        data: 
+        objectReferenceParameter: {fileID: 11400000, guid: 4ef170765380c0e489889714de725303, type: 2}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
@@ -466,7 +536,21 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0
+        functionName: SetStiffEvent
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 15
+        messageOptions: 0
+      - time: 0
+        functionName: MoveEvent
+        data: 
+        objectReferenceParameter: {fileID: 11400000, guid: bd298442f11148c409c97e3ca602d2fc, type: 2}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
@@ -553,7 +637,21 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0
+        functionName: SetStiffEvent
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 60
+        messageOptions: 0
+      - time: 0.23263888
+        functionName: MoveEvent
+        data: 
+        objectReferenceParameter: {fileID: 11400000, guid: 14dd9028ccb5d3044a51885787a1e848, type: 2}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}

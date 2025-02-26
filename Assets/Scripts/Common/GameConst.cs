@@ -30,4 +30,7 @@ public class GameConst
     public const float PARRY_SLOW_SPEED = 0.25f;
     public const float PARRY_SLOW_TIME = 1.5f;
     public const float PRE_INPUT_TIME = 0.5f;
+
+    // ƒV[ƒ“‘JˆÚ
+    public const float SCENE_FADE_TIME = 1.0f;
 }
