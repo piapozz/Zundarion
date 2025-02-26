@@ -29,6 +29,9 @@ public abstract class BaseCharacter : MonoBehaviour
     [SerializeField]
     private DamageObserver _damageObserver = null;
 
+    [SerializeField]
+    private GameObject[] _childObjectArray = null;
+
     // キャラクターのステータス
     public float healthMax { get; protected set; } = -1;    // 最大体力
     public float health { get; protected set; } = -1;       // 現在の体力
@@ -144,6 +147,29 @@ public abstract class BaseCharacter : MonoBehaviour
     public void EffectEvent(EffectGenerateData data)
     {
         EffectManager.instance.GenerateEffect(data, transform);
+    }
+
+    /// <summary>
+    /// 一定時間不可視にするイベント
+    /// </summary>
+    /// <param name="frame"></param>
+    /// <returns></returns>
+    public async UniTask InvisibleEvent(int frame)
+    {
+        InvisibleAll(false);
+        await CommonModule.WaitAction(frame, InvisibleAll, true);
+    }
+
+    /// <summary>
+    /// 子オブジェクトのアクティブを切り替える
+    /// </summary>
+    /// <param name="visible"></param>
+    private void InvisibleAll(bool visible)
+    {
+        for (int i = 0, max = _childObjectArray.Length; i < max; i++)
+        {
+            _childObjectArray[i].gameObject.SetActive(visible);
+        }
     }
 
     /// <summary>

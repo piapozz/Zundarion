@@ -75,8 +75,7 @@ public abstract class BasePlayer : BaseCharacter
     /// 回避のクールダウンキャンセルトークン
     private CancellationTokenSource _avoidCTS = null;
 
-    private const float _RUN_SPEED_RATE = 1.25f;
-    private const float _AVOID_SPEED_RATE = 2.0f;
+    private const float _RUN_SPEED_RATE = 1.5f;
     private const float _ATTACK_SENS_RANGE = 10.0f;
     private const int _PARRY_COOL_DOWN_STOCK = 2;
     private const float _PARRY_COOL_DOWN_SECOND = 2.0f;
@@ -94,9 +93,11 @@ public abstract class BasePlayer : BaseCharacter
     }
 
     private void Update()
-    { 
+    {
+        // 先行入力処理
         PreInputExecute();
 
+        // 移動処理
         MoveExecute();
     }
 
@@ -107,33 +108,6 @@ public abstract class BasePlayer : BaseCharacter
     public void OnMove(InputAction.CallbackContext context)
     {
         _inputMoveDir = context.ReadValue<Vector2>();
-    }
-
-    /// <summary>
-    /// ActionsのRunに割り当てられている入力があったなら実行
-    /// </summary>
-    /// <param name="context"></param>
-    public void OnRun(InputAction.CallbackContext context)
-    {
-
-    }
-
-    /// <summary>
-    /// ActionsのAttakに割り当てられている入力があったなら実行
-    /// </summary>
-    /// <param name="context"></param>
-    public void OnAttack(InputAction.CallbackContext context)
-    {
-
-    }
-
-    /// <summary>
-    /// ActionsのParryに割り当てられている入力があったなら実行
-    /// </summary>
-    /// <param name="context"></param>
-    public void OnParry(InputAction.CallbackContext context)
-    {
-
     }
 
     /// <summary>
@@ -152,9 +126,10 @@ public abstract class BasePlayer : BaseCharacter
             selfAnimator.SetBool("Move", true);
         }
         else
+        {
+            _currentMultiplier = 1.0f;
             return;
-
-        SetWalkState();
+        }
 
         // 回転し移動
         Rotate(AdjustMoveDir());
@@ -174,7 +149,7 @@ public abstract class BasePlayer : BaseCharacter
         switch (input)
         {
             case InputType.Run:
-                UniTask task = AvoidExecute();
+                AvoidExecute();
                 break;
             case InputType.Attack:
                 AttackExecute();
@@ -190,25 +165,15 @@ public abstract class BasePlayer : BaseCharacter
     /// 回避アクションを実行
     /// </summary>
     /// <returns></returns>
-    private async UniTask AvoidExecute()
+    private void AvoidExecute()
     {
         if (_isStiff) return;
 
         // クールダウン中なら処理を抜ける
         if (CheckAvoidCoolDown()) return;
 
-        SetAvoidState();
-        while (!CheckAnimation(selfAnimationData.animationName[(int)PlayerAnimation.AVOID]))
-        {
-            await UniTask.DelayFrame(1);
-        }
-        // 回避が終わるまで待機
-        while (CheckAnimation(selfAnimationData.animationName[(int)PlayerAnimation.AVOID]))
-        {
-            Move(speed * _currentMultiplier);
-            await UniTask.DelayFrame(1);
-        }
-        SetRunState();
+        selfAnimator.SetTrigger(selfAnimationData.animationName[(int)PlayerAnimation.AVOID]);
+        _currentMultiplier = _RUN_SPEED_RATE;
     }
 
     private bool CheckAvoidCoolDown()
@@ -238,24 +203,6 @@ public abstract class BasePlayer : BaseCharacter
         // カメラ方向に基づいた移動ベクトルを計算
         Vector3 adjustedMove = (cameraRight * _inputMoveDir.x + cameraForward * _inputMoveDir.y).normalized;
         return adjustedMove;
-    }
-
-    private void SetAvoidState()
-    {
-        selfAnimator.SetTrigger(selfAnimationData.animationName[(int)PlayerAnimation.AVOID]);
-        _currentMultiplier = _AVOID_SPEED_RATE;
-        _isStiff = true;
-    }
-
-    private void SetWalkState()
-    {
-        _currentMultiplier = 1.0f;
-    }
-
-    private void SetRunState()
-    {
-        _currentMultiplier = _RUN_SPEED_RATE;
-        _isStiff = false;
     }
 
     /// <summary>
@@ -346,6 +293,12 @@ public abstract class BasePlayer : BaseCharacter
         base.TakeDamage(damageSize);
         if (health <= 0)
             selfAnimator.SetTrigger(selfAnimationData.animationName[(int)PlayerAnimation.DIE]);
+    }
+
+    public override void DeadEvent()
+    {
+        base.DeadEvent();
+        UniTask task = FadeManager.instance.TransScene("Result", SCENE_FADE_TIME);
     }
 
 #if GUI_OUTPUT
