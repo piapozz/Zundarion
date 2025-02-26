@@ -17,7 +17,7 @@ public class BearUpperState : BaseEnemyState
         stateInfo = enemy.selfAnimator.GetCurrentAnimatorStateInfo(0);
 
         // アニメーションが再生され終わったかを見てステートを変更する
-        if (stateInfo.normalizedTime >= 1.0f)
+        if (stateInfo.IsName("BearUpper") && stateInfo.normalizedTime >= 1.0f)
         {
             enemy.ChangeState(new BearWaitState());
         }

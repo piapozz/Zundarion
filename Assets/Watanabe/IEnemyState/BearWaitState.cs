@@ -2,11 +2,13 @@ using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 
 public class BearWaitState : BaseEnemyState
 {
-    float count = 0;
+    private float _count = 0;
+    private AnimatorStateInfo stateInfo;
 
     public override void Enter(BaseEnemy enemy)
     {
@@ -15,9 +17,11 @@ public class BearWaitState : BaseEnemyState
 
     public override void Execute(BaseEnemy enemy)
     {
-        count += Time.deltaTime;
+        //_count += Time.deltaTime;
+        //if (_count < _TRANITION_TIME) return;
 
-        if (count < 1) return;
+        stateInfo = enemy.selfAnimator.GetCurrentAnimatorStateInfo(0);
+        if (!stateInfo.IsName("BearWait")) return;
 
         enemy.ChangeState(new BearIdleState());
     }

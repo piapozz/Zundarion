@@ -12,9 +12,14 @@ public class SystemManager : MonoBehaviour
 
     private void Awake()
     {
+        // マウスカーソルを固定・非表示
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
 
+        // FPSを固定
+        Application.targetFrameRate = 60;
+
+        // マネージャーを初期化
         Initialize();
     }
 

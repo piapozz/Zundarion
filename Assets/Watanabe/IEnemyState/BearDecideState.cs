@@ -6,62 +6,45 @@ using UnityEngine;
 
 public class BearDecideState : BaseEnemyState
 {
-    float count = 0;
+    private AnimatorStateInfo stateInfo;
+    private EnemyBear enemyBear = null;
+    private float _count = 0;
 
     public override void Enter(BaseEnemy enemy)
     {
         enemy.SetAnimatorBool("Decide", true);
         SetEnemy(enemy);
+        enemyBear = enemy.GetComponent<EnemyBear>();
     }
 
     public override void Execute(BaseEnemy enemy)
     {
-        count += Time.deltaTime;
+        //_count += Time.deltaTime;
+        //if (_count < _TRANITION_TIME) return;
 
-        if (count < 3) return;
+        stateInfo = enemy.selfAnimator.GetCurrentAnimatorStateInfo(0);
+        if (!stateInfo.IsName("BearDecide")) return;
 
         Transform playerTransform = CharacterManager.instance.characterList[0].transform;
-        float distance = enemy.GetRelativePosition(playerTransform).magnitude;
+        float distance = GetDistance(playerTransform);
 
         // 遠すぎたら追いかける
-        if (GetDistance(playerTransform) >= 20.0f)
-        {
-            // 追いかける
-            enemy.ChangeState(new BearChasingState());
-        }
-
-        if (GetDistance(playerTransform) <= 5.0f)
+        if (distance >= _ENEMY_DISTANCE_FAR) { enemy.ChangeState(new BearChasingState()); }
+        // 近かったら
+        else if (distance <= _ENEMY_DISTANCE_NEAR)
         {
             // 怒りポイントを見て好戦的だったら攻撃
-            if (enemy.GetComponent<EnemyBear>().fury >= 50.0f)
-            {
-                // 攻撃する
-                enemy.ChangeState(new BearUpperState());
-            }
-
+            if (enemyBear.fury >= 50.0f) { enemy.ChangeState(new BearUpperState()); }
             // 控え目だったら急速で下がる
-            else
-            {
-                // 下がる
-                enemy.ChangeState(new BearJumpState());
-            }
+            else { enemy.ChangeState(new BearJumpState()); }
         }
-
-        if (GetDistance(playerTransform) >= 10.0f)
+        // 遠かったら
+        else if (distance >= _ENEMY_DISTANCE_NEAR)
         {
             // 好戦的だったら直接ジャンプ攻撃する
-            if (enemy.GetComponent<EnemyBear>().fury >= 50.0f)
-            {
-                // 攻撃する
-                enemy.ChangeState(new BearJumpAttackState());
-            }
-
+            if (enemyBear.fury >= 50.0f) { enemy.ChangeState(new BearJumpAttackState()); }
             // 間合いを取る
-            else
-            {
-                // 様子見を行う
-                enemy.ChangeState(new BearVigilanceState());
-            }
+            else { enemy.ChangeState(new BearVigilanceState()); }
         }
     }
 
