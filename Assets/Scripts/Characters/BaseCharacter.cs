@@ -141,9 +141,9 @@ public abstract class BaseCharacter : MonoBehaviour
     /// エフェクトを出すイベント
     /// </summary>
     /// <param name="ID"></param>
-    public void EffectEvent(int ID)
+    public void EffectEvent(EffectGenerateData data)
     {
-        EffectManager.instance.GenerateEffect(ID, transform.position);
+        EffectManager.instance.GenerateEffect(data, transform);
     }
 
     /// <summary>
