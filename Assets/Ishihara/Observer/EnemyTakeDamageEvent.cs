@@ -18,7 +18,7 @@ public class EnemyTakeDamageEvent : DamageObserver
         ComboManager.instance.AddCombo();
 
         // SE再生
-        AudioManager.instance.PlaySE(AudioManager.SE.HIT);
+        AudioManager.instance.PlaySE(SE.HIT);
 
         // ダメージエフェクト生成
 

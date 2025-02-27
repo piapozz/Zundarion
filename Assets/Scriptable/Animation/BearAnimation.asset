@@ -14,8 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animationName:
   - Idle
-  - Walk
-  - Run
-  - 
-  - 
-  - 
+  - Wandering
+  - Found
+  - Chasing
+  - Restaint
+  - Attack
+  - StrongAttack
+  - JumpAttack
+  - HitBackHigh
+  - HitBackLow
+  - Dying
+  - Upper
+  - Hammer
+  - Decide
+  - Vigilance
+  - Jump
+  - Wait

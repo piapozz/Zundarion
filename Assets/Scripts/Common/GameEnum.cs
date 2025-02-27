@@ -35,3 +35,19 @@ public enum PlayerAnimation
 
     MAX
 }
+
+public enum BGM
+{
+    TITLE = 0,
+    MAIN,
+    OTHER,
+
+    MAX
+}
+
+public enum SE
+{
+    HIT = 0,
+    ENEMY_OMEN,
+    MAX
+}

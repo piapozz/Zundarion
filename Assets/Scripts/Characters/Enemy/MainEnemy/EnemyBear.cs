@@ -23,13 +23,13 @@ public class EnemyBear : BaseEnemy
 
     private void Update()
     {
-        Debug.Log(enemyState);
+        // Debug.Log(enemyState);
         position = transform.position;
     }
 
-    public override void TakeDamage(float damageSize)
+    public override void TakeDamage(float damageSize, float strength)
     {
-        base.TakeDamage(damageSize);
+        base.TakeDamage(damageSize, strength);
         fury += _ENEMY_INCREASE_FURY;
 
     }

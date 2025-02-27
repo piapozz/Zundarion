@@ -12,7 +12,7 @@ public class PlayerTakeDamageEvent : DamageObserver
         // ダメージ表記
         UIManager.instance.GenerateDamageEffect(position, damage, Color.red);
         // SE再生
-        AudioManager.instance.PlaySE(AudioManager.SE.HIT);
+        AudioManager.instance.PlaySE(SE.HIT);
 
         // ダメージエフェクト生成
     }

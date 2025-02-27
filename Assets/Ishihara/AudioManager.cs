@@ -6,22 +6,6 @@ using UnityEngine.Audio;
 
 public class AudioManager : SystemObject
 {
-    public enum BGM
-    {
-        TITLE = 0,
-        MAIN,
-        OTHER,
-
-        MAX
-    }
-
-    public enum SE
-    {   
-        HIT = 0,
-
-        MAX
-    }
-
     AudioMixer audioMixer;
 
     [SerializeField]
