@@ -16,7 +16,6 @@ public class CameraViewFix : MonoBehaviour
 {
     Camera camera;
     private Transform _player;
-    [SerializeField]
     private List<Collider> lastRaycastHit = new List<Collider>();
 
     void Start()
