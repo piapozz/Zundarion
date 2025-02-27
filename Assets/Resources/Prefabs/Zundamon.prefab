@@ -2397,10 +2397,9 @@ MonoBehaviour:
   _childObjectArray:
   - {fileID: 8490218982257343956}
   - {fileID: 5260986830738389849}
-  _rigidbody: {fileID: 8291126890484967174}
   selfAnimator: {fileID: 9087602159865906689}
+  _selfAnimationData: {fileID: 11400000, guid: f03e0162b8d9cbe4180198f9a6d7de7d, type: 2}
   _selfPreInput: {fileID: 4235519568728557811}
-  playerAnimation: {fileID: 11400000, guid: f03e0162b8d9cbe4180198f9a6d7de7d, type: 2}
 --- !u!136 &4987976259458873354
 CapsuleCollider:
   m_ObjectHideFlags: 0

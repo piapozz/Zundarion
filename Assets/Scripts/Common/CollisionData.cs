@@ -55,6 +55,7 @@ public class CollisionData : MonoBehaviour
         if (hitCharacter == null) return;
 
         BaseCharacter sourceCharacter = CharacterManager.instance.GetCharacter(characterID);
+        if (sourceCharacter == null) return;
         if (isParry)
             // ƒŠƒXƒg‚É“ü‚ê‚é
             CollisionManager.instance.parryList.Add(sourceCharacter);

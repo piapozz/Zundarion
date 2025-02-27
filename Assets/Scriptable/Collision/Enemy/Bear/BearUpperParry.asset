@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: BearUpperParry
   m_EditorClassIdentifier: 
   isParry: 1
-  distance: 1.5
+  distance: 1
   scale: 5
   damage: -1
   generateTime: 0.7

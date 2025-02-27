@@ -28,9 +28,6 @@ public abstract class BasePlayer : BaseCharacter
     /// <summary>アニメーションの再生速度</summary>
     public float selfAnimationSpeed { get; protected set; }
 
-    /// <summary>アニメーションのパラメーター情報</summary>
-    public AnimationData selfAnimationData { get; protected set; }
-
     /// <summary>自身の前方アングル</summary>
     public float selfFrontAngleZ { get; set; }
 
@@ -172,7 +169,7 @@ public abstract class BasePlayer : BaseCharacter
         // クールダウン中なら処理を抜ける
         if (CheckAvoidCoolDown()) return;
 
-        selfAnimator.SetTrigger(selfAnimationData.animationName[(int)PlayerAnimation.AVOID]);
+        selfAnimator.SetTrigger(_selfAnimationData.animationName[(int)PlayerAnimation.AVOID]);
         _currentMultiplier = _RUN_SPEED_RATE;
     }
 
@@ -211,7 +208,7 @@ public abstract class BasePlayer : BaseCharacter
     public void AttackExecute()
     {
         // アニメーション設定
-        selfAnimator.SetTrigger(selfAnimationData.animationName[(int)PlayerAnimation.ATTACK]);
+        selfAnimator.SetTrigger(_selfAnimationData.animationName[(int)PlayerAnimation.ATTACK]);
         // 敵の方向を向く
         BaseCharacter character = CharacterManager.instance.GetNearCharacter(this, _ATTACK_SENS_RANGE);
         if (character == null) return;
@@ -230,19 +227,18 @@ public abstract class BasePlayer : BaseCharacter
         if (parryList.Count <= 0)
         {
             // アニメーションをセット
-            selfAnimator.SetTrigger(selfAnimationData.animationName[(int)PlayerAnimation.PARRY_MISS]);
+            selfAnimator.SetTrigger(_selfAnimationData.animationName[(int)PlayerAnimation.PARRY_MISS]);
         }
         else
         {
             // アニメーションをセット
-            selfAnimator.SetTrigger(selfAnimationData.animationName[(int)PlayerAnimation.PARRY]);
-            // パリィ相手のアニメーションをひるみにする
-            parryList[0].selfAnimator.SetTrigger(selfAnimationData.animationName[(int)PlayerAnimation.IMPACT]);
+            selfAnimator.SetTrigger(_selfAnimationData.animationName[(int)PlayerAnimation.PARRY]);
             // プレイヤーを敵の方向に向ける
             TurnAround(parryList[0].transform);
             // 通常カメラをリセット
             CameraManager.instance.SetFreeCam(transform.eulerAngles.y, 0.5f);
-
+            // パリィ相手のアニメーションをひるみにする
+            parryList[0].SetImpact();
         }
     }
 
@@ -292,14 +288,21 @@ public abstract class BasePlayer : BaseCharacter
     public override void TakeDamage(float damageSize, float strength)
     {
         base.TakeDamage(damageSize, strength);
+        // ひるむ
+        SetImpact();
         if (health <= 0)
-            selfAnimator.SetTrigger(selfAnimationData.animationName[(int)PlayerAnimation.DIE]);
+            selfAnimator.SetTrigger(_selfAnimationData.animationName[(int)PlayerAnimation.DIE]);
+    }
+
+    public override void SetImpact()
+    {
+        selfAnimator.SetTrigger(_selfAnimationData.animationName[(int)PlayerAnimation.IMPACT]);
     }
 
     public override void DeadEvent()
     {
         base.DeadEvent();
-        UniTask task = FadeManager.instance.TransScene("Result", SCENE_FADE_TIME);
+        UniTask task = FadeManager.instance.TransScene("GameResult", SCENE_FADE_TIME);
     }
 
 #if GUI_OUTPUT

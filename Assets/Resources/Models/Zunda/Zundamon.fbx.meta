@@ -367,6 +367,20 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
+      - time: 0.13721804
+        functionName: CreateCollisionEvent
+        data: 
+        objectReferenceParameter: {fileID: 11400000, guid: 1deb8355977330b45bff1122526d7f77, type: 2}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.18003343
+        functionName: CreateCollisionEvent
+        data: 
+        objectReferenceParameter: {fileID: 11400000, guid: 1deb8355977330b45bff1122526d7f77, type: 2}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       - time: 0.19097222
         functionName: InvisibleEvent
         data: 
@@ -374,28 +388,14 @@ ModelImporter:
         floatParameter: 0
         intParameter: 20
         messageOptions: 0
-      - time: 0.22625062
+      - time: 0.22123809
         functionName: EffectEvent
         data: 
         objectReferenceParameter: {fileID: 11400000, guid: 4cc9595011a09304ea3c032e424e0cf2, type: 2}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.25
-        functionName: CreateCollisionEvent
-        data: 
-        objectReferenceParameter: {fileID: 11400000, guid: 1deb8355977330b45bff1122526d7f77, type: 2}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.2777778
-        functionName: CreateCollisionEvent
-        data: 
-        objectReferenceParameter: {fileID: 11400000, guid: 1deb8355977330b45bff1122526d7f77, type: 2}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.2986111
+      - time: 0.2560046
         functionName: CreateCollisionEvent
         data: 
         objectReferenceParameter: {fileID: 11400000, guid: 1deb8355977330b45bff1122526d7f77, type: 2}
@@ -409,7 +409,7 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.4285975
+      - time: 0.43110377
         functionName: CreateCollisionEvent
         data: 
         objectReferenceParameter: {fileID: 11400000, guid: 1deb8355977330b45bff1122526d7f77, type: 2}

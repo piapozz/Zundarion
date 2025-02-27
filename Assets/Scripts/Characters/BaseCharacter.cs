@@ -25,6 +25,10 @@ public abstract class BaseCharacter : MonoBehaviour
     [SerializeField]
     private int _ID = -1;
 
+    /// <summary>アニメーションのパラメーター情報</summary>
+    [SerializeField]
+    protected AnimationData _selfAnimationData;
+
     /// <summary>ダメージオブザーバー</summary>
     [SerializeField]
     private DamageObserver _damageObserver = null;
@@ -87,6 +91,14 @@ public abstract class BaseCharacter : MonoBehaviour
 
         if (health <= 0)
             CharacterManager.instance.RemoveCharacterList(_ID);
+    }
+
+    /// <summary>
+    /// ひるむ
+    /// </summary>
+    public virtual void SetImpact()
+    {
+
     }
 
     /// <summary>

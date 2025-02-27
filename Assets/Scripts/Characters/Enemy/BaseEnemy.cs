@@ -48,6 +48,11 @@ public class BaseEnemy : BaseCharacter
             selfAnimator.SetBool("Dying", true);
     }
 
+    public override void SetImpact()
+    {
+        selfAnimator.SetTrigger(_selfAnimationData.animationName[(int)EnemyAnimation.HIT_BACK_HIGH]);
+    }
+
     public void ChangeState(IEnemyState newState)
     {
         if (enemyState == newState || newState == null) return;

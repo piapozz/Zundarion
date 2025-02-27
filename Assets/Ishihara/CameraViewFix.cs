@@ -2,12 +2,6 @@ using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine;
 using System.Linq;
-using Unity.VisualScripting;
-using UnityEngine.XR;
-using static UnityEditor.Progress;
-using UnityEngine.UIElements;
-using UnityEngine.InputSystem.iOS;
-using System.Diagnostics;
 
 /// <summary>
 /// マテリアルの透過を制御するスクリプト
