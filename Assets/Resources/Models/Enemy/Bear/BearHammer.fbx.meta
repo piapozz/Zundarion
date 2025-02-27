@@ -57,6 +57,13 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
+      - time: 0.02309457
+        functionName: MoveEvent
+        data: 
+        objectReferenceParameter: {fileID: 11400000, guid: f676145f481fd8149886e4e4c8389d6b, type: 2}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       - time: 0.2451735
         functionName: MoveEvent
         data: 
@@ -64,17 +71,10 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.48042688
-        functionName: CreateCollisionEvent
+      - time: 0.29584667
+        functionName: EyeEffectEvent
         data: 
-        objectReferenceParameter: {fileID: 11400000, guid: cf52249c0b47c1a42b8b7d7c73300cb1, type: 2}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.02309457
-        functionName: MoveEvent
-        data: 
-        objectReferenceParameter: {fileID: 11400000, guid: f676145f481fd8149886e4e4c8389d6b, type: 2}
+        objectReferenceParameter: {fileID: 11400000, guid: ed280db26ab2a234fb04552c4a0341a9, type: 2}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
@@ -85,10 +85,17 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.4757843
+      - time: 0.41497338
         functionName: CreateCollisionEvent
         data: 
         objectReferenceParameter: {fileID: 11400000, guid: ea1e890f41f5b2e48b634fa6caf0d1de, type: 2}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.48042688
+        functionName: CreateCollisionEvent
+        data: 
+        objectReferenceParameter: {fileID: 11400000, guid: cf52249c0b47c1a42b8b7d7c73300cb1, type: 2}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0

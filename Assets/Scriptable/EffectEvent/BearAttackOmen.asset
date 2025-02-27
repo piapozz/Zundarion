@@ -9,11 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26598dd705daf2f409c55aeb49e8e735, type: 3}
-  m_Name: BearHammer
+  m_Script: {fileID: 11500000, guid: bae44e58f416d174c8e01d718f7b9bfd, type: 3}
+  m_Name: BearAttackOmen
   m_EditorClassIdentifier: 
-  isParry: 0
-  distance: 0
-  scale: 2.5
-  damage: 1.5
-  generateTime: 0.5
+  ID: 1
+  dir: {x: 0, y: 0, z: 0}
+  length: 0

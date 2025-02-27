@@ -1580,10 +1580,12 @@ MonoBehaviour:
   charaData: {fileID: 11400000, guid: c92e7374c55531b43b89b8b40a3a9053, type: 2}
   _ID: 1
   _childObjectArray: []
-  _rigidbody: {fileID: 8924379283247075946}
   selfAnimator: {fileID: 2245784756199610559}
   position: {x: 0, y: 0, z: 0}
   targetVec: {x: 0, y: 0, z: 0}
+  effectManager: {fileID: 0}
+  eyeLeft: {fileID: 7936962700944875299}
+  eyeRight: {fileID: 217010219112045000}
   fury: -1
 --- !u!136 &-7582454076540647926
 CapsuleCollider:

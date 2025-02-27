@@ -22,11 +22,14 @@ public class BaseEnemy : BaseCharacter
     public Vector3 targetVec;
 
     public IEnemyState enemyState = null;
+    public EffectManager effectManager = null;
+    [SerializeField] private GameObject eyeLeft = null, eyeRight = null;
 
     private void Start()
     {
         selfAnimator = GetComponent<Animator>();
         player = CharacterManager.instance.player;
+        effectManager = EffectManager.instance;
     }
 
     public void SetAnimatorTrigger(string triggerName) { selfAnimator?.SetTrigger(triggerName); }
@@ -38,18 +41,29 @@ public class BaseEnemy : BaseCharacter
 
     public override bool IsPlayer() { return false; }
 
-    public override void TakeDamage(float damageSize)
+    public override void TakeDamage(float damageSize, float strength)
     {
-        base.TakeDamage(damageSize);
+        base.TakeDamage(damageSize, strength);
         if (health <= 0)
             selfAnimator.SetBool("Dying", true);
     }
+
     public void ChangeState(IEnemyState newState)
     {
         if (enemyState == newState || newState == null) return;
         if(enemyState != null)enemyState.Exit(this);
         enemyState = newState;
         enemyState.Enter(this);
+    }
+
+    public void EyeEffectEvent(EffectGenerateData data)
+    {
+        AudioManager audioManager = AudioManager.instance;
+
+        EffectManager.instance.GenerateEffect(data, eyeLeft.transform);
+        EffectManager.instance.GenerateEffect(data, eyeRight.transform);
+
+        audioManager.PlaySE(SE.ENEMY_OMEN);
     }
 
     public void EnemyAction()

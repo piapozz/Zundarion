@@ -71,6 +71,13 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
+      - time: 0.27034187
+        functionName: EyeEffectEvent
+        data: 
+        objectReferenceParameter: {fileID: 11400000, guid: ed280db26ab2a234fb04552c4a0341a9, type: 2}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       - time: 0.27283844
         functionName: MoveEvent
         data: 
@@ -78,7 +85,7 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.44071606
+      - time: 0.40779385
         functionName: CreateCollisionEvent
         data: 
         objectReferenceParameter: {fileID: 11400000, guid: 51f9ba6884ec89c43a0ccf75add843a8, type: 2}

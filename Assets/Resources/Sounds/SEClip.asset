@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   seClips:
   - {fileID: 8300000, guid: 911e3f91958d8d34cbefd76f7f8aa431, type: 3}
+  - {fileID: 8300000, guid: 5c1cf293603adf44a9cf5058a588d031, type: 3}

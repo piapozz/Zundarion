@@ -57,7 +57,14 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.31907687
+      - time: 0.05899605
+        functionName: EyeEffectEvent
+        data: 
+        objectReferenceParameter: {fileID: 11400000, guid: ed280db26ab2a234fb04552c4a0341a9, type: 2}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.21735543
         functionName: CreateCollisionEvent
         data: 
         objectReferenceParameter: {fileID: 11400000, guid: a74e898d12d620b47b9b638dc38b298c, type: 2}
