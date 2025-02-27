@@ -38,6 +38,8 @@ public class SystemManager : MonoBehaviour
 
             systemList.Add(createObj);
         }
+
+        AudioManager.instance.PlayBGM(BGM.MAIN);
     }
 
     private void Update()

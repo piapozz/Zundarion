@@ -10,24 +10,15 @@ public class FadeManager : SystemObject
 {
     public static FadeManager instance = null;
 
+
     /// <summary>暗転用黒テクスチャ</summary>
+    [SerializeField]
     private GameObject _fadeImage;
     private Material _fadeMaterial;
 
     public override void Initialize()
     {
-        if (instance == null)
-        {
-            instance = this;
-        }
-        
-        if (this != instance)
-        {
-            Destroy(this);
-            return;
-        }
-
-        DontDestroyOnLoad(this.gameObject);
+        instance = this;
 
         // フェードプレハブ取得
         _fadeImage = Resources.Load<GameObject>("Prefabs/Fade/FadeImage");
@@ -71,5 +62,4 @@ public class FadeManager : SystemObject
 
         await UniTask.DelayFrame(1);
     }
-
 }
