@@ -18,9 +18,6 @@ public class CharacterManager : SystemObject
     [SerializeField]
     private GameObject playerOrigin = null;
 
-    [SerializeField]
-    public DamageObserver _damageObserver = null;
-
     public BasePlayer player { get; private set; } = null;
 
     public List<BaseCharacter> characterList { get; private set; } = null;
@@ -33,8 +30,6 @@ public class CharacterManager : SystemObject
         {
             characterList.Add(null);
         }
-
-        _damageObserver = new CreateDamageEffect();
 
         GeneratePlayer(playerOrigin, StageManager.instance.startTrasform);
     }
@@ -86,7 +81,9 @@ public class CharacterManager : SystemObject
             characterList[useID] = character;
         }
         character.SetTransform(genTransform);
-        character.SetDamageObserver(_damageObserver);
+        DamageObserver observer = character.IsPlayer() ? new PlayerTakeDamageEvent() : new EnemyTakeDamageEvent();
+        observer.Initialize();
+        character.SetDamageObserver(observer);
         return character;
     }
 

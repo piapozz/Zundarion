@@ -47,3 +47,4 @@ MonoBehaviour:
   _bgmSourceOrigin: {fileID: 1540173421147941049, guid: a70f70fbf49a0ce44968f4393db725a2, type: 3}
   _seSourceOrigin: {fileID: 4653732695220885922, guid: ec1c8f170601a1841994ce483b6f80b4, type: 3}
   _bgmClip: {fileID: 11400000, guid: 4b307be9474d5104aaad682bbe213374, type: 2}
+  _seClip: {fileID: 11400000, guid: 5873e73e609281a4b8cfab6e112e933e, type: 2}

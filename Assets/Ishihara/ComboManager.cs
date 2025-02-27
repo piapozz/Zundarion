@@ -8,6 +8,8 @@ public class ComboManager : SystemObject
     [SerializeField] 
     private TextMeshProUGUI _comboText = null;    // コンボ数を表示するテキスト
     [SerializeField]
+    private Canvas _comboCanvas = null;
+    [SerializeField]
     private float _comboTime = 1.5f;              // コンボが途切れるまでの時間
 
     public static ComboManager instance = null;
@@ -18,5 +20,13 @@ public class ComboManager : SystemObject
     public override void Initialize()
     {
         instance = this;
+        _comboCanvas.worldCamera = Camera.main;
+        _comboText.text = "0";
+    }
+
+    public void AddCombo()
+    {
+        _comboCount++;
+        _comboText.text = _comboCount.ToString();
     }
 }

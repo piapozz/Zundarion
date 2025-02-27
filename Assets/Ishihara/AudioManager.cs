@@ -16,14 +16,8 @@ public class AudioManager : SystemObject
     }
 
     public enum SE
-    {
-        ENTER = 0,
-        SELECT,
-        RETURN,
-        CLEAR,
-        GAMEOVER,
-        JINGLE,
-        UI_DISPLAY,
+    {   
+        HIT = 0,
 
         MAX
     }
@@ -39,6 +33,9 @@ public class AudioManager : SystemObject
     [SerializeField]
     private BGMClip _bgmClip;
 
+    [SerializeField]
+    SEClip _seClip;
+
     public static AudioManager instance = null;
 
     private List<AudioSource> BGMSourceList;
@@ -52,7 +49,10 @@ public class AudioManager : SystemObject
         SESourceList = new List<AudioSource>();
     }
 
-    // BGMを流す関数
+    /// <summary>
+    /// BGMを流す関数
+    /// </summary>
+    /// <param name="num"></param>
     public void PlayBGM(BGM num)
     {
         AudioSource source = GetUnusedBGMSource(BGMSourceList);
@@ -62,15 +62,22 @@ public class AudioManager : SystemObject
         source.Play();
     }
 
-    // SEを鳴らす関数
-    public void PlaySE(SE num, float volume)
+    /// <summary>
+    /// SEを鳴らす関数
+    /// </summary>
+    /// <param name="num"></param>
+    public void PlaySE(SE num)
     {
         AudioSource source = GetUnusedSESource(SESourceList);
 
-        source.PlayOneShot(_bgmClip.bgmClips[(int)num], volume);
+        source.PlayOneShot(_seClip.seClips[(int)num]);
     }
 
-    // 未使用のソースを取得する
+    /// <summary>
+    /// 未使用のソースを取得する
+    /// </summary>
+    /// <param name="source"></param>
+    /// <returns></returns>
     private AudioSource GetUnusedBGMSource(List<AudioSource> source)
     {
         int number = -1;
@@ -95,7 +102,11 @@ public class AudioManager : SystemObject
         return source[number];
     }
 
-    // 未使用のソースを取得する
+    /// <summary>
+    /// 未使用のソースを取得する
+    /// </summary>
+    /// <param name="source"></param>
+    /// <returns></returns>
     private AudioSource GetUnusedSESource(List<AudioSource> source)
     {
         int number = -1;
