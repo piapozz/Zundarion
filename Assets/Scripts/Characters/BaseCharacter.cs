@@ -73,9 +73,13 @@ public abstract class BaseCharacter : MonoBehaviour
     /// ダメージを受ける処理
     /// </summary>
     /// <param name="damageSize"></param>
-    public virtual void TakeDamage(float damageSize)
+    public virtual void TakeDamage(float damageSize, float strength)
     {
-        int damage = (int)(damageSize * multiplier);
+        if (health <= 0) return;
+
+        float defenceRatio = 100 / (defence + 100);
+        float damageRatio = damageSize * strength;
+        int damage = (int)(damageRatio * defenceRatio * multiplier);
 
         health -= damage;
 
@@ -125,6 +129,8 @@ public abstract class BaseCharacter : MonoBehaviour
         {
             // 指定された方向に移動
             transform.position += direction * speed / moveFrame;
+            //Vector3 nextPos = transform.position + direction * speed / moveFrame;
+            //_rigidbody.MovePosition(nextPos);
 
             frameCount++;
             // 1フレーム待ち
@@ -182,6 +188,7 @@ public abstract class BaseCharacter : MonoBehaviour
         // 向いている方向に移動
         Vector3 movePosition = transform.position + (transform.forward * speed * Time.deltaTime);
         transform.position = movePosition;
+        //_rigidbody.MovePosition(movePosition);
     }
 
     /// <summary>

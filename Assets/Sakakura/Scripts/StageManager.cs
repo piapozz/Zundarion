@@ -17,6 +17,8 @@ public class StageManager : SystemObject
 
     private List<BattleProcessor> _battleList = null;
 
+    public int battleCount { get; private set; } = 0;
+
     public Transform startTrasform { get; private set; } = null;
 
     public override void Initialize()
@@ -28,7 +30,8 @@ public class StageManager : SystemObject
         _stageData = _stageObject.GetStageData();
         startTrasform = _stageObject.GetSpownTransform();
         _battleList = new List<BattleProcessor>(_stageObject.GetBattle());
-        for (int i = 0, max = _battleList.Count; i < max; i++)
+        battleCount = _battleList.Count;
+        for (int i = 0; i < battleCount; i++)
         {
             _battleList[i].Initialize(i, _stageData.battleData[i]);
         }

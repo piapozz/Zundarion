@@ -60,7 +60,7 @@ public class CollisionData : MonoBehaviour
             CollisionManager.instance.parryList.Add(sourceCharacter);
         else
             // ƒ_ƒ[ƒW”»’è
-            hitCharacter.TakeDamage(damage);
+            hitCharacter.TakeDamage(damage, sourceCharacter.strength);
     }
 
     private void OnTriggerExit(Collider other)

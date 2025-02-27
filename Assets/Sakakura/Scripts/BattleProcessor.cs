@@ -1,7 +1,10 @@
+using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+
+using static GameConst;
 
 public class BattleProcessor : MonoBehaviour
 {
@@ -12,13 +15,14 @@ public class BattleProcessor : MonoBehaviour
     public bool isFinished { get; private set; } = false;
     // 今何ウェーブ目か
     private int _waveCount = -1;
-    // 今何体か
-    private List<GameObject> _enemyList = null;
     // バトルデータ
     private BattleData _battleData = null;
 
     [SerializeField]
     private Transform[] _anchor = null;
+
+    [SerializeField]
+    private GameObject _closeObject = null;
 
     public void Initialize(int setBattleNum, BattleData setBattleData)
     {
@@ -30,17 +34,10 @@ public class BattleProcessor : MonoBehaviour
     {
         if (!_isStart || isFinished) return;
 
-        if (_waveCount >= _battleData.waveData.Length)
-            isFinished = true;
-
+        // 敵がいるなら処理しない
         if (CharacterManager.instance.IsAliveEnemy()) return;
 
-        _waveCount++;
-        if (_waveCount >= _battleData.waveData.Length)
-            isFinished = true;
-        else
-            StartWave(_battleData.waveData[_waveCount]);
-
+        NextWave();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -50,8 +47,19 @@ public class BattleProcessor : MonoBehaviour
         if (other.tag != "Player") return;
 
         if (!StageManager.instance.CanNextBattle(_battleNum)) return;
-        _isStart = true;
-        StageManager.instance.NextBattle();
+        StartBattle();
+    }
+
+    /// <summary>
+    /// ウェーブを進める
+    /// </summary>
+    private void NextWave()
+    {
+        _waveCount++;
+        if (_waveCount >= _battleData.waveData.Length)
+            FinishBattle();
+        else
+            StartWave(_battleData.waveData[_waveCount]);
     }
 
     /// <summary>
@@ -60,23 +68,37 @@ public class BattleProcessor : MonoBehaviour
     /// <param name="waveData"></param>
     private void StartWave(WaveData waveData)
     {
+        // ウェーブのすべての敵を出現させる
         int charaCount = waveData.generateCharacterData.Length;
         for (int i = 0; i < charaCount; i++)
         {
             GameObject genObject = waveData.generateCharacterData[i].characterPrefab;
             int genAnchorNum = waveData.generateCharacterData[i].generateAnchorNum;
-            Transform genTransform = _anchor[i];
+            Transform genTransform = _anchor[genAnchorNum];
             CharacterManager.instance.GenerateEnemy(genObject, genTransform);
         }
     }
 
     /// <summary>
-    /// ウェーブを進める
+    /// 戦闘を開始する
     /// </summary>
-    public void NextBattle()
+    private void StartBattle()
     {
-        _waveCount++;
-        StartWave(_battleData.waveData[_waveCount]);
+        _isStart = true;
+        _closeObject.SetActive(true);
+        NextWave();
+        StageManager.instance.NextBattle();
+    }
+
+    /// <summary>
+    /// 戦闘を終了する
+    /// </summary>
+    private void FinishBattle()
+    {
+        isFinished = true;
+        _closeObject.SetActive(false);
+        if (StageManager.instance.battleCount <= _battleNum + 1)
+            FadeManager.instance.TransScene("Result", SCENE_FADE_TIME);
     }
 
     public Transform[] GetAnchors()

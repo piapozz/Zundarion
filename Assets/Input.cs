@@ -90,7 +90,7 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
                     ""id"": ""a2cf9687-7c04-43c3-bfe5-620a41712fd7"",
                     ""path"": ""<Gamepad>/rightStick"",
                     ""interactions"": """",
-                    ""processors"": ""InvertVector2(invertX=false)"",
+                    ""processors"": ""InvertVector2(invertX=false),ScaleVector2(x=5,y=5)"",
                     ""groups"": """",
                     ""action"": ""Look"",
                     ""isComposite"": false,
