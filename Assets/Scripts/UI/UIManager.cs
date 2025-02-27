@@ -9,6 +9,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Xml.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -26,6 +27,7 @@ public class UIManager : SystemObject
     public static UIManager instance { get; private set; } = null;
 
     private readonly int INITIAL_COUNT = 1;
+    public static readonly int POOL_COUNT = 100;
 
     [SerializeField] private GameObject damageEffect;
 
@@ -39,11 +41,10 @@ public class UIManager : SystemObject
     private Transform parent = null;
     private Transform parentOverlay = null;
 
-    private DamageObserver damageObserver = null;
-
     private List<EnemyUI> enemyUIList = null;
     private List<GameObject> useObjectList = null;
     private Queue<GameObject> unuseObjectQueue = null;
+    List<GameObject> _damageEffectList = null;
 
     Vector3 viewportPos;
 
@@ -74,9 +75,14 @@ public class UIManager : SystemObject
                 unuseObjectQueue.Enqueue(Instantiate(enemyUIObject, new Vector3(0.0f, 0.0f, 0.0f), Quaternion.identity, parent));
             }
         }
-
-        damageObserver = CharacterManager.instance._damageObserver;
-        damageObserver.Initialize(damageEffect, worldSpace);
+        _damageEffectList = new List<GameObject>(POOL_COUNT);
+        // プール
+        for (int i = 0; i < POOL_COUNT; i++)
+        {
+            var effect = Instantiate(damageEffect, new Vector3(0, 0, 0), Quaternion.identity, spaceOverlay.transform);
+            effect.SetActive(false);
+            _damageEffectList.Add(effect);
+        }
     }
 
     public override void Proc()
@@ -150,6 +156,53 @@ public class UIManager : SystemObject
         enemyUIList.RemoveAt(index);
     }
 
+    public void GenerateDamageEffect(Vector3 position, int damage, Color color)
+    {
+        position = Camera.main.WorldToScreenPoint(position);
+        int activeNumber = -1;
+        for (int i = 0; i < POOL_COUNT; i++)
+        {
+            if (_damageEffectList[i] == null || !_damageEffectList[i].activeSelf)
+            {
+                activeNumber = i;
+                _damageEffectList[activeNumber].SetActive(true);
+                break;
+            }
+        }
+
+        if (activeNumber < 0) return;
+
+        // 位置をずらす
+        float dir = UnityEngine.Random.Range(0,360);
+        float length = UnityEngine.Random.Range(100,150);
+
+        SetPosition(_damageEffectList[activeNumber], dir, length, position);
+
+        // ダメージの値を設定する
+        var text =_damageEffectList[activeNumber].GetComponent<TextMeshProUGUI>();
+        if (text == null) return;
+
+        text.text = string.Format("{0}!!", damage);
+
+        // 色を設定
+        text.color = color;
+        text.faceColor = Color.white;
+
+        var damageEffect = _damageEffectList[activeNumber].GetComponent<DamageFont>();
+        damageEffect.Execution();
+
+    }
+
+    private void SetPosition(GameObject effect, float dir, float length, Vector3 position)
+    {
+        float angleInRadians = dir * Mathf.Deg2Rad;
+        Vector3 offset;
+        offset.x = length * Mathf.Cos(angleInRadians);
+        offset.y = length * Mathf.Sin(angleInRadians);
+        offset.z = 0;
+
+        effect.transform.position = offset + position;
+    }
     private void GeneratePlayerUI(BasePlayer basePlayer)
     {
         PlayerUI playerUI = null;
