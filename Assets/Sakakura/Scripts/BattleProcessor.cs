@@ -98,7 +98,7 @@ public class BattleProcessor : MonoBehaviour
         isFinished = true;
         _closeObject.SetActive(false);
         if (StageManager.instance.battleCount <= _battleNum + 1)
-            FadeManager.instance.TransScene("Result", SCENE_FADE_TIME);
+            FadeManager.instance.TransScene("GameResult", SCENE_FADE_TIME);
     }
 
     public Transform[] GetAnchors()

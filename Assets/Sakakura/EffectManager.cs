@@ -23,7 +23,7 @@ public class EffectManager : SystemObject
 
     public void GenerateEffect(EffectGenerateData data, Transform setTransform)
     {
-        GameObject geneffect = Instantiate(_effectObject[data.ID], data.dir * data.length, Quaternion.identity);
+        GameObject geneffect = Instantiate(_effectObject[data.ID], data.dir * data.length, Quaternion.identity, setTransform);
 
         // ç¿ïWê›íË
         Vector3 genPos = setTransform.position;

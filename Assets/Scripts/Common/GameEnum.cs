@@ -36,6 +36,30 @@ public enum PlayerAnimation
     MAX
 }
 
+public enum EnemyAnimation
+{
+    INVALID = -1,
+    IDLE,
+    WANDERING,
+    FOUND,
+    CHASING,
+    RESTAINT,
+    ATTACK,
+    STRONG_ATTACK,
+    JUMP_ATTACK,
+    HIT_BACK_HIGH,
+    HIT_BACK_LOW,
+    DYING,
+    UPPER,
+    HAMMER,
+    DECIDE,
+    VIGILANCE,
+    JUMP,
+    WAIT,
+
+    MAX
+}
+
 public enum BGM
 {
     TITLE = 0,
