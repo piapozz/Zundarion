@@ -15,5 +15,5 @@ MonoBehaviour:
   isParry: 0
   distance: 1
   scale: 1
-  damage: 10
+  damage: 800
   generateTime: 0.1

@@ -242,6 +242,7 @@ public abstract class BasePlayer : BaseCharacter
             TurnAround(parryList[0].transform);
             // 通常カメラをリセット
             CameraManager.instance.SetFreeCam(transform.eulerAngles.y, 0.5f);
+
         }
     }
 
@@ -263,11 +264,6 @@ public abstract class BasePlayer : BaseCharacter
         return false;
     }
 
-    private bool CheckAnimation(string animationName)
-    {
-        return selfAnimator.GetCurrentAnimatorStateInfo(0).IsName(animationName);
-    }
-
     /// <summary>
     /// 完全硬直を設定
     /// </summary>
@@ -286,11 +282,16 @@ public abstract class BasePlayer : BaseCharacter
         SlowManager.instance.SetSlow(PARRY_SLOW_SPEED, PARRY_SLOW_TIME);
     }
 
+    public void StartTimeEvent()
+    {
+        SlowManager.instance.StartTime();
+    }
+
     public override bool IsPlayer() { return true; }
 
-    public override void TakeDamage(float damageSize)
+    public override void TakeDamage(float damageSize, float strength)
     {
-        base.TakeDamage(damageSize);
+        base.TakeDamage(damageSize, strength);
         if (health <= 0)
             selfAnimator.SetTrigger(selfAnimationData.animationName[(int)PlayerAnimation.DIE]);
     }

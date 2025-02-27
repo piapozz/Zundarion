@@ -2330,9 +2330,9 @@ GameObject:
   m_Component:
   - component: {fileID: 2953669559327693947}
   - component: {fileID: 9087602159865906689}
+  - component: {fileID: 3372619454647401876}
   - component: {fileID: 4987976259458873354}
   - component: {fileID: 8291126890484967174}
-  - component: {fileID: 3372619454647401876}
   - component: {fileID: 4235519568728557811}
   - component: {fileID: 2592564701725501607}
   m_Layer: 0
@@ -2380,6 +2380,27 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &3372619454647401876
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2573343726670497473}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec5093543b35da84cb277f180bb73504, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  charaData: {fileID: 11400000, guid: 2682e0f7083dedc4ea653e2f1463900e, type: 2}
+  _ID: 0
+  _childObjectArray:
+  - {fileID: 8490218982257343956}
+  - {fileID: 5260986830738389849}
+  _rigidbody: {fileID: 8291126890484967174}
+  selfAnimator: {fileID: 9087602159865906689}
+  _selfPreInput: {fileID: 4235519568728557811}
+  playerAnimation: {fileID: 11400000, guid: f03e0162b8d9cbe4180198f9a6d7de7d, type: 2}
 --- !u!136 &4987976259458873354
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2406,27 +2427,10 @@ Rigidbody:
   m_Drag: 0
   m_AngularDrag: 0
   m_UseGravity: 1
-  m_IsKinematic: 1
+  m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 112
-  m_CollisionDetection: 0
---- !u!114 &3372619454647401876
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2573343726670497473}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec5093543b35da84cb277f180bb73504, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  charaData: {fileID: 11400000, guid: 2682e0f7083dedc4ea653e2f1463900e, type: 2}
-  _ID: 0
-  selfAnimator: {fileID: 9087602159865906689}
-  _selfPreInput: {fileID: 4235519568728557811}
-  playerAnimation: {fileID: 11400000, guid: f03e0162b8d9cbe4180198f9a6d7de7d, type: 2}
+  m_CollisionDetection: 3
 --- !u!114 &4235519568728557811
 MonoBehaviour:
   m_ObjectHideFlags: 0
