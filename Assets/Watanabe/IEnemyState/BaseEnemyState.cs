@@ -7,6 +7,7 @@ public abstract class BaseEnemyState : IEnemyState
     protected BaseEnemy enemy; // 現在の敵オブジェクトを参照
 
     protected readonly float _TRANITION_TIME = 1.5f;
+    protected readonly float _ENEMY_DISTANCE = 4.0f;
     protected readonly float _ENEMY_DISTANCE_NEAR = 3.0f;
     protected readonly float _ENEMY_DISTANCE_FAR = 10.0f;
 

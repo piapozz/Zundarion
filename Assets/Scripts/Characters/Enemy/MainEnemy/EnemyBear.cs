@@ -18,12 +18,12 @@ public class EnemyBear : BaseEnemy
 
     private void Start()
     {
-        ChangeState(new BearWanderingState());
+        ChangeState(new BearIdleState());
     }
 
     private void Update()
     {
-        // Debug.Log(enemyState);
+        Debug.Log(enemyState);
         position = transform.position;
     }
 
