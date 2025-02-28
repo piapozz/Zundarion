@@ -5,19 +5,14 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class FadeInBounce : FadeInFont
-{
-    [SerializeField]
+public class FadeInScaling : FadeInFont
+{    [SerializeField]
     private TMP_Text _textMeshPro;
-
-    private int _delayFrame = 5;
-    private float _bounceTime = 1f;
-    private float _bounceHeight = 1;
+    [SerializeField]
+    private float _scalingTime = 1f;
 
     [SerializeField]
-    private AnimationCurve _positionX;
-    [SerializeField]
-    private AnimationCurve _positionY;
+    private AnimationCurve _scale;
 
     private List<Vector3[]> _startPosition;
 
@@ -38,32 +33,39 @@ public class FadeInBounce : FadeInFont
             Vector3[] copiedVertices = (Vector3[])vertices.Clone();
             _startPosition.Add(copiedVertices);
 
-            AnimateBounce(characterInfo, vertices, _startPosition[i]);
-           
-            await UniTask.DelayFrame(60 - _delayFrame);
+            AnimateScaling(characterInfo, vertices, _startPosition[i], value);
         }
 
         await UniTask.DelayFrame(1);
     }
 
-    private async UniTask AnimateBounce(TMP_CharacterInfo characterInfo, Vector3[] vertices, Vector3[] startPosition)
+    private async UniTask AnimateScaling(TMP_CharacterInfo characterInfo, Vector3[] vertices, Vector3[] startPosition, float value = 1)
     {
         int vertexIndex = characterInfo.vertexIndex;
         float elapsedTime = 0.0f;
-
-        while (_textMeshPro != null && elapsedTime < _bounceTime)
+        Vector3[] goalPos = new Vector3[startPosition.Length];
+        float maxOffset =(_scale.Evaluate(_scalingTime) * value);
+        for (int i = 0, max = startPosition.Length; i < max; i++) 
         {
-            elapsedTime += Time.deltaTime;
-            float offsetX = _positionX.Evaluate(elapsedTime) * _bounceHeight;
-            float offsetY = _positionY.Evaluate(elapsedTime) * _bounceHeight;
+            goalPos[i] = maxOffset * startPosition[i];
+        }
+
+        while (_textMeshPro != null && elapsedTime < _scalingTime)
+        {
+            elapsedTime += 0.1f;
 
             for (int i = 0; i < 4; i++)
             {
-                vertices[vertexIndex + i] = startPosition[vertexIndex + i] + new Vector3(offsetX, offsetY, 0);
+                vertices[vertexIndex + i] = startPosition[vertexIndex + i] * Mathf.Lerp(_scale.Evaluate(0), maxOffset, elapsedTime);
             }
             _textMeshPro.UpdateVertexData(TMP_VertexDataUpdateFlags.Vertices);
-
             await UniTask.DelayFrame(1);
+
+        }
+
+        for (int i = 0; i < 4; i++)
+        {
+            vertices[vertexIndex + i] = startPosition[vertexIndex + i] * maxOffset;
         }
     }
 }

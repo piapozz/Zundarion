@@ -3,7 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface FadeOutFont
+public class FadeOutNorm : FadeOutFont
 {
-    public UniTask FadeOut(float value = 1);
+    public async UniTask FadeOut(float value = 1)
+    {
+        
+    }
 }

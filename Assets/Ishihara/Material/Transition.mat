@@ -131,7 +131,7 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 5
     - _Surface: 1
-    - _Transition: 1.0030396
+    - _Transition: 1
     - _WorkflowMode: 1
     - _ZTest: 8
     - _ZWrite: 0

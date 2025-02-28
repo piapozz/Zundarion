@@ -148,7 +148,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _comboText: {fileID: 6512707359548245731}
   _comboCanvas: {fileID: 1035716805}
-  _comboTime: 1.5
+  COMBO_TIME_RESET: 10
 --- !u!1 &5461017068631040524
 GameObject:
   m_ObjectHideFlags: 0
@@ -160,6 +160,7 @@ GameObject:
   - component: {fileID: 1302750649456414470}
   - component: {fileID: 4286063175601974174}
   - component: {fileID: 6512707359548245731}
+  - component: {fileID: 3268097642670393799}
   m_Layer: 5
   m_Name: ComboCounter
   m_TagString: Untagged
@@ -217,15 +218,15 @@ MonoBehaviour:
       m_Calls: []
   m_text: 0
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: a5388d2a75e713941bb45151f78673af, type: 2}
+  m_sharedMaterial: {fileID: -9112105517961203978, guid: a5388d2a75e713941bb45151f78673af, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4284703587
+  m_fontColor: {r: 0.38679248, g: 0.38679248, b: 0.38679248, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -242,8 +243,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 500
-  m_fontSizeBase: 500
+  m_fontSize: 150
+  m_fontSizeBase: 150
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -284,3 +285,55 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &3268097642670393799
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5461017068631040524}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6fd204360906e446b7277b8e8265a87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fadeInFont:
+    rid: 1695653176270389251
+  fadeOutFont:
+    rid: 1695653176270389250
+  _isDestory: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: 1695653176270389250
+      type: {class: FadeOutNorm, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1695653176270389251
+      type: {class: FadeInScaling, ns: , asm: Assembly-CSharp}
+      data:
+        _textMeshPro: {fileID: 6512707359548245731}
+        _scalingTime: 1
+        _scale:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: -0.001159668
+            inSlope: 1.0447192
+            outSlope: 1.0447192
+            tangentMode: 34
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0.33333334
+          - serializedVersion: 3
+            time: 0.99959016
+            value: 1.0431314
+            inSlope: 1.0447192
+            outSlope: 1.0447192
+            tangentMode: 34
+            weightedMode: 0
+            inWeight: 0.33333334
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4

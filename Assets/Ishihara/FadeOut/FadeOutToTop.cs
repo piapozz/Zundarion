@@ -15,7 +15,7 @@ public class FadeOutToTop : FadeOutFont
     [SerializeField]
     private float _fadeOutSpeed = 1;
 
-    public async UniTask FadeOut()
+    public async UniTask FadeOut(float value = 1)
     {
         Move();
     }

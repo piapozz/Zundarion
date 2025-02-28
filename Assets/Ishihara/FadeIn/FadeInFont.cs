@@ -5,5 +5,5 @@ using UnityEngine;
 
 public interface FadeInFont
 {
-    public abstract UniTask FadeIn();
+    public abstract UniTask FadeIn(float value = 1);
 }
