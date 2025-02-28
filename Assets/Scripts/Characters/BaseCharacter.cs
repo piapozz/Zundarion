@@ -12,6 +12,8 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+using static CommonModule;
+
 // 親クラスのpublicをインスペクター上に表示
 #if UNITY_EDITOR
 [CustomEditor(typeof(BaseCharacter))]
@@ -23,7 +25,7 @@ public abstract class BaseCharacter : MonoBehaviour
     private CharacterData charaData = null;       // キャラクターのデータ
 
     [SerializeField]
-    private int _ID = -1;
+    protected int ID = -1;
 
     /// <summary>アニメーションのパラメーター情報</summary>
     [SerializeField]
@@ -48,12 +50,15 @@ public abstract class BaseCharacter : MonoBehaviour
     /// <summary>アニメーターコンポーネント</summary>
     public Animator selfAnimator = null;
 
+    /// <summary>無敵かどうか</summary>
+    private bool _isInvincible = false;
+
     /// <summary>
     /// ScriptableObjectを使って初期化
     /// </summary>
     public void Initialize(int setID)
     {
-        _ID = setID;
+        ID = setID;
         healthMax = charaData.health;
         health = healthMax;
         strength = charaData.strength;
@@ -76,21 +81,30 @@ public abstract class BaseCharacter : MonoBehaviour
     /// <summary>
     /// ダメージを受ける処理
     /// </summary>
-    /// <param name="damageSize"></param>
-    public virtual void TakeDamage(float damageSize, float strength)
+    /// <param name="damageRatio"></param>
+    public virtual void TakeDamage(float damageRatio, float sourceStrength)
     {
-        if (health <= 0) return;
+        // 無敵なら処理しない
+        if (_isInvincible) return;
 
-        float defenceRatio = 100 / (defence + 100);
-        float damageRatio = damageSize * strength;
-        int damage = (int)(damageRatio * defenceRatio * multiplier);
-
-        health -= damage;
+        // ダメージ処理
+        int damage = GetDamage(sourceStrength, damageRatio);
+        health = Mathf.Max(0, (health - damage));
 
         _damageObserver.OnDamage(transform.position, damage);
+    }
 
-        if (health <= 0)
-            CharacterManager.instance.RemoveCharacterList(_ID);
+    /// <summary>
+    /// 計算後のダメージを取得する
+    /// </summary>
+    /// <param name="sourceStrength"></param>
+    /// <param name="damageRatio"></param>
+    /// <returns></returns>
+    protected int GetDamage(float sourceStrength, float damageRatio)
+    {
+        float defenceRatio = 100 / (defence + 100);
+        float damage = damageRatio * sourceStrength;
+        return (int)(damage * defenceRatio * multiplier);
     }
 
     /// <summary>
@@ -108,7 +122,7 @@ public abstract class BaseCharacter : MonoBehaviour
     public void CreateCollisionEvent(CharacterAttackData attackData)
     {
         // 生成
-        CollisionManager.instance.CreateCollisionSphere(_ID, attackData, transform);
+        CollisionManager.instance.CreateCollisionSphere(ID, attackData, transform);
     }
 
     /// <summary>
@@ -168,14 +182,33 @@ public abstract class BaseCharacter : MonoBehaviour
     }
 
     /// <summary>
+    /// 一定時間無敵にするイベント
+    /// </summary>
+    /// <param name="frame"></param>
+    public void InvincibleEvent(int frame)
+    {
+        SetInvincible(true);
+        UniTask task =WaitAction(frame, SetInvincible, false);
+    }
+
+    /// <summary>
+    /// 無敵の可否設定
+    /// </summary>
+    /// <param name="setInvincible"></param>
+    public void SetInvincible(bool setInvincible)
+    {
+        _isInvincible = setInvincible;
+    }
+
+    /// <summary>
     /// 一定時間不可視にするイベント
     /// </summary>
     /// <param name="frame"></param>
     /// <returns></returns>
-    public async UniTask InvisibleEvent(int frame)
+    public void InvisibleEvent(int frame)
     {
         InvisibleAll(false);
-        await CommonModule.WaitAction(frame, InvisibleAll, true);
+        UniTask task = WaitAction(frame, InvisibleAll, true);
     }
 
     /// <summary>
@@ -220,7 +253,7 @@ public abstract class BaseCharacter : MonoBehaviour
     /// </summary>
     /// <param name="dir"></param>
     /// <param name="speed"></param>
-    public void Rotate(Vector3 dir, float speed = GameConst.CHARACTER_ROTATE_SPEED)
+    public virtual void Rotate(Vector3 dir, float speed = GameConst.CHARACTER_ROTATE_SPEED)
     {
         // 移動ベクトルがゼロでない場合のみ処理を進める
         if (dir == Vector3.zero) return;
@@ -230,7 +263,7 @@ public abstract class BaseCharacter : MonoBehaviour
 
         // 現在の回転角度から目標の角度へ補間
         Quaternion targetRotation = Quaternion.AngleAxis(targetAngle - 90, Vector3.down);
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, speed * Time.deltaTime);
+        transform.rotation = Quaternion.LookRotation(dir, Vector3.up);
     }
 
     /// <summary>

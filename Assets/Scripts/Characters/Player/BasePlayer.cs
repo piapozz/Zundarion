@@ -91,11 +91,11 @@ public abstract class BasePlayer : BaseCharacter
 
     private void Update()
     {
-        // 先行入力処理
-        PreInputExecute();
-
         // 移動処理
         MoveExecute();
+
+        // 先行入力処理
+        PreInputExecute();
     }
 
     /// <summary>
@@ -169,8 +169,24 @@ public abstract class BasePlayer : BaseCharacter
         // クールダウン中なら処理を抜ける
         if (CheckAvoidCoolDown()) return;
 
-        selfAnimator.SetTrigger(_selfAnimationData.animationName[(int)PlayerAnimation.AVOID]);
-        _currentMultiplier = _RUN_SPEED_RATE;
+        // ジャスト回避になるか判定
+        List<BaseCharacter> parryList = CollisionManager.instance.parryList;
+        if (parryList.Count <= 0)
+        {
+            selfAnimator.SetTrigger(_selfAnimationData.animationName[(int)PlayerAnimation.AVOID]);
+            _currentMultiplier = _RUN_SPEED_RATE;
+        }
+        else
+        {
+            // アニメーションをセット
+            selfAnimator.SetTrigger(_selfAnimationData.animationName[(int)PlayerAnimation.JUST_AVOID]);
+            // プレイヤーを敵の方向に向ける
+            TurnAround(parryList[0].transform);
+            // 通常カメラをリセット
+            CameraManager.instance.SetFreeCam(transform.eulerAngles.y, 0.5f);
+            // パリィ相手のアニメーションをひるみにする
+            parryList[0].SetImpact();
+        }
     }
 
     private bool CheckAvoidCoolDown()
@@ -288,10 +304,14 @@ public abstract class BasePlayer : BaseCharacter
     public override void TakeDamage(float damageSize, float strength)
     {
         base.TakeDamage(damageSize, strength);
+
         // ひるむ
         SetImpact();
         if (health <= 0)
+        {
             selfAnimator.SetTrigger(_selfAnimationData.animationName[(int)PlayerAnimation.DIE]);
+            CharacterManager.instance.RemoveCharacterList(ID);
+        }
     }
 
     public override void SetImpact()

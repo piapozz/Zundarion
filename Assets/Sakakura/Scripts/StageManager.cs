@@ -60,4 +60,14 @@ public class StageManager : SystemObject
 
         return true;
     }
+
+    /// <summary>
+    /// ウェーブが終わっているか確認する
+    /// </summary>
+    public void CheckWaveFinish()
+    {
+        if (CharacterManager.instance.IsAliveEnemy()) return;
+
+        _battleList[_nowBattle].NextWave();
+    }
 }

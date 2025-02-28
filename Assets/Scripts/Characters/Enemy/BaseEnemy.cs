@@ -25,6 +25,8 @@ public class BaseEnemy : BaseCharacter
     public EffectManager effectManager = null;
     [SerializeField] private GameObject eyeLeft = null, eyeRight = null;
 
+    private const float _HIT_IMPACT_RATIO = 10;
+
     private void Start()
     {
         selfAnimator = GetComponent<Animator>();
@@ -44,8 +46,17 @@ public class BaseEnemy : BaseCharacter
     public override void TakeDamage(float damageSize, float strength)
     {
         base.TakeDamage(damageSize, strength);
+
+        // ˆê’è‚ÌŠ„‡‚Ìƒ_ƒ[ƒW‚ðŽó‚¯‚½‚ç‚Ð‚é‚Þ
+        if (GetDamage(strength, damageSize) > (healthMax / _HIT_IMPACT_RATIO))
+            SetImpact();
+
         if (health <= 0)
-            selfAnimator.SetBool("Dying", true);
+        {
+            selfAnimator.SetBool(_selfAnimationData.animationName[(int)EnemyAnimation.DYING], true);
+            CharacterManager.instance.RemoveCharacterList(ID);
+            StageManager.instance.CheckWaveFinish();
+        }
     }
 
     public override void SetImpact()
