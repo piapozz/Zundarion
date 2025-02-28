@@ -10,6 +10,18 @@ public class BearDecideState : BaseEnemyState
     private EnemyBear enemyBear = null;
     private float _count = 0;
 
+    private float speed = 1.0f;
+    private readonly float _ENEMY_VIGILANCE_TIME = 3.0f;
+
+    private enum NearAttack
+    {
+        ATTACK,
+        STRONG_ATTACK,
+        UPPER,
+
+        MAX
+    }
+
     public override void Enter(BaseEnemy enemy)
     {
         enemy.SetAnimatorBool("Decide", true);
@@ -19,14 +31,32 @@ public class BearDecideState : BaseEnemyState
 
     public override void Execute(BaseEnemy enemy)
     {
-        //_count += Time.deltaTime;
-        //if (_count < _TRANITION_TIME) return;
-
         stateInfo = enemy.selfAnimator.GetCurrentAnimatorStateInfo(0);
         if (!stateInfo.IsName("BearDecide")) return;
 
+        _count += Time.deltaTime;
         Transform playerTransform = CharacterManager.instance.characterList[0].transform;
         float distance = GetDistance(playerTransform);
+        Vector3 targetVec = enemy.GetTargetVec(playerTransform.position);
+        enemy.Rotate(targetVec);
+
+        if (distance <= _ENEMY_DISTANCE) { enemy.Move(speed, Vector3.right); }
+        else { enemy.Move(speed, Vector3.forward); }
+        
+        // ”»’f‘O‚Ü‚Å‚É‚©‚È‚è‹ß‚Ã‚¢‚Ä‚«‚Ä‚¢‚½‚çƒ‰ƒ“ƒ_ƒ€‚Å‹ß‹——£UŒ‚‚ÉˆÚs‚·‚é
+        if (distance <= _ENEMY_DISTANCE_NEAR / 2) 
+        {
+            int randomNearAttackID = RandomNumber((int)NearAttack.MAX);
+            Debug.Log(randomNearAttackID);
+            if (randomNearAttackID == (int)NearAttack.ATTACK) { enemy.ChangeState(new BearAttackState()); }
+            else if (randomNearAttackID == (int)NearAttack.STRONG_ATTACK) { enemy.ChangeState(new BearStrongAttackState()); }
+            else enemy.ChangeState(new BearUpperState());
+
+            return;
+        }
+
+        // ŽvlŽžŠÔ‚ð‰ß‚¬‚Ä‚¢‚È‚©‚Á‚½‚çƒ‹[ƒv
+        if (_count < _ENEMY_VIGILANCE_TIME) return;
 
         // ‰“‚·‚¬‚½‚ç’Ç‚¢‚©‚¯‚é
         if (distance >= _ENEMY_DISTANCE_FAR) { enemy.ChangeState(new BearChasingState()); }
@@ -36,7 +66,7 @@ public class BearDecideState : BaseEnemyState
             // “{‚èƒ|ƒCƒ“ƒg‚ðŒ©‚ÄDí“I‚¾‚Á‚½‚çUŒ‚
             if (enemyBear.fury >= 50.0f) { enemy.ChangeState(new BearUpperState()); }
             // T‚¦–Ú‚¾‚Á‚½‚ç‹}‘¬‚Å‰º‚ª‚é
-            else { enemy.ChangeState(new BearJumpState()); }
+            else { enemy.ChangeState(new BearTackleState()); }
         }
         // ‰“‚©‚Á‚½‚ç
         else if (distance >= _ENEMY_DISTANCE_NEAR)

@@ -38,6 +38,6 @@ public class BearIdleState : BaseEnemyState
 
     public override void Exit(BaseEnemy enemy)
     {
-
+        enemy.SetAnimatorBool("Idle", false);
     }
 }
