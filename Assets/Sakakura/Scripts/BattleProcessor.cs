@@ -30,16 +30,6 @@ public class BattleProcessor : MonoBehaviour
         _battleData = setBattleData;
     }
 
-    private void Update()
-    {
-        if (!_isStart || isFinished) return;
-
-        // 敵がいるなら処理しない
-        if (CharacterManager.instance.IsAliveEnemy()) return;
-
-        NextWave();
-    }
-
     private void OnTriggerEnter(Collider other)
     {
         if (_isStart) return;
@@ -53,7 +43,7 @@ public class BattleProcessor : MonoBehaviour
     /// <summary>
     /// ウェーブを進める
     /// </summary>
-    private void NextWave()
+    public void NextWave()
     {
         _waveCount++;
         if (_waveCount >= _battleData.waveData.Length)

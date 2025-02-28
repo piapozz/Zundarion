@@ -30,6 +30,7 @@ public enum PlayerAnimation
     PARRY,
     PARRY_MISS,
     AVOID,
+    JUST_AVOID,
     VICTORY,
     DIE,
 

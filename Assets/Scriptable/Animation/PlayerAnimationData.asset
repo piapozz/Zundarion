@@ -21,5 +21,6 @@ MonoBehaviour:
   - Parry
   - ParryMiss
   - Avoid
+  - JustAvoid
   - Victory
   - Die
