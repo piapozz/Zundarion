@@ -204,7 +204,7 @@ public abstract class BaseCharacter : MonoBehaviour
     public void InvincibleEvent(int frame)
     {
         SetInvincible(true);
-        UniTask task =WaitAction(frame, SetInvincible, false);
+        UniTask task = WaitAction(frame, SetInvincible, false);
     }
 
     /// <summary>

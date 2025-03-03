@@ -71,6 +71,13 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
+      - time: 0
+        functionName: MoveEvent
+        data: 
+        objectReferenceParameter: {fileID: 11400000, guid: aec380ededb758e498d28b4304b7fa27, type: 2}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
