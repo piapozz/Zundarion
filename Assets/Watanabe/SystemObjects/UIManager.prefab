@@ -46,7 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damageEffect: {fileID: 4769409175254973720, guid: ca0074c5a16e6c34297ca672f8f3cc4a, type: 3}
   playerUIObject: {fileID: 6711189681384417597, guid: 593436823fecda341820c31285446d21, type: 3}
-  enemyUIObject: {fileID: 2140908724248844690, guid: d7bf03d82b3ebb04f9cc37ea1e3467a2, type: 3}
+  enemyUIObject: {fileID: 3314102705326797433, guid: 42b912726b9398d45b220bfdf2443aee, type: 3}
   canvasWorldSpace: {fileID: 2355519898346420178, guid: e82cd1bfbd746e9498fef0f63c951a37, type: 3}
   canvasOverlay: {fileID: 4790416559839681067, guid: ec8190736023abe439090a75ed1d932e, type: 3}
   obstacleLayer:

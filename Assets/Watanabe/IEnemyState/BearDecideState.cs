@@ -8,10 +8,15 @@ public class BearDecideState : BaseEnemyState
 {
     private AnimatorStateInfo stateInfo;
     private EnemyBear enemyBear = null;
+    private Transform playerTransform = null;
     private float _count = 0;
 
     private float speed = 1.0f;
+
+    private readonly float _ENEMY_ROTATE_SPEED = 1.0f; 
     private readonly float _ENEMY_VIGILANCE_TIME = 3.0f;
+    private readonly int _ENEMY_FURY_COST_UPPER = -15;
+    private readonly int _ENEMY_FURY_COST_JUMPATTACK = -15;
 
     private enum NearAttack
     {
@@ -27,6 +32,8 @@ public class BearDecideState : BaseEnemyState
         enemy.SetAnimatorBool("Decide", true);
         SetEnemy(enemy);
         enemyBear = enemy.GetComponent<EnemyBear>();
+        playerTransform = CharacterManager.instance.characterList[0].transform;
+
     }
 
     public override void Execute(BaseEnemy enemy)
@@ -35,10 +42,9 @@ public class BearDecideState : BaseEnemyState
         if (!stateInfo.IsName("BearDecide")) return;
 
         _count += Time.deltaTime;
-        Transform playerTransform = CharacterManager.instance.characterList[0].transform;
         float distance = GetDistance(playerTransform);
         Vector3 targetVec = enemy.GetTargetVec(playerTransform.position);
-        enemy.Rotate(targetVec);
+        enemy.Rotate(targetVec, _ENEMY_ROTATE_SPEED);
 
         if (distance <= _ENEMY_DISTANCE) { enemy.Move(speed, Vector3.right); }
         else { enemy.Move(speed, Vector3.forward); }
@@ -47,7 +53,6 @@ public class BearDecideState : BaseEnemyState
         if (distance <= _ENEMY_DISTANCE_NEAR / 2) 
         {
             int randomNearAttackID = RandomNumber((int)NearAttack.MAX);
-            Debug.Log(randomNearAttackID);
             if (randomNearAttackID == (int)NearAttack.ATTACK) { enemy.ChangeState(new BearAttackState()); }
             else if (randomNearAttackID == (int)NearAttack.STRONG_ATTACK) { enemy.ChangeState(new BearStrongAttackState()); }
             else enemy.ChangeState(new BearUpperState());
@@ -55,8 +60,21 @@ public class BearDecideState : BaseEnemyState
             return;
         }
 
-        // 思考時間を過ぎていなかったらループ
-        if (_count < _ENEMY_VIGILANCE_TIME) return;
+        // 距離によって思考時間を変える
+        if (_count < distance) return;
+
+        // 遠かったら
+        if (distance >= _ENEMY_DISTANCE_NEAR)
+        {
+            // 好戦的だったら直接ジャンプ攻撃する
+            if (enemyBear.GetFury() >= _ENEMY_FURY_COST_JUMPATTACK)
+            {
+                enemy.ChangeState(new BearJumpAttackState());
+                enemyBear.ChangeFury(_ENEMY_FURY_COST_JUMPATTACK);
+            }
+            // 間合いを取る
+            else { enemy.ChangeState(new BearVigilanceState()); }
+        }
 
         // 遠すぎたら追いかける
         if (distance >= _ENEMY_DISTANCE_FAR) { enemy.ChangeState(new BearChasingState()); }
@@ -64,17 +82,13 @@ public class BearDecideState : BaseEnemyState
         else if (distance <= _ENEMY_DISTANCE_NEAR)
         {
             // 怒りポイントを見て好戦的だったら攻撃
-            if (enemyBear.fury >= 50.0f) { enemy.ChangeState(new BearUpperState()); }
+            if (enemyBear.GetFury() >= _ENEMY_FURY_COST_UPPER) 
+            {
+                enemy.ChangeState(new BearUpperState());
+                enemyBear.ChangeFury(_ENEMY_FURY_COST_UPPER);
+            }
             // 控え目だったら急速で下がる
             else { enemy.ChangeState(new BearTackleState()); }
-        }
-        // 遠かったら
-        else if (distance >= _ENEMY_DISTANCE_NEAR)
-        {
-            // 好戦的だったら直接ジャンプ攻撃する
-            if (enemyBear.fury >= 50.0f) { enemy.ChangeState(new BearJumpAttackState()); }
-            // 間合いを取る
-            else { enemy.ChangeState(new BearVigilanceState()); }
         }
     }
 

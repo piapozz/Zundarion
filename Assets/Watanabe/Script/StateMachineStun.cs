@@ -14,8 +14,6 @@ public class StateMachineStun : StateMachineBehaviour
 
     public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        Debug.Log(stateInfo.normalizedTime);
-
         // アニメーションが再生され終わったかを見てステートを変更する
         if (stateInfo.normalizedTime >= 1.0f)
         {

@@ -13,7 +13,7 @@ using UnityEngine.UI;
 
 public class EnemyUI : MonoBehaviour 
 {
-    private Image image = null;                                             // UIとなるImage
+    [SerializeField] private Image imageHealth = null;
     private Camera mainCamera = null;                                       // メインカメラ
     private RectTransform rectTransform;                                    // オブジェクトの座標
     public BaseEnemy baseEnemy { get; private set; } = null;              // 敵のクラス（情報）
@@ -21,7 +21,7 @@ public class EnemyUI : MonoBehaviour
     public float health { get; protected set; } = -1;                       // 敵の現在体力
     public float healthMax { get; protected set; } = -1;                    // 敵の最大体力
 
-    private readonly float HEIGHT_OFFSET = 3.0f;                            // UIの位置を調節
+    private readonly float HEIGHT_OFFSET = 2.0f;                            // UIの位置を調節
 
     private void Start()
     {
@@ -51,7 +51,6 @@ public class EnemyUI : MonoBehaviour
     {
         rectTransform = GetComponent<RectTransform>();
 
-        image = _enemyUI.GetComponent<Image>();
         baseEnemy = _baseEnemy;
         health = _baseEnemy.GetComponent<BaseCharacter>().health;
         healthMax = _baseEnemy.GetComponent<BaseCharacter>().healthMax;
@@ -62,7 +61,7 @@ public class EnemyUI : MonoBehaviour
     /// </summary>
     public void Teardown()
     {
-        image = null;
+        imageHealth = null;
         baseEnemy = null;
         health = -1;
         healthMax = -1;
@@ -75,7 +74,7 @@ public class EnemyUI : MonoBehaviour
     /// </summary>
     public void UpdateImage()
     {
-        image.fillAmount = health / healthMax;
+        imageHealth.fillAmount = health / healthMax;
     }
 
     /// <summary>

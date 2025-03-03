@@ -7,16 +7,17 @@ public class BearChasingState : BaseEnemyState
 {
     private float _count = 0;
     private Vector3 targetVec;
+    private Transform playerTransform = null;
 
     public override void Enter(BaseEnemy enemy)
     {
         enemy.SetAnimatorBool("Chasing", true);
         SetEnemy(enemy);
+        playerTransform = CharacterManager.instance.characterList[0].transform;
     }
 
     public override void Execute(BaseEnemy enemy)
     {
-        Transform playerTransform = CharacterManager.instance.characterList[0].transform;
         targetVec = GetTargetVec(playerTransform);
 
         enemy.Move(enemy.speed);

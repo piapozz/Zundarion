@@ -13,24 +13,45 @@ using UnityEngine;
 public class EnemyBear : BaseEnemy
 {
     // “{‚èƒQ[ƒW
-    public float fury = -1;
-    private readonly float _ENEMY_INCREASE_FURY = 10.0f;
+    [SerializeField] private int fury = -1;
+    private readonly int _ENEMY_FURY_INITIAL = 0;
+    private readonly int _ENEMY_FURY_INCREASE = 6;
 
     private void Start()
     {
         ChangeState(new BearIdleState());
+        fury = _ENEMY_FURY_INITIAL;
     }
 
     private void Update()
     {
-        Debug.Log(enemyState);
+        // Debug.Log(enemyState);
         position = transform.position;
+        Debug.Log(enemyState);
     }
 
     public override void TakeDamage(float damageSize, float strength)
     {
         base.TakeDamage(damageSize, strength);
-        fury += _ENEMY_INCREASE_FURY;
+        fury += _ENEMY_FURY_INCREASE;
 
     }
+
+    public int GetFury() { return fury; }
+
+    // “{‚èƒQ[ƒW‚ð•Ï“®‚³‚¹‚é
+    public void ChangeFury(int changeValue)
+    {
+        if (changeValue == 0) return;
+
+        if (changeValue >= 1) fury += changeValue;
+
+        else if (changeValue <= -1)
+        {
+            int index = fury + changeValue;
+            if (index >= 0) fury = index;
+            else if (index <= 0) fury = 0;
+        }
+    }
+
 }
