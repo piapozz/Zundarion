@@ -41,6 +41,8 @@ public abstract class BasePlayer : BaseCharacter
     /// <summary>硬直中かどうか</summary>
     private bool _isStiff = false;
 
+    private bool _isMoveStiff = false;
+
     /// <summary>プレイヤーの先行入力情報</summary>
     [SerializeField]
     private PreInput _selfPreInput = null;
@@ -107,7 +109,7 @@ public abstract class BasePlayer : BaseCharacter
         selfAnimator.SetBool("Move", false);
 
         // 移動できないなら処理を抜ける
-        if (_isStiff) return;
+        if (_isStiff || _isMoveStiff) return;
 
         // 移動方向が入力されているなら
         if (_inputMoveDir.x != 0 || _inputMoveDir.y != 0)
@@ -273,6 +275,25 @@ public abstract class BasePlayer : BaseCharacter
     {
         _isStiff = true;
         UniTask task = WaitAction(frame, () => _isStiff = false);
+    }
+
+    /// <summary>
+    /// 移動硬直を設定
+    /// </summary>
+    /// <param name="frame"></param>
+    public void SetMoveStiffEvent(int frame)
+    {
+        _isMoveStiff = true;
+        UniTask task = WaitAction(frame, () => _isMoveStiff = false);
+    }
+
+    /// <summary>
+    /// 硬直解除
+    /// </summary>
+    public void ClearStiff()
+    {
+        _isStiff = false;
+        _isMoveStiff = false;
     }
 
     /// <summary>

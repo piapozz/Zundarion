@@ -25,6 +25,8 @@ public class GameConst
 
     // キャラクター関係
     public const float CHARACTER_ROTATE_SPEED = 1000;
+    public const float HIT_STOP_SPEED = 0.01f;
+    public const int HIT_STOP_FRAME = 3;
 
     // プレイヤー関係
     public const float PARRY_SLOW_SPEED = 0.25f;
