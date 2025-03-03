@@ -69,6 +69,7 @@ public abstract class BasePlayer : BaseCharacter
     private const float _PARRY_COOL_DOWN_SECOND = 2.0f;
     private const int _AVOID_COOL_DOWN_STOCK = 2;
     private const float _AVOID_COOL_DOWN_SECOND = 2.0f;
+    private const int _ATTACK_CAMERA_FRAME = 20;
 
     void Awake()
     {
@@ -210,10 +211,13 @@ public abstract class BasePlayer : BaseCharacter
     {
         // アニメーション設定
         selfAnimator.SetTrigger(_selfAnimationData.animationName[(int)PlayerAnimation.ATTACK]);
-        // 敵の方向を向く
+        // 近くの敵を取得し角度調整
         BaseCharacter character = CharacterManager.instance.GetNearCharacter(this, _ATTACK_SENS_RANGE);
         if (character == null) return;
+
         TurnAround(character.gameObject.transform);
+        // カメラを調整
+        UniTask task = CameraManager.instance.SetFreeCam(transform.eulerAngles.y, 0.5f, _ATTACK_CAMERA_FRAME);
     }
 
     /// <summary>
@@ -237,7 +241,7 @@ public abstract class BasePlayer : BaseCharacter
             // プレイヤーを敵の方向に向ける
             TurnAround(parryList[0].transform);
             // 通常カメラをリセット
-            CameraManager.instance.SetFreeCam(transform.eulerAngles.y, 0.5f);
+            UniTask task = CameraManager.instance.SetFreeCam(transform.eulerAngles.y, 0.5f);
             // パリィ相手のアニメーションをひるみにする
             parryList[0].SetImpact();
         }

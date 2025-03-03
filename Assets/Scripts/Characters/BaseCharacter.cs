@@ -13,6 +13,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 using static CommonModule;
+using static GameConst;
 
 // 親クラスのpublicをインスペクター上に表示
 #if UNITY_EDITOR
@@ -37,6 +38,9 @@ public abstract class BaseCharacter : MonoBehaviour
 
     [SerializeField]
     private GameObject[] _childObjectArray = null;
+
+    [SerializeField]
+    private Transform _effectAnchor = null;
 
     // キャラクターのステータス
     public float healthMax { get; protected set; } = -1;    // 最大体力
@@ -91,7 +95,10 @@ public abstract class BaseCharacter : MonoBehaviour
         int damage = GetDamage(sourceStrength, damageRatio);
         health = Mathf.Max(0, (health - damage));
 
-        _damageObserver.OnDamage(transform.position, damage);
+        _damageObserver.OnDamage(_effectAnchor, damage);
+
+        // カメラを揺らす
+        CameraManager.instance.SetShake(CAMERA_SHAKE_TIME, CAMERA_SHAKE_GAIN);
     }
 
     /// <summary>
@@ -262,7 +269,7 @@ public abstract class BaseCharacter : MonoBehaviour
     /// </summary>
     /// <param name="dir"></param>
     /// <param name="speed"></param>
-    public virtual void Rotate(Vector3 dir, float speed = GameConst.CHARACTER_ROTATE_SPEED)
+    public virtual void Rotate(Vector3 dir, float speed = CHARACTER_ROTATE_SPEED)
     {
         // 移動ベクトルがゼロでない場合のみ処理を進める
         if (dir == Vector3.zero) return;
