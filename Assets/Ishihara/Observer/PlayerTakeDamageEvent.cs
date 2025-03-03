@@ -7,10 +7,10 @@ public class PlayerTakeDamageEvent : DamageObserver
     public void Initialize()
     {
     }
-    public void OnDamage(Vector3 position, int damage)
+    public void OnDamage(Transform target, int damage)
     {
         // ダメージ表記
-        UIManager.instance.GenerateDamageEffect(position, damage, Color.red);
+        UIManager.instance.GenerateDamageEffect(target.position, damage, Color.red);
         // SE再生
         AudioManager.instance.PlaySE(SE.HIT);
 

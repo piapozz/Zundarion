@@ -16,7 +16,7 @@ public class ComboManager : SystemObject
     public static ComboManager instance = null;
 
     private float _comboTime = 0;                // コンボタイマー
-    private int _comboCount = 0;                  // コンボ数
+    private int _comboCount = 0;                 // コンボ数
     private FontEffect _comboEffect = null;
     private UniTask task;
 
@@ -73,6 +73,7 @@ public class ComboManager : SystemObject
     private async UniTask BreakCombo()
     {
         _comboCount = 0;
+
 
     } 
 }

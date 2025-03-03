@@ -94,8 +94,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 34.26
-  m_fontSizeBase: 34.26
+  m_fontSize: 20
+  m_fontSizeBase: 20
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -152,6 +152,7 @@ MonoBehaviour:
     rid: -2
   fadeOutFont:
     rid: -2
+  _isDestory: 0
   _textMeshPro: {fileID: 4769409175254973727}
   _delayFrame: 45
   _bounceTime: 0.15
