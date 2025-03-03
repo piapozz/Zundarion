@@ -2,31 +2,37 @@ using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cysharp.Threading.Tasks;
 
 public class CameraManager : SystemObject
 {
     public static CameraManager instance { get; private set; } = null;
 
     /// <summary>カメラ</summary>
-    public Camera selfCamera;
+    public Camera selfCamera = null;
 
     /// <summary>カメラ制御</summary>
-    private CinemachineStateDrivenCamera _stateCam;
+    [SerializeField]
+    private CinemachineStateDrivenCamera _stateCam = null;
 
     /// <summary>フリールックカメラ</summary>
-    private CinemachineFreeLook _freeLookCam;
+    [SerializeField]
+    private CinemachineFreeLook _freeLookCam = null;
+
+    /// <summary>
+    /// 衝撃を与える元
+    /// </summary>
+    [SerializeField]
+    private CinemachineImpulseSource _impulseSource = null;
 
     public override void Initialize()
     {
         instance = this;
         selfCamera = Camera.main;
 
-        Transform setTransform = CharacterManager.instance.player.transform;
-        Animator setAnimator = CharacterManager.instance.GetCharacter(0).selfAnimator;
-
-        _stateCam = GetComponentInChildren<CinemachineStateDrivenCamera>();
-        _freeLookCam = GetComponentInChildren<CinemachineFreeLook>();
-
+        BasePlayer player = CharacterManager.instance.player;
+        Transform setTransform = player.transform;
+        Animator setAnimator = player.selfAnimator;
         SetTransform(setTransform, setAnimator);
     }
 
@@ -38,9 +44,40 @@ public class CameraManager : SystemObject
 
     }
 
-    public void SetFreeCam(float xAxis, float yAxis)
+    /// <summary>
+    /// 指定の角度に指定の時間かけて回転
+    /// </summary>
+    /// <param name="setXAngle"></param>
+    /// <param name="setYAngle"></param>
+    /// <param name="setFrame"></param>
+    public async UniTask SetFreeCam(float setXAngle, float setYAngle, int setFrame = 1)
     {
-        _freeLookCam.m_XAxis.Value = xAxis;
-        _freeLookCam.m_YAxis.Value = yAxis;
+        if (setFrame <= 0) return;
+        float diffXAngle = setXAngle - _freeLookCam.m_XAxis.Value;
+        if (diffXAngle > 180) diffXAngle -= 360;
+        else if (diffXAngle <= -180) diffXAngle += 360;
+        float diffYAngle = setYAngle - _freeLookCam.m_YAxis.Value;
+
+        float xAxisLerp = diffXAngle / setFrame;
+        float yAxisLerp = diffYAngle / setFrame;
+
+        // 線形補間
+        int elapsedFrame = 0;
+        while (elapsedFrame < setFrame)
+        {
+            _freeLookCam.m_XAxis.Value += xAxisLerp;
+            _freeLookCam.m_YAxis.Value += yAxisLerp;
+
+            elapsedFrame++;
+            await UniTask.DelayFrame(1);
+        }
+    }
+
+    public void SetShake(float time, float gain)
+    {
+        CinemachineImpulseDefinition definition = _impulseSource.m_ImpulseDefinition;
+        definition.m_TimeEnvelope.m_SustainTime = time;
+        definition.m_AmplitudeGain = gain;
+        _impulseSource.GenerateImpulse();
     }
 }

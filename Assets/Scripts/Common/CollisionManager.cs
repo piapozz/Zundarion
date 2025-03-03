@@ -52,7 +52,6 @@ public class CollisionManager : SystemObject
         if (genObj == null) return;
 
         SetCollision(ref genObj, ID, attackData, setTransform);
-        genObj.transform.parent = useCollisionRoot;
     }
 
     /// <summary>
@@ -104,5 +103,6 @@ public class CollisionManager : SystemObject
         Vector3 offset = new Vector3(Mathf.Sin(angle) * distance, 1, Mathf.Cos(angle) * distance);
         genPos += offset;
         genObj.transform.position = genPos;
+        genObj.transform.SetParent(setTransform);
     }
 }

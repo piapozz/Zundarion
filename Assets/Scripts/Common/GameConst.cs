@@ -33,4 +33,8 @@ public class GameConst
 
     // ƒV[ƒ“‘JˆÚ
     public const float SCENE_FADE_TIME = 1.0f;
+
+    // ƒJƒƒ‰
+    public const float CAMERA_SHAKE_TIME = 0.01f;
+    public const float CAMERA_SHAKE_GAIN = 0.5f;
 }
