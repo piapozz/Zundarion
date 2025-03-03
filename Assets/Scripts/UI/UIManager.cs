@@ -85,6 +85,7 @@ public class UIManager : SystemObject
         }
     }
 
+    /*
     public override void Proc()
     {
         // 不必要なUIを非表示にする
@@ -105,7 +106,7 @@ public class UIManager : SystemObject
             else
             {
                 enemyUIList[i].SetActive(false);
-                return;
+                continue;
             }
         }
 
@@ -133,6 +134,46 @@ public class UIManager : SystemObject
             {
                 RemoveEnemyUI(i);
                 max -= 1;
+            }
+        }
+    }
+    */
+
+    public override void Proc()
+    {
+        for (int i = 0; i < enemyUIList.Count; i++)
+        {
+            if (enemyUIList[i] == null) continue;
+
+            Vector3 enemyPosition = enemyUIList[i].enemyPosition + Vector3.up * 2f;
+            viewportPos = mainCamera.WorldToViewportPoint(enemyPosition);
+
+            // カメラの後ろにある場合
+            if (viewportPos.z < 0)
+            {
+                enemyUIList[i].SetActive(false);
+                continue;
+            }
+
+            // 画面内判定
+            bool isVisible = viewportPos.x >= 0 && viewportPos.x <= 1 && viewportPos.y >= 0 && viewportPos.y <= 1;
+            // 障害物判定
+            Vector3 direction = (enemyPosition - mainCamera.transform.position).normalized;
+
+            float distance = Vector3.Distance(mainCamera.transform.position, enemyPosition);
+            bool isObstructed = Physics.Raycast(mainCamera.transform.position, direction, distance, obstacleLayer);
+            bool shouldShowUI = isVisible && !isObstructed;
+
+            // UIの表示・非表示を設定
+            enemyUIList[i].SetActive(shouldShowUI);
+        }
+
+        // HPが0のUIを削除
+        for (int i = enemyUIList.Count - 1; i >= 0; i--)
+        {
+            if (enemyUIList[i].health <= 0)
+            {
+                RemoveEnemyUI(i);
             }
         }
     }

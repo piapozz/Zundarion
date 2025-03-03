@@ -61,7 +61,6 @@ public class EnemyUI : MonoBehaviour
     /// </summary>
     public void Teardown()
     {
-        imageHealth = null;
         baseEnemy = null;
         health = -1;
         healthMax = -1;
