@@ -60,8 +60,11 @@ public class CollisionData : MonoBehaviour
             // リストに入れる
             CollisionManager.instance.parryList.Add(sourceCharacter);
         else
+        {
             // ダメージ判定
             hitCharacter.TakeDamage(damage, sourceCharacter.strength);
+            sourceCharacter.SetAnimationSpeed(0.01f, 3);
+        }
     }
 
     private void OnTriggerExit(Collider other)

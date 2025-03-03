@@ -1578,7 +1578,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   charaData: {fileID: 11400000, guid: c92e7374c55531b43b89b8b40a3a9053, type: 2}
-  _ID: 1
+  ID: -1
   _selfAnimationData: {fileID: 11400000, guid: a98ad5dd1c1b9d044940dd85c7428abe, type: 2}
   _childObjectArray: []
   selfAnimator: {fileID: 2245784756199610559}
@@ -1598,7 +1598,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.5
+  m_Radius: 0.83
   m_Height: 2.4
   m_Direction: 1
   m_Center: {x: 0, y: 1.2, z: 0}

@@ -116,6 +116,15 @@ public abstract class BaseCharacter : MonoBehaviour
     }
 
     /// <summary>
+    /// アニメーションの再生時間を一定時間変える
+    /// </summary>
+    public void SetAnimationSpeed(float setSpeed, int frame)
+    {
+        selfAnimator.SetFloat("Speed", setSpeed);
+        UniTask task = WaitAction(frame, () => selfAnimator.SetFloat("Speed", 1));
+    }
+
+    /// <summary>
     /// 当たり判定を生成する
     /// </summary>
     /// <param name="attackData"></param>
@@ -261,9 +270,8 @@ public abstract class BaseCharacter : MonoBehaviour
         // 目標の角度を計算
         float targetAngle = Mathf.Atan2(dir.z, dir.x) * Mathf.Rad2Deg;
 
-        // 現在の回転角度から目標の角度へ補間
         Quaternion targetRotation = Quaternion.AngleAxis(targetAngle - 90, Vector3.down);
-        transform.rotation = Quaternion.LookRotation(dir, Vector3.up);
+        transform.rotation = targetRotation;
     }
 
     /// <summary>

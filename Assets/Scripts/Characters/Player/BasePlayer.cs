@@ -19,15 +19,6 @@ public abstract class BasePlayer : BaseCharacter
 
     }
 
-    /// <summary>攻撃コンボの最大数</summary>
-    public int selfComboCountMax { get; protected set; }
-
-    /// <summary>攻撃コンボ数</summary>
-    public int selfComboCount { get; protected set; }
-
-    /// <summary>アニメーションの再生速度</summary>
-    public float selfAnimationSpeed { get; protected set; }
-
     /// <summary>自身の前方アングル</summary>
     public float selfFrontAngleZ { get; set; }
 
@@ -180,12 +171,6 @@ public abstract class BasePlayer : BaseCharacter
         {
             // アニメーションをセット
             selfAnimator.SetTrigger(_selfAnimationData.animationName[(int)PlayerAnimation.JUST_AVOID]);
-            // プレイヤーを敵の方向に向ける
-            TurnAround(parryList[0].transform);
-            // 通常カメラをリセット
-            CameraManager.instance.SetFreeCam(transform.eulerAngles.y, 0.5f);
-            // パリィ相手のアニメーションをひるみにする
-            parryList[0].SetImpact();
         }
     }
 
@@ -305,12 +290,17 @@ public abstract class BasePlayer : BaseCharacter
     {
         base.TakeDamage(damageSize, strength);
 
-        // ひるむ
-        SetImpact();
         if (health <= 0)
         {
             selfAnimator.SetTrigger(_selfAnimationData.animationName[(int)PlayerAnimation.DIE]);
             CharacterManager.instance.RemoveCharacterList(ID);
+        }
+        else
+        {
+            // 先行入力をキャンセル
+            _selfPreInput.ClearRecord();
+            // ひるむ
+            SetImpact();
         }
     }
 

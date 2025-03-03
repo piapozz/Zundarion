@@ -47,15 +47,16 @@ public class BaseEnemy : BaseCharacter
     {
         base.TakeDamage(damageSize, strength);
 
-        // 一定の割合のダメージを受けたらひるむ
-        if (GetDamage(strength, damageSize) > (healthMax / _HIT_IMPACT_RATIO))
-            SetImpact();
-
         if (health <= 0)
         {
             selfAnimator.SetBool(_selfAnimationData.animationName[(int)EnemyAnimation.DYING], true);
             CharacterManager.instance.RemoveCharacterList(ID);
             StageManager.instance.CheckWaveFinish();
+        }
+        else if (GetDamage(strength, damageSize) > (healthMax / _HIT_IMPACT_RATIO))
+        {
+            // 一定の割合のダメージを受けたらひるむ
+            SetImpact();
         }
     }
 
