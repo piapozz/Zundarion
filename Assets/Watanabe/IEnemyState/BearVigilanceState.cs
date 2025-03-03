@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class BearVigilanceState : BaseEnemyState
 {
-    public Transform player;   // プレイヤー
+    public Transform playerTransform;   // プレイヤー
     private float speed = 1.0f;
     private float _count = 0;
     private readonly float _ENEMY_VIGILANCE_TIME = 5.0f;
@@ -14,20 +14,19 @@ public class BearVigilanceState : BaseEnemyState
     {
         enemy.SetAnimatorBool("Vigilance", true);
         SetEnemy(enemy);
+        playerTransform = CharacterManager.instance.characterList[0].transform;
     }
 
     public override void Execute(BaseEnemy enemy)
     {
         _count += Time.deltaTime;
-        player = CharacterManager.instance.characterList[0].transform;
-        Vector3 targetVec = enemy.GetTargetVec(player.position);
+        Vector3 targetVec = enemy.GetTargetVec(playerTransform.position);
 
         enemy.Move(speed, Vector3.left);
         enemy.Rotate(targetVec);
 
         if (_count < _ENEMY_VIGILANCE_TIME) return;
 
-        Transform playerTransform = CharacterManager.instance.characterList[0].transform;
         float distance = GetDistance(playerTransform);
 
         // 近かったら

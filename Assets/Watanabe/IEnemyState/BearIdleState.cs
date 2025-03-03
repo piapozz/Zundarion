@@ -8,16 +8,17 @@ public class BearIdleState : BaseEnemyState
     private AnimatorStateInfo stateInfo;            // StateInfo
     private float _count = 0;
     private Vector3 targetVec;
+    private Transform playerTransform;
 
     public override void Enter(BaseEnemy enemy)
     {
         enemy.SetAnimatorBool("Idle", true);
         SetEnemy(enemy);
+        playerTransform = CharacterManager.instance.characterList[0].transform;
     }
 
     public override void Execute(BaseEnemy enemy)
     {
-        Transform playerTransform = CharacterManager.instance.characterList[0].transform;
         targetVec = GetTargetVec(playerTransform);
 
         enemy.Rotate(targetVec);

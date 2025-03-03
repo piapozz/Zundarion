@@ -218,7 +218,7 @@ public class UIManager : SystemObject
         rectTransform.anchorMin = new Vector2(0, 1);  // 左上基準
         rectTransform.anchorMax = new Vector2(0, 1);
         rectTransform.pivot = new Vector2(0, 1);      // 左上ピボット
-        rectTransform.anchoredPosition = new Vector2(50, -30); // 左上から少しオフセット
+        rectTransform.anchoredPosition = new Vector2(50, -50); // 左上から少しオフセット
     }
 
     /// <summary>

@@ -29,7 +29,8 @@ public class EffectManager : SystemObject
         Vector3 genPos = setTransform.position;
         float angle = setTransform.rotation.eulerAngles.y * Mathf.Deg2Rad;
         float length = data.length;
-        Vector3 offset = new Vector3(Mathf.Sin(angle) * length, 1, Mathf.Cos(angle) * length);
+        float height = geneffect.transform.position.y;
+        Vector3 offset = new Vector3(Mathf.Sin(angle) * length, height, Mathf.Cos(angle) * length);
         genPos += offset;
         geneffect.transform.position = genPos;
     }
