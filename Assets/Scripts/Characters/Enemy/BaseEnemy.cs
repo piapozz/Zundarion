@@ -22,18 +22,18 @@ public class BaseEnemy : BaseCharacter
     public Vector3 targetVec;
 
     public IEnemyState enemyState = null;
-    public EffectManager effectManager = null;
 
     [SerializeField] private GameObject eyeLeft = null, eyeRight = null;
     [SerializeField] public LightEffectController lightEffectController = null;
 
     private const float _HIT_IMPACT_RATIO = 10;
 
-    private void Start()
+    public override void Initialize(int setID)
     {
-        selfAnimator = GetComponent<Animator>();
+        base.Initialize(setID);
+
         player = CharacterManager.instance.player;
-        effectManager = EffectManager.instance;
+        targetEnemy = player;
     }
 
     public void SetAnimatorTrigger(string triggerName) { selfAnimator?.SetTrigger(triggerName); }
@@ -47,6 +47,9 @@ public class BaseEnemy : BaseCharacter
 
     public override void TakeDamage(float damageSize, float strength)
     {
+        // ñ≥ìGÇ©HPÇ™Ç»Ç¢Ç»ÇÁèàóùÇµÇ»Ç¢
+        if (isInvincible || isDead) return;
+
         base.TakeDamage(damageSize, strength);
 
         if (health <= 0)
@@ -54,6 +57,7 @@ public class BaseEnemy : BaseCharacter
             selfAnimator.SetBool(_selfAnimationData.animationName[(int)EnemyAnimation.DYING], true);
             CharacterManager.instance.RemoveCharacterList(ID);
             StageManager.instance.CheckWaveFinish();
+            isDead = true;
         }
         else if (GetDamage(strength, damageSize) > (healthMax / _HIT_IMPACT_RATIO))
         {

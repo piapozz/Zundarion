@@ -31,6 +31,8 @@ public class GameConst
     // プレイヤー関係
     public const float PARRY_SLOW_SPEED = 0.25f;
     public const float PARRY_SLOW_TIME = 0.5f;
+    public const float AVOID_SLOW_SPEED = 0.25f;
+    public const float AVOID_SLOW_TIME = 0.25f;
     public const float PRE_INPUT_TIME = 0.5f;
 
     // シーン遷移

@@ -12,5 +12,8 @@ public class MoveEventData : ScriptableObject
 {
     public Vector3 dir;
     public int frame;
-    public float speed;
+    public float length;
+    public bool isApproach;
+    public float maxLength;
+    public float minLength;
 }

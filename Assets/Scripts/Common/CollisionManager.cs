@@ -19,8 +19,6 @@ public class CollisionManager : SystemObject
     private List<GameObject> _useCollisionList = null;      // 使用中のコリジョンリスト
     private List<GameObject> _unuseCollisionList = null;    // 未使用のコリジョンリスト
 
-    public List<BaseCharacter> parryList = null;        // パリィに使うリスト
-
     public readonly int COLLISION_MAX = 10;         // コリジョンの最大数
 
     public override void Initialize()
@@ -34,8 +32,6 @@ public class CollisionManager : SystemObject
         {
             _unuseCollisionList.Add(Instantiate(_collisionOrigin, unuseCollisionRoot));
         }
-
-        parryList = new List<BaseCharacter>(COLLISION_MAX);
     }
 
     /// <summary>
@@ -86,6 +82,7 @@ public class CollisionManager : SystemObject
         CollisionData collisionData = genObj.GetComponent<CollisionData>();
         collisionData.damage = attackData.damage;
         collisionData.isParry = attackData.isParry;
+        collisionData.isAvoid = attackData.isAvoid;
         collisionData.characterID = ID;
         // 生成時間設定
         collisionData.deleteFrame = attackData.deleteFrame;

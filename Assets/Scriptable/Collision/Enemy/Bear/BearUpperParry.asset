@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26598dd705daf2f409c55aeb49e8e735, type: 3}
   m_Name: BearUpperParry
   m_EditorClassIdentifier: 
-  isParry: 1
+  isParry: 0
+  isAvoid: 1
   distance: 1
   scale: 5
   damage: 0

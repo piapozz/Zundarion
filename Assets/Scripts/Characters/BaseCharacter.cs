@@ -32,6 +32,15 @@ public abstract class BaseCharacter : MonoBehaviour
     [SerializeField]
     protected AnimationData _selfAnimationData;
 
+    /// <summary>死亡フラグ</summary>
+    protected bool isDead = false;
+
+    /// <summary>無敵かどうか</summary>
+    protected bool isInvincible = false;
+
+    /// <summary>ターゲットの敵</summary>
+    protected BaseCharacter targetEnemy = null;
+
     /// <summary>ダメージオブザーバー</summary>
     [SerializeField]
     private DamageObserver _damageObserver = null;
@@ -54,13 +63,10 @@ public abstract class BaseCharacter : MonoBehaviour
     /// <summary>アニメーターコンポーネント</summary>
     public Animator selfAnimator = null;
 
-    /// <summary>無敵かどうか</summary>
-    private bool _isInvincible = false;
-
     /// <summary>
     /// ScriptableObjectを使って初期化
     /// </summary>
-    public void Initialize(int setID)
+    public virtual void Initialize(int setID)
     {
         ID = setID;
         healthMax = charaData.health;
@@ -88,9 +94,6 @@ public abstract class BaseCharacter : MonoBehaviour
     /// <param name="damageRatio"></param>
     public virtual void TakeDamage(float damageRatio, float sourceStrength)
     {
-        // 無敵なら処理しない
-        if (_isInvincible) return;
-
         // ダメージ処理
         int damage = GetDamage(sourceStrength, damageRatio);
         health = Mathf.Max(0, (health - damage));
@@ -161,7 +164,10 @@ public abstract class BaseCharacter : MonoBehaviour
     public async UniTask MoveEvent(MoveEventData eventData)
     {
         int moveFrame = eventData.frame;
-        float speed = eventData.speed;
+        float length = eventData.length;
+        // 接近する攻撃なら
+        if (eventData.isApproach)
+            length = GetMoveLength(eventData.minLength, eventData.maxLength);
 
         // directionをローカル座標系に変換
         Vector3 direction = transform.TransformDirection(eventData.dir.normalized);
@@ -170,7 +176,7 @@ public abstract class BaseCharacter : MonoBehaviour
         while (moveFrame > frameCount)
         {
             // 指定された方向に移動
-            transform.position += direction * speed / moveFrame;
+            transform.position += direction * length / moveFrame;
             //Vector3 nextPos = transform.position + direction * speed / moveFrame;
             //_rigidbody.MovePosition(nextPos);
 
@@ -178,6 +184,21 @@ public abstract class BaseCharacter : MonoBehaviour
             // 1フレーム待ち
             await UniTask.DelayFrame(1);
         }
+    }
+
+    /// <summary>
+    /// 移動距離を取得
+    /// </summary>
+    /// <param name="minLength"></param>
+    /// <param name="maxLength"></param>
+    /// <returns></returns>
+    private float GetMoveLength(float minLength, float maxLength)
+    {
+        Vector3 targetPosition = targetEnemy.transform.position;
+        Vector3 selfPosition = transform.position;
+        float distance = Vector3.Distance(targetPosition, selfPosition);
+
+        return Mathf.Clamp((distance - minLength), 0, maxLength);
     }
 
     /// <summary>
@@ -213,7 +234,7 @@ public abstract class BaseCharacter : MonoBehaviour
     /// <param name="setInvincible"></param>
     public void SetInvincible(bool setInvincible)
     {
-        _isInvincible = setInvincible;
+        isInvincible = setInvincible;
     }
 
     /// <summary>
