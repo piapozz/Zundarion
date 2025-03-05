@@ -16,5 +16,5 @@ MonoBehaviour:
   frame: 5
   length: 0
   isApproach: 1
-  maxLength: 0
-  minLength: 0
+  maxLength: 5
+  minLength: 0.2

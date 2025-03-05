@@ -14,4 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dir: {x: 0, y: 0, z: 1}
   frame: 10
-  speed: 1
+  length: 0
+  isApproach: 1
+  maxLength: 10
+  minLength: 0.2

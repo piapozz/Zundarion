@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bae44e58f416d174c8e01d718f7b9bfd, type: 3}
-  m_Name: BearAttackOmen
+  m_Name: ZundamonParryEffect
   m_EditorClassIdentifier: 
-  ID: 1
-  dir: {x: 0, y: 0, z: 0}
-  length: 0
+  ID: 3
+  dir: {x: 0, y: 0, z: 1}
+  length: 0.2

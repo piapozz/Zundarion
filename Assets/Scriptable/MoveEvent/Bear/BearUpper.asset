@@ -9,9 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4a081fba02bd6b745baa76e81b78ddc5, type: 3}
-  m_Name: ParryEyeData
+  m_Script: {fileID: 11500000, guid: f5a1829107be98146aa83b0c557333d4, type: 3}
+  m_Name: BearUpper
   m_EditorClassIdentifier: 
-  isParry: 1
-  isAvoid: 0
-  deleteTime: 0
+  dir: {x: 0, y: 0, z: 1}
+  frame: 30
+  length: 0
+  isApproach: 1
+  maxLength: 10
+  minLength: 0.5

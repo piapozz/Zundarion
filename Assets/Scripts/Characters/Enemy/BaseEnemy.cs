@@ -89,14 +89,14 @@ public class BaseEnemy : BaseCharacter
         audioManager.PlaySE(SE.ENEMY_OMEN);
     }
 
-    //public void EyeEffectEvent(float sec)
-    //{
-    //    AudioManager audioManager = AudioManager.instance;
+    public void EyeEffectEvent(float sec)
+    {
+        AudioManager audioManager = AudioManager.instance;
 
-    //    lightEffectController.SetTransform(sec);
+        lightEffectController.SetTransform(sec);
         
-    //    audioManager.PlaySE(SE.ENEMY_OMEN);
-    //}
+        audioManager.PlaySE(SE.ENEMY_OMEN);
+    }
 
     public void EnemyAction()
     {

@@ -665,6 +665,13 @@ ModelImporter:
         floatParameter: 0
         intParameter: 12
         messageOptions: 0
+      - time: 0.17708333
+        functionName: EffectEvent
+        data: 
+        objectReferenceParameter: {fileID: 11400000, guid: 7edebef956a8acf459a0c67241d547e1, type: 2}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}

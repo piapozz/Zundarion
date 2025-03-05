@@ -22,6 +22,8 @@ public abstract class BasePlayer : BaseCharacter
     /// <summary>自身のゲームオブジェクト</summary>
     public GameObject selfGameObject { get; private set; }
 
+    public static bool isPlayerDead { get; private set; } = false;
+
     // protected //////////////////////////////////////////////////////////////////
 
     /// <summary>派生先による初期化</summary>
@@ -75,16 +77,12 @@ public abstract class BasePlayer : BaseCharacter
     private const float _AVOID_COOL_DOWN_SECOND = 2.0f; // 回避クールダウン秒数
     private const int _ATTACK_CAMERA_FRAME = 20;        // 攻撃時のカメラ遷移フレーム
 
-    public static bool isPlayerDead = false;
-
     void Awake()
     {
         _selfPreInput.Initialize();
 
         _parryStock = _PARRY_COOL_DOWN_STOCK;
         _avoidStock = _AVOID_COOL_DOWN_STOCK;
-
-        isPlayerDead = false;
 
         _parryList = new List<BaseCharacter>(5);
         _avoidList = new List<BaseCharacter>(5);
@@ -175,7 +173,7 @@ public abstract class BasePlayer : BaseCharacter
         // ジャスト回避になるか判定
         if (_avoidList.Count <= 0)
         {
-            selfAnimator.SetTrigger(_selfAnimationData.animationName[(int)PlayerAnimation.AVOID]);
+            SetAnimationTrigger(_selfAnimationData.animationName[(int)PlayerAnimation.AVOID]);
             _currentMultiplier = _RUN_SPEED_RATE;
         }
         else
@@ -184,7 +182,7 @@ public abstract class BasePlayer : BaseCharacter
 
             TurnNearEnemy();
             // アニメーションをセット
-            selfAnimator.SetTrigger(_selfAnimationData.animationName[(int)PlayerAnimation.JUST_AVOID]);
+            SetAnimationTrigger(_selfAnimationData.animationName[(int)PlayerAnimation.JUST_AVOID]);
             // スロー
             SlowManager.instance.SetSlow(AVOID_SLOW_SPEED, AVOID_SLOW_TIME);
         }
@@ -226,7 +224,7 @@ public abstract class BasePlayer : BaseCharacter
     {
         TurnNearEnemy();
         // アニメーション設定
-        selfAnimator.SetTrigger(_selfAnimationData.animationName[(int)PlayerAnimation.ATTACK]);
+        SetAnimationTrigger(_selfAnimationData.animationName[(int)PlayerAnimation.ATTACK]);
         // カメラを調整
         UniTask task = CameraManager.instance.SetFreeCam(transform.eulerAngles.y, 0.5f, _ATTACK_CAMERA_FRAME);
     }
@@ -253,13 +251,13 @@ public abstract class BasePlayer : BaseCharacter
         if (_parryList.Count <= 0)
         {
             // アニメーションをセット
-            selfAnimator.SetTrigger(_selfAnimationData.animationName[(int)PlayerAnimation.PARRY_MISS]);
+            SetAnimationTrigger(_selfAnimationData.animationName[(int)PlayerAnimation.PARRY_MISS]);
         }
         else
         {
             if (_parryList[0] == null) return;
             // アニメーションをセット
-            selfAnimator.SetTrigger(_selfAnimationData.animationName[(int)PlayerAnimation.PARRY]);
+            SetAnimationTrigger(_selfAnimationData.animationName[(int)PlayerAnimation.PARRY]);
             // プレイヤーを敵の方向に向ける
             targetEnemy = _parryList[0];
             TurnAround(targetEnemy.transform);
@@ -270,28 +268,30 @@ public abstract class BasePlayer : BaseCharacter
         }
     }
 
-    public void AddParryList(BaseCharacter target)
+    public int AddParryList(BaseCharacter target)
     {
-        if (_parryList.Exists(chara => chara == target)) return;
+        if (_parryList.Exists(chara => chara == target)) return -1;
         _parryList.Add(target);
+        return _parryList.Count - 1;
     }
 
-    public void RemoveParryList(BaseCharacter target)
+    public void RemoveParryList(int indexCount)
     {
-        if (_parryList.Exists(chara => chara != target)) return;
-        _parryList.Remove(target);
+        if (indexCount >= _parryList.Count || indexCount < 0) return;
+        _parryList.RemoveAt(indexCount);
     }
 
-    public void AddAvoidList(BaseCharacter target)
+    public int AddAvoidList(BaseCharacter target)
     {
-        if (_avoidList.Exists(chara => chara == target)) return;
+        if (_avoidList.Exists(chara => chara == target)) return -1;
         _avoidList.Add(target);
+        return _avoidList.Count - 1;
     }
 
-    public void RemoveAvoidList(BaseCharacter target)
+    public void RemoveAvoidList(int indexCount)
     {
-        if (_avoidList.Exists(chara => chara != target)) return;
-        _avoidList.Remove(target);
+        if (indexCount >= _avoidList.Count || indexCount < 0) return;
+        _avoidList.RemoveAt(indexCount);
     }
 
     /// <summary>
@@ -365,9 +365,10 @@ public abstract class BasePlayer : BaseCharacter
 
         if (health <= 0)
         {
-            selfAnimator.SetTrigger(_selfAnimationData.animationName[(int)PlayerAnimation.DIE]);
+            SetAnimationTrigger(_selfAnimationData.animationName[(int)PlayerAnimation.DIE]);
             CharacterManager.instance.RemoveCharacterList(ID);
             isDead = true;
+            isPlayerDead = true;
         }
         else
         {
@@ -380,13 +381,19 @@ public abstract class BasePlayer : BaseCharacter
 
     public override void SetImpact()
     {
-        selfAnimator.SetTrigger(_selfAnimationData.animationName[(int)PlayerAnimation.IMPACT]);
+        SetAnimationTrigger(_selfAnimationData.animationName[(int)PlayerAnimation.IMPACT]);
     }
 
     public override void DeadEvent()
     {
         base.DeadEvent();
-        isPlayerDead = true;
         UniTask task = FadeManager.instance.TransScene("GameResult", SCENE_FADE_TIME);
+    }
+
+    private void SetAnimationTrigger(string triggerName)
+    {
+        if (isDead) return;
+
+        selfAnimator.SetTrigger(triggerName);
     }
 }

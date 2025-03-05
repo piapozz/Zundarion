@@ -215,7 +215,7 @@ public abstract class BaseCharacter : MonoBehaviour
     /// <param name="ID"></param>
     public void EffectEvent(EffectGenerateData data)
     {
-        EffectManager.instance.GenerateEffect(data, transform);
+        EffectManager.instance.GenerateEffect(data, _effectAnchor);
     }
 
     /// <summary>
