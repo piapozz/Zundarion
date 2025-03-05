@@ -14,11 +14,12 @@ public class BearVigilanceState : BaseEnemyState
     {
         enemy.SetAnimatorBool("Vigilance", true);
         SetEnemy(enemy);
-        playerTransform = player.transform;
+        playerTransform = SetTransform();
     }
 
     public override void Execute(BaseEnemy enemy)
     {
+        if (playerTransform == null) return;
         _count += Time.deltaTime;
         Vector3 targetVec = enemy.GetTargetVec(playerTransform.position);
 

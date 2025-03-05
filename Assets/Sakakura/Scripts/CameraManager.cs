@@ -34,6 +34,8 @@ public class CameraManager : SystemObject
         Transform setTransform = player.transform;
         Animator setAnimator = player.selfAnimator;
         SetTransform(setTransform, setAnimator);
+
+        selfCamera.GetComponent<CameraViewFix>().Initialize(selfCamera);
     }
 
     private void SetTransform(Transform setTransform, Animator setAnimator)

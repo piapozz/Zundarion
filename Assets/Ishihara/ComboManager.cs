@@ -17,6 +17,7 @@ public class ComboManager : SystemObject
 
     private float _comboTime = 0;                // コンボタイマー
     private int _comboCount = 0;                 // コンボ数
+    public static int comboMaximum = 0;
     private FontEffect _comboEffect = null;
     private UniTask task;
 
@@ -24,6 +25,7 @@ public class ComboManager : SystemObject
     {
         instance = this;
         _comboCanvas.worldCamera = Camera.main;
+        comboMaximum = 0;
         _comboText.text = " ";
         _comboEffect = _comboText.gameObject.GetComponent<FontEffect>();
         if (task.Status.IsCompleted()) task = ComboTimer();
@@ -36,6 +38,8 @@ public class ComboManager : SystemObject
         float size = Mathf.Min((_comboCount * 0.05f) + 1 , 2.5f);
         _comboEffect.FadeIn(size);
         _comboTime = 0;
+
+        if(_comboCount >= comboMaximum)comboMaximum = _comboCount;
     }
 
     private async UniTask ComboTimer()

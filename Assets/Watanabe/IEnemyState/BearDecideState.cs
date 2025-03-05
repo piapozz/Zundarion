@@ -32,7 +32,7 @@ public class BearDecideState : BaseEnemyState
         enemy.SetAnimatorBool("Decide", true);
         enemyBear = enemy.GetComponent<EnemyBear>();
         SetEnemy(enemy);
-        playerTransform = player.transform;
+        playerTransform = SetTransform();
 
     }
 
@@ -41,6 +41,7 @@ public class BearDecideState : BaseEnemyState
         stateInfo = enemy.selfAnimator.GetCurrentAnimatorStateInfo(0);
         if (!stateInfo.IsName("BearDecide")) return;
 
+        if (playerTransform == null) return;
         _count += Time.deltaTime;
         float distance = GetDistance(playerTransform);
         Vector3 targetVec = enemy.GetTargetVec(playerTransform.position);

@@ -14,11 +14,12 @@ public class BearIdleState : BaseEnemyState
     {
         enemy.SetAnimatorBool("Idle", true);
         SetEnemy(enemy);
-        playerTransform = player.transform;
+        playerTransform = SetTransform();
     }
 
     public override void Execute(BaseEnemy enemy)
     {
+        if (playerTransform == null) return;
         targetVec = GetTargetVec(playerTransform);
 
         enemy.Rotate(targetVec);
