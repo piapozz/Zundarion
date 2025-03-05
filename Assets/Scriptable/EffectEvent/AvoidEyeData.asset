@@ -9,12 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26598dd705daf2f409c55aeb49e8e735, type: 3}
-  m_Name: BearHammerParry
+  m_Script: {fileID: 11500000, guid: 4a081fba02bd6b745baa76e81b78ddc5, type: 3}
+  m_Name: AvoidEyeData
   m_EditorClassIdentifier: 
   isParry: 0
   isAvoid: 1
-  distance: 0
-  scale: 5
-  damage: 0
-  deleteFrame: 20
+  deleteTime: 0

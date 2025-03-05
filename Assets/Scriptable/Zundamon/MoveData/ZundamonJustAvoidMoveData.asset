@@ -9,12 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26598dd705daf2f409c55aeb49e8e735, type: 3}
-  m_Name: BearHammerParry
+  m_Script: {fileID: 11500000, guid: f5a1829107be98146aa83b0c557333d4, type: 3}
+  m_Name: ZundamonJustAvoidMoveData
   m_EditorClassIdentifier: 
-  isParry: 0
-  isAvoid: 1
-  distance: 0
-  scale: 5
-  damage: 0
-  deleteFrame: 20
+  dir: {x: 0, y: 0, z: -1}
+  frame: 45
+  speed: 1

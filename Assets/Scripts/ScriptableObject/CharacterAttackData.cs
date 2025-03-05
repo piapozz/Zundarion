@@ -6,6 +6,7 @@ using UnityEngine;
 public class CharacterAttackData : ScriptableObject
 {
     public bool isParry;        // パリィかどうか
+    public bool isAvoid;        // 回避かどうか
     public float distance;      // 距離
     public float scale;         // 大きさ
     public float damage;        // ダメージ

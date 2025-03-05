@@ -16,6 +16,7 @@ public class CollisionData : MonoBehaviour
 {
     public int characterID = -1;
     public bool isParry = false;
+    public bool isAvoid = false;
     public float damage = -1;
     public int deleteFrame = -1;
 
@@ -38,7 +39,15 @@ public class CollisionData : MonoBehaviour
     {
         CollisionManager.instance.UnuseCollision(gameObject);
         BaseCharacter parryTarget = CharacterManager.instance.GetCharacter(characterID);
-        CollisionManager.instance.parryList.Remove(parryTarget);
+        if (parryTarget == null) return;
+        if (isParry)
+        {
+            CharacterManager.instance.player.RemoveParryList(parryTarget);
+        }
+        else if (isAvoid)
+        {
+            CharacterManager.instance.player.RemoveAvoidList(parryTarget);
+        }
     }
 
     private readonly string PLAYER_TAG = "Player";
@@ -58,8 +67,15 @@ public class CollisionData : MonoBehaviour
         BaseCharacter sourceCharacter = CharacterManager.instance.GetCharacter(characterID);
         if (sourceCharacter == null) return;
         if (isParry)
+        {
             // リストに入れる
-            CollisionManager.instance.parryList.Add(sourceCharacter);
+            CharacterManager.instance.player.AddParryList(sourceCharacter);
+        }
+        else if (isAvoid)
+        {
+            // リストに入れる
+            CharacterManager.instance.player.AddAvoidList(sourceCharacter);
+        }
         else
         {
             // ダメージ判定
@@ -70,7 +86,7 @@ public class CollisionData : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (!isParry) return;
+        if (!isParry && !isAvoid) return;
         // タグでチェック判定
         GameObject hitObj = other.gameObject;
         string hitTagName = hitObj.tag;
@@ -82,7 +98,8 @@ public class CollisionData : MonoBehaviour
 
         // リストから外す
         BaseCharacter sourceCharacter = CharacterManager.instance.GetCharacter(characterID);
-        CollisionManager.instance.parryList.Remove(sourceCharacter);
+        CharacterManager.instance.player.RemoveParryList(sourceCharacter);
+        CharacterManager.instance.player.RemoveAvoidList(sourceCharacter);
     }
 
     /// <summary>
