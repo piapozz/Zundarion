@@ -14,7 +14,7 @@ public class BearIdleState : BaseEnemyState
     {
         enemy.SetAnimatorBool("Idle", true);
         SetEnemy(enemy);
-        playerTransform = CharacterManager.instance.characterList[0].transform;
+        playerTransform = player.transform;
     }
 
     public override void Execute(BaseEnemy enemy)

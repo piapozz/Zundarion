@@ -13,7 +13,7 @@ public class BearChasingState : BaseEnemyState
     {
         enemy.SetAnimatorBool("Chasing", true);
         SetEnemy(enemy);
-        playerTransform = CharacterManager.instance.characterList[0].transform;
+        playerTransform = player.transform;
     }
 
     public override void Execute(BaseEnemy enemy)

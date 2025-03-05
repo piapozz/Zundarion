@@ -13,7 +13,7 @@ public class BearWanderingState : BaseEnemyState
 
     public override void Execute(BaseEnemy enemy)
     {
-        Transform playerTransform = CharacterManager.instance.characterList[0].transform;
+        Transform playerTransform = CharacterManager.instance.player.transform;
         float distance = GetDistance(playerTransform);
 
         // 距離を見てステートを変更

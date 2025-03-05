@@ -61,7 +61,7 @@ public class UIManager : SystemObject
         parent = worldSpace.transform;
         parentOverlay = spaceOverlay.transform;
 
-        AddPlayerUI(CharacterManager.instance.characterList[0].GetComponent<BasePlayer>());
+        AddPlayerUI(CharacterManager.instance.player);
 
         // 全てが空だったらあらかじめ生成する
         if (useObjectList == null && unuseObjectQueue == null)
@@ -162,7 +162,9 @@ public class UIManager : SystemObject
 
             float distance = Vector3.Distance(mainCamera.transform.position, enemyPosition);
             bool isObstructed = Physics.Raycast(mainCamera.transform.position, direction, distance, obstacleLayer);
-            bool shouldShowUI = isVisible && !isObstructed;
+            // bool shouldShowUI = isVisible && !isObstructed;
+
+            bool shouldShowUI = !isObstructed;
 
             // UIの表示・非表示を設定
             enemyUIList[i].SetActive(shouldShowUI);

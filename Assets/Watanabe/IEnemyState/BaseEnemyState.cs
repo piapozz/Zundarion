@@ -11,6 +11,8 @@ public abstract class BaseEnemyState : IEnemyState
     protected readonly float _ENEMY_DISTANCE_NEAR = 4.0f;
     protected readonly float _ENEMY_DISTANCE_FAR = 10.0f;
 
+    protected BasePlayer player = CharacterManager.instance.player;
+
     public void SetEnemy(BaseEnemy enemy)
     {
         this.enemy = enemy;
