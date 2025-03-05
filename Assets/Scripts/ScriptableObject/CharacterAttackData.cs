@@ -9,5 +9,5 @@ public class CharacterAttackData : ScriptableObject
     public float distance;      // ‹——£
     public float scale;         // ‘å‚«‚³
     public float damage;        // ƒ_ƒ[ƒW
-    public float generateTime;  // ¶¬‚µ‚Ä‚¢‚éŠÔ
+    public int deleteFrame;     // ¶¬‚µ‚Ä‚¢‚éŠÔ
 }

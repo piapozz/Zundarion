@@ -20,7 +20,7 @@ public class CharacterManager : SystemObject
 
     public BasePlayer player { get; private set; } = null;
 
-    public List<BaseCharacter> characterList { get; private set; } = null;
+    private List<BaseCharacter> characterList = null;
 
     public override void Initialize()
     {

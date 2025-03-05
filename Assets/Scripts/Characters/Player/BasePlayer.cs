@@ -19,9 +19,6 @@ public abstract class BasePlayer : BaseCharacter
 
     }
 
-    /// <summary>自身の前方アングル</summary>
-    public float selfFrontAngleZ { get; set; }
-
     /// <summary>自身のゲームオブジェクト</summary>
     public GameObject selfGameObject { get; private set; }
 
@@ -41,6 +38,7 @@ public abstract class BasePlayer : BaseCharacter
     /// <summary>硬直中かどうか</summary>
     private bool _isStiff = false;
 
+    /// <summary>移動硬直中かどうか</summary>
     private bool _isMoveStiff = false;
 
     /// <summary>プレイヤーの先行入力情報</summary>
@@ -65,13 +63,13 @@ public abstract class BasePlayer : BaseCharacter
     /// 回避のクールダウンキャンセルトークン
     private CancellationTokenSource _avoidCTS = null;
 
-    private const float _RUN_SPEED_RATE = 1.5f;
-    private const float _ATTACK_SENS_RANGE = 10.0f;
-    private const int _PARRY_COOL_DOWN_STOCK = 2;
-    private const float _PARRY_COOL_DOWN_SECOND = 2.0f;
-    private const int _AVOID_COOL_DOWN_STOCK = 2;
-    private const float _AVOID_COOL_DOWN_SECOND = 2.0f;
-    private const int _ATTACK_CAMERA_FRAME = 20;
+    private const float _RUN_SPEED_RATE = 1.5f;         // 走る速度倍率
+    private const float _ATTACK_SENS_RANGE = 10.0f;     // 攻撃感知範囲
+    private const int _PARRY_COOL_DOWN_STOCK = 2;       // パリィクールダウンストック
+    private const float _PARRY_COOL_DOWN_SECOND = 2.0f; // パリィクールダウン秒数
+    private const int _AVOID_COOL_DOWN_STOCK = 2;       // 回避クールダウンストック
+    private const float _AVOID_COOL_DOWN_SECOND = 2.0f; // 回避クールダウン秒数
+    private const int _ATTACK_CAMERA_FRAME = 20;        // 攻撃時のカメラ遷移フレーム
 
     void Awake()
     {
@@ -231,6 +229,7 @@ public abstract class BasePlayer : BaseCharacter
         if (CheckParryCoolDown()) return;
         // パリィになるか判定
         List<BaseCharacter> parryList = CollisionManager.instance.parryList;
+
         if (parryList.Count <= 0)
         {
             // アニメーションをセット
@@ -238,6 +237,7 @@ public abstract class BasePlayer : BaseCharacter
         }
         else
         {
+            if (parryList[0] == null) return;
             // アニメーションをセット
             selfAnimator.SetTrigger(_selfAnimationData.animationName[(int)PlayerAnimation.PARRY]);
             // プレイヤーを敵の方向に向ける
@@ -338,77 +338,5 @@ public abstract class BasePlayer : BaseCharacter
     {
         base.DeadEvent();
         UniTask task = FadeManager.instance.TransScene("GameResult", SCENE_FADE_TIME);
-    }
-
-#if GUI_OUTPUT
-
-    /// <summary>GUI出力用 インスタンスカウンタ</summary>
-    static private int gui_instanceTotalNum = 0;
-
-    /// <summary>GUI出力用 インスタンス番号</summary>
-    private int gui_instanceNum;
-
-    /// <summary>インスペクタ用GUI表示／非表示フラグ</summary>
-    [SerializeField]
-    private bool enableGUIOutput = true;
-
-    /// <summary>
-    /// 毎フレーム呼ばれるGUI出力用メソッド
-    /// <para>
-    /// 画面にデバッグ用の情報を出す
-    /// （重いので実機には乗らないようにする）
-    /// </para>
-    /// </summary>
-    private void OnGUI()
-    {
-        if (!enableGUIOutput)
-        {
-            return;
-        }
-        Color oldColor = GUI.color;
-        GUI.color = Color.yellow;
-        using (new GUILayout.AreaScope(new Rect(0, 0, Screen.width, Screen.height)))
-        {
-            using (new GUILayout.VerticalScope())
-            {
-                using (new GUILayout.HorizontalScope())
-                {
-                    if (gui_instanceNum == 0)
-                    {
-                        using (new GUILayout.VerticalScope("box"))
-                        {
-                            GUIOutputSelfInfo();
-                            GUILayout.Space(20);
-                        }
-                    }
-                    GUILayout.FlexibleSpace();
-                    if (gui_instanceNum == 1)
-                    {
-                        using (new GUILayout.VerticalScope("box"))
-                        {
-                            GUIOutputSelfInfo();
-                            GUILayout.Space(20);
-                        }
-                    }
-                }
-                GUILayout.FlexibleSpace();
-                if (gui_instanceNum == 0)
-                {
-
-                }
-            }
-        }
-        GUI.color = oldColor;
-    }
-#endif  // GUI_OUTPUT
-
-    /// <summary>GUIに自身の情報を出力</summary>
-    protected void GUIOutputSelfInfo()
-    {
-#if GUI_OUTPUT
-        GUILayout.Label("SelfPosition: " + transform.position);
-        GUILayout.Label("SelfYRotation: " + transform.rotation.eulerAngles.y);
-        GUILayout.Label("input.x: " + _inputMove.z "input.y" + _inputMove.y);
-#endif  // GUI_OUTPUT
     }
 }

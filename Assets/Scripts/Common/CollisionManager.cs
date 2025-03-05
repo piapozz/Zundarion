@@ -88,7 +88,7 @@ public class CollisionManager : SystemObject
         collisionData.isParry = attackData.isParry;
         collisionData.characterID = ID;
         // ê∂ê¨éûä‘ê›íË
-        collisionData.deleteTime = attackData.generateTime;
+        collisionData.deleteFrame = attackData.deleteFrame;
         // îºåaê›íË
         genObj.transform.localScale = Vector3.one * attackData.scale;
         // É^ÉOê›íË
