@@ -99,6 +99,20 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
+      - time: 0.29559818
+        functionName: CreateCollisionEvent
+        data: 
+        objectReferenceParameter: {fileID: 11400000, guid: ea1e890f41f5b2e48b634fa6caf0d1de, type: 2}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.29615358
+        functionName: EyeEffectEvent
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 3
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}

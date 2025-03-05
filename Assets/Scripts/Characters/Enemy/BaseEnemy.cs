@@ -23,7 +23,9 @@ public class BaseEnemy : BaseCharacter
 
     public IEnemyState enemyState = null;
     public EffectManager effectManager = null;
+
     [SerializeField] private GameObject eyeLeft = null, eyeRight = null;
+    [SerializeField] public LightEffectController lightEffectController = null;
 
     private const float _HIT_IMPACT_RATIO = 10;
 
@@ -73,13 +75,22 @@ public class BaseEnemy : BaseCharacter
         enemyState.Enter(this);
     }
 
-    public void EyeEffectEvent(EffectGenerateData data)
+    //public void EyeEffectEvent(EffectGenerateData data)
+    //{
+    //    AudioManager audioManager = AudioManager.instance;
+
+    //    EffectManager.instance.GenerateEffect(data, eyeLeft.transform);
+    //    EffectManager.instance.GenerateEffect(data, eyeRight.transform);
+
+    //    audioManager.PlaySE(SE.ENEMY_OMEN);
+    //}
+
+    public void EyeEffectEvent(float sec)
     {
         AudioManager audioManager = AudioManager.instance;
 
-        EffectManager.instance.GenerateEffect(data, eyeLeft.transform);
-        EffectManager.instance.GenerateEffect(data, eyeRight.transform);
-
+        lightEffectController.SetTransform(sec);
+        
         audioManager.PlaySE(SE.ENEMY_OMEN);
     }
 

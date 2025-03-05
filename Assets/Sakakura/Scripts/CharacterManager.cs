@@ -51,7 +51,11 @@ public class CharacterManager : SystemObject
     {
         BaseCharacter genCharacter = GenerateCharacter(genBase, genTransform);
 
-        UIManager.instance.AddEnemyUI(genCharacter as BaseEnemy);
+        BaseEnemy baseEnemy = genCharacter as BaseEnemy;
+        ScreenLineRenderFeature feature = EffectManager.instance.GetScreenLineRenderFeature();
+        baseEnemy.lightEffectController.SetFeature(feature);
+
+        UIManager.instance.AddEnemyUI(baseEnemy);
     }
 
     /// <summary>

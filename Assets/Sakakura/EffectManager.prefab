@@ -48,3 +48,5 @@ MonoBehaviour:
   - {fileID: 8607631924172411, guid: d8058b5ac353b57439588fd6dd492a12, type: 3}
   - {fileID: 5534214548612450651, guid: f566be946f528e945a6065f14f19c213, type: 3}
   - {fileID: 3434040619743330674, guid: f3cb64ea715c80c4fb5639f2908e42fd, type: 3}
+  UniversalRendererData: {fileID: 11400000, guid: daaac3476adf9a64a9aad17d88049d19, type: 2}
+  material: {fileID: 2100000, guid: 8a510b80f0d29014daeda2c5c59dda8f, type: 2}
