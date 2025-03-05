@@ -78,6 +78,13 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
+      - time: 0
+        functionName: SetStiffEvent
+        data: 
+        objectReferenceParameter: {fileID: 11400000, guid: 0e18bb8bf96f3c041967a7943f0c69cc, type: 2}
+        floatParameter: 0
+        intParameter: 15
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}

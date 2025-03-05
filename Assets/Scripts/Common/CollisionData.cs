@@ -22,6 +22,8 @@ public class CollisionData : MonoBehaviour
 
     private string thisTag = null;
 
+    private int _indexCount = -1;
+
     /// <summary>
     /// 制限時間を設定し、時間経過後にゲームオブジェクトを破壊します。
     /// </summary>
@@ -37,17 +39,15 @@ public class CollisionData : MonoBehaviour
     /// </summary>
     private void LimitOver()
     {
-        CollisionManager.instance.UnuseCollision(gameObject);
-        BaseCharacter parryTarget = CharacterManager.instance.GetCharacter(characterID);
-        if (parryTarget == null) return;
         if (isParry)
         {
-            CharacterManager.instance.player.RemoveParryList(parryTarget);
+            CharacterManager.instance.player.RemoveParryList(_indexCount);
         }
         else if (isAvoid)
         {
-            CharacterManager.instance.player.RemoveAvoidList(parryTarget);
+            CharacterManager.instance.player.RemoveAvoidList(_indexCount);
         }
+        CollisionManager.instance.UnuseCollision(gameObject);
     }
 
     private readonly string PLAYER_TAG = "Player";
@@ -69,12 +69,12 @@ public class CollisionData : MonoBehaviour
         if (isParry)
         {
             // リストに入れる
-            CharacterManager.instance.player.AddParryList(sourceCharacter);
+            _indexCount = CharacterManager.instance.player.AddParryList(sourceCharacter);
         }
         else if (isAvoid)
         {
             // リストに入れる
-            CharacterManager.instance.player.AddAvoidList(sourceCharacter);
+            _indexCount = CharacterManager.instance.player.AddAvoidList(sourceCharacter);
         }
         else
         {
@@ -92,14 +92,11 @@ public class CollisionData : MonoBehaviour
         string hitTagName = hitObj.tag;
         if (!JudgeHittable(hitTagName)) return;
 
-        // BaseCharacterを取得
-        BaseCharacter hitCharacter = hitObj.GetComponent<BaseCharacter>();
-        if (hitCharacter == null) return;
-
         // リストから外す
-        BaseCharacter sourceCharacter = CharacterManager.instance.GetCharacter(characterID);
-        CharacterManager.instance.player.RemoveParryList(sourceCharacter);
-        CharacterManager.instance.player.RemoveAvoidList(sourceCharacter);
+        if (isParry)
+            CharacterManager.instance.player.RemoveParryList(_indexCount);
+        if (isAvoid)
+            CharacterManager.instance.player.RemoveAvoidList(_indexCount);
     }
 
     /// <summary>

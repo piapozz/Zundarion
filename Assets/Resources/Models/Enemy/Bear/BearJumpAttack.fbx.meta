@@ -78,17 +78,17 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.27034187
-        functionName: EyeEffectEvent
-        data: 
-        objectReferenceParameter: {fileID: 11400000, guid: ed280db26ab2a234fb04552c4a0341a9, type: 2}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.27283844
+      - time: 0.27033222
         functionName: MoveEvent
         data: 
         objectReferenceParameter: {fileID: 11400000, guid: f193105ffd8f61d438723f917acae1c0, type: 2}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.27034187
+        functionName: EyeEffectEvent
+        data: 
+        objectReferenceParameter: {fileID: 11400000, guid: 6ead55ea3b2215543a28bc66824d56df, type: 2}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
