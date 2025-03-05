@@ -9,6 +9,12 @@ public class Title : MonoBehaviour
 
     private List<SystemObject> systemList = null;
 
+    private void Awake()
+    {
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+    }
+
     private void Start()
     {
         systemList = new List<SystemObject>();

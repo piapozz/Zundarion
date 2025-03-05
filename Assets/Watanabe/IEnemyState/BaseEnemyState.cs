@@ -18,6 +18,12 @@ public abstract class BaseEnemyState : IEnemyState
         this.enemy = enemy;
     }
 
+    protected Transform SetTransform()
+    {
+        if(player == null)return null;
+        return player.transform;
+    }
+
     protected float GetDistance(Transform _transform)
     {
         if (_transform == null) return -1;

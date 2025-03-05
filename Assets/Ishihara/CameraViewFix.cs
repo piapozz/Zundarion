@@ -8,23 +8,24 @@ using System.Linq;
 /// </summary>
 public class CameraViewFix : MonoBehaviour
 {
-    Camera camera;
+    private Camera _camera;
     private Transform _player;
     private List<Collider> lastRaycastHit = new List<Collider>();
 
-    void Start()
+    public void Initialize(Camera camera)
     {
-        camera = Camera.main;
-        //_player = camera.Follow;
+        _camera = camera;
+
+        if (_player == null)
+        {
+            _player = CharacterManager.instance.player.transform;
+        }
     }
 
     void Update()
     {
-        if(_player == null)
-        {
-            _player = CharacterManager.instance.player.transform;
-        }
-        Vector3 position = camera.transform.position;
+        if (_player == null) return;
+        Vector3 position = GetComponent<Camera>().transform.position;
         Vector3 playerDirection = _player.position - position;
         float playerDistance =  Vector3.Distance(_player.position, position);
         List<RaycastHit> objects = GetObjectsInRaycast(position, playerDirection, playerDistance);
