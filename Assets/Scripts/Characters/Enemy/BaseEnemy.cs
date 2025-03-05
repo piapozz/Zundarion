@@ -79,24 +79,24 @@ public class BaseEnemy : BaseCharacter
         enemyState.Enter(this);
     }
 
-    //public void EyeEffectEvent(EffectGenerateData data)
-    //{
-    //    AudioManager audioManager = AudioManager.instance;
-
-    //    EffectManager.instance.GenerateEffect(data, eyeLeft.transform);
-    //    EffectManager.instance.GenerateEffect(data, eyeRight.transform);
-
-    //    audioManager.PlaySE(SE.ENEMY_OMEN);
-    //}
-
-    public void EyeEffectEvent(float sec)
+    public void EyeEffectEvent(EffectGenerateData data)
     {
         AudioManager audioManager = AudioManager.instance;
 
-        lightEffectController.SetTransform(sec);
-        
+        EffectManager.instance.GenerateEffect(data, eyeLeft.transform);
+        EffectManager.instance.GenerateEffect(data, eyeRight.transform);
+
         audioManager.PlaySE(SE.ENEMY_OMEN);
     }
+
+    //public void EyeEffectEvent(float sec)
+    //{
+    //    AudioManager audioManager = AudioManager.instance;
+
+    //    lightEffectController.SetTransform(sec);
+        
+    //    audioManager.PlaySE(SE.ENEMY_OMEN);
+    //}
 
     public void EnemyAction()
     {

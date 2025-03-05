@@ -11,7 +11,7 @@ public class GameResultUI : MonoBehaviour
 
     void Start()
     {
-        if(BasePlayer.isDead == true)
+        if(BasePlayer.isPlayerDead == true)
         {
             resultText.text = string.Format("GameOver");
             resultText.color = Color.red;

@@ -75,12 +75,16 @@ public abstract class BasePlayer : BaseCharacter
     private const float _AVOID_COOL_DOWN_SECOND = 2.0f; // 回避クールダウン秒数
     private const int _ATTACK_CAMERA_FRAME = 20;        // 攻撃時のカメラ遷移フレーム
 
+    public static bool isPlayerDead = false;
+
     void Awake()
     {
         _selfPreInput.Initialize();
 
         _parryStock = _PARRY_COOL_DOWN_STOCK;
         _avoidStock = _AVOID_COOL_DOWN_STOCK;
+
+        isPlayerDead = false;
 
         _parryList = new List<BaseCharacter>(5);
         _avoidList = new List<BaseCharacter>(5);
@@ -382,6 +386,7 @@ public abstract class BasePlayer : BaseCharacter
     public override void DeadEvent()
     {
         base.DeadEvent();
+        isPlayerDead = true;
         UniTask task = FadeManager.instance.TransScene("GameResult", SCENE_FADE_TIME);
     }
 }
