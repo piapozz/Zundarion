@@ -148,7 +148,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _comboText: {fileID: 6512707359548245731}
   _comboCanvas: {fileID: 1035716805}
-  COMBO_TIME_RESET: 10
+  COMBO_TIME_RESET: 3
 --- !u!1 &5461017068631040524
 GameObject:
   m_ObjectHideFlags: 0
