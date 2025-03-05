@@ -109,8 +109,8 @@ ModelImporter:
       - time: 0.29615358
         functionName: EyeEffectEvent
         data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 3
+        objectReferenceParameter: {fileID: 11400000, guid: ed280db26ab2a234fb04552c4a0341a9, type: 2}
+        floatParameter: 0
         intParameter: 0
         messageOptions: 0
       transformMask: []
