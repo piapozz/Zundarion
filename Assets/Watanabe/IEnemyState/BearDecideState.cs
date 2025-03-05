@@ -30,9 +30,9 @@ public class BearDecideState : BaseEnemyState
     public override void Enter(BaseEnemy enemy)
     {
         enemy.SetAnimatorBool("Decide", true);
-        SetEnemy(enemy);
         enemyBear = enemy.GetComponent<EnemyBear>();
-        playerTransform = CharacterManager.instance.characterList[0].transform;
+        SetEnemy(enemy);
+        playerTransform = player.transform;
 
     }
 

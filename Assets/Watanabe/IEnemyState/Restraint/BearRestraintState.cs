@@ -12,7 +12,7 @@ public class BearRestraintState : BaseEnemyState
 
     public override void Execute(BaseEnemy enemy)
     {
-        Transform playerTransform = CharacterManager.instance.characterList[0].transform;
+        Transform playerTransform = CharacterManager.instance.player.transform;
         float distance = enemy.GetRelativePosition(playerTransform).magnitude;
 
         if (distance >= 8.0f)
