@@ -14,9 +14,6 @@ public class CollisionManager : SystemObject
     private GameObject _collisionOrigin = null;     // 当たり判定の元オブジェ
 
     [SerializeField]
-    public Transform useCollisionRoot = null;       // 当たり判定生成する親
-
-    [SerializeField]
     public Transform unuseCollisionRoot = null;     // 未使用のコリジョンの親
 
     private List<GameObject> _useCollisionList = null;      // 使用中のコリジョンリスト

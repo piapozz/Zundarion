@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using static CommonModule;
+using static GameConst;
 
 public class CollisionData : MonoBehaviour
 {
@@ -63,7 +64,7 @@ public class CollisionData : MonoBehaviour
         {
             // É_ÉÅÅ[ÉWîªíË
             hitCharacter.TakeDamage(damage, sourceCharacter.strength);
-            sourceCharacter.SetAnimationSpeed(0.01f, 3);
+            sourceCharacter.SetAnimationSpeed(HIT_STOP_SPEED, HIT_STOP_FRAME);
         }
     }
 
