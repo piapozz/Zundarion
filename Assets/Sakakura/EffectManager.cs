@@ -7,7 +7,9 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class EffectManager : SystemObject
 {
@@ -15,6 +17,9 @@ public class EffectManager : SystemObject
     private GameObject[] _effectObject = null;
 
     public static EffectManager instance = null;
+
+    public UniversalRendererData UniversalRendererData;
+    public Material material;
 
     public override void Initialize()
     {
@@ -33,5 +38,15 @@ public class EffectManager : SystemObject
         Vector3 offset = new Vector3(Mathf.Sin(angle) * length, height, Mathf.Cos(angle) * length);
         genPos += offset;
         geneffect.transform.position = genPos;
+    }
+
+    public ScreenLineRenderFeature GetScreenLineRenderFeature()
+    {
+        ScreenLineRenderFeature feature = new ScreenLineRenderFeature();
+        Material mat = new Material(material);
+        feature.lineMaterial = mat;
+        UniversalRendererData.rendererFeatures.Add(feature);
+        
+        return feature;
     }
 }
