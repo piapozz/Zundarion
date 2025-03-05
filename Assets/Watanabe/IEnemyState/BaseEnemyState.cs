@@ -20,11 +20,13 @@ public abstract class BaseEnemyState : IEnemyState
 
     protected float GetDistance(Transform _transform)
     {
+        if (_transform == null) return -1;
         return enemy.GetRelativePosition(_transform).magnitude;
     }
 
     protected Vector3 GetTargetVec(Transform _transform)
     {
+        if (_transform == null) return new Vector3(0, 0, 0);
         return enemy.GetTargetVec(_transform.position);
     }
 
