@@ -17,7 +17,7 @@ public class CollisionData : MonoBehaviour
     public int characterID = -1;
     public bool isParry = false;
     public float damage = -1;
-    public float deleteTime = 0.1f;
+    public int deleteFrame = -1;
 
     private string thisTag = null;
 
@@ -28,7 +28,7 @@ public class CollisionData : MonoBehaviour
     public void OnEnable()
     {
         thisTag = transform.tag;
-        UniTask task = WaitAction(deleteTime, LimitOver);
+        UniTask task = WaitAction(deleteFrame, LimitOver);
     }
 
     /// <summary>
