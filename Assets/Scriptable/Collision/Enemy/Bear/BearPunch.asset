@@ -16,4 +16,4 @@ MonoBehaviour:
   distance: 1
   scale: 2
   damage: 1
-  generateTime: 0.7
+  deleteFrame: 3
