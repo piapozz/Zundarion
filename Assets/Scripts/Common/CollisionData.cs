@@ -7,6 +7,7 @@
 using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 using static CommonModule;
@@ -22,8 +23,6 @@ public class CollisionData : MonoBehaviour
 
     private string thisTag = null;
 
-    private int _indexCount = -1;
-
     /// <summary>
     /// 制限時間を設定し、時間経過後にゲームオブジェクトを破壊します。
     /// </summary>
@@ -34,19 +33,18 @@ public class CollisionData : MonoBehaviour
         UniTask task = WaitAction(deleteFrame, LimitOver);
     }
 
+    // 親オブジェクトのdestroyでListから消せてない？
+    private void OnDisable()
+    {
+        RemoveList();
+    }
+
     /// <summary>
     /// アタッチされているオブジェクトを非アクティブにする
     /// </summary>
     private void LimitOver()
     {
-        if (isParry)
-        {
-            CharacterManager.instance.player.RemoveParryList(_indexCount);
-        }
-        else if (isAvoid)
-        {
-            CharacterManager.instance.player.RemoveAvoidList(_indexCount);
-        }
+        RemoveList();
         CollisionManager.instance.UnuseCollision(gameObject);
     }
 
@@ -69,12 +67,12 @@ public class CollisionData : MonoBehaviour
         if (isParry)
         {
             // リストに入れる
-            _indexCount = CharacterManager.instance.player.AddParryList(sourceCharacter);
+            CharacterManager.instance.player.AddParryList(this);
         }
         else if (isAvoid)
         {
             // リストに入れる
-            _indexCount = CharacterManager.instance.player.AddAvoidList(sourceCharacter);
+            CharacterManager.instance.player.AddAvoidList(this);
         }
         else
         {
@@ -92,11 +90,7 @@ public class CollisionData : MonoBehaviour
         string hitTagName = hitObj.tag;
         if (!JudgeHittable(hitTagName)) return;
 
-        // リストから外す
-        if (isParry)
-            CharacterManager.instance.player.RemoveParryList(_indexCount);
-        if (isAvoid)
-            CharacterManager.instance.player.RemoveAvoidList(_indexCount);
+        RemoveList();
     }
 
     /// <summary>
@@ -111,5 +105,17 @@ public class CollisionData : MonoBehaviour
             return true;
         else
             return false;
+    }
+
+    private void RemoveList()
+    {
+        if (isParry)
+        {
+            CharacterManager.instance.player.RemoveParryList(this);
+        }
+        else if (isAvoid)
+        {
+            CharacterManager.instance.player.RemoveAvoidList(this);
+        }
     }
 }
