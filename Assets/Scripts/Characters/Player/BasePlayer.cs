@@ -65,9 +65,9 @@ public abstract class BasePlayer : BaseCharacter
     /// 回避のクールダウンキャンセルトークン
     private CancellationTokenSource _avoidCTS = null;
 
-    private List<BaseCharacter> _parryList = null;
+    private List<CollisionData> _parryList = null;
 
-    private List<BaseCharacter> _avoidList = null;
+    private List<CollisionData> _avoidList = null;
 
     private const float _RUN_SPEED_RATE = 1.5f;         // 走る速度倍率
     private const float _ATTACK_SENS_RANGE = 10.0f;     // 攻撃感知範囲
@@ -84,8 +84,8 @@ public abstract class BasePlayer : BaseCharacter
         _parryStock = _PARRY_COOL_DOWN_STOCK;
         _avoidStock = _AVOID_COOL_DOWN_STOCK;
 
-        _parryList = new List<BaseCharacter>(5);
-        _avoidList = new List<BaseCharacter>(5);
+        _parryList = new List<CollisionData>(5);
+        _avoidList = new List<CollisionData>(5);
 
         Init();
     }
@@ -259,39 +259,37 @@ public abstract class BasePlayer : BaseCharacter
             // アニメーションをセット
             SetAnimationTrigger(_selfAnimationData.animationName[(int)PlayerAnimation.PARRY]);
             // プレイヤーを敵の方向に向ける
-            targetEnemy = _parryList[0];
+            targetEnemy = CharacterManager.instance.GetCharacter(_parryList[0].characterID);
             TurnAround(targetEnemy.transform);
             // 通常カメラをリセット
             UniTask task = CameraManager.instance.SetFreeCam(transform.eulerAngles.y, 0.5f);
             // パリィ相手のアニメーションをひるみにする
-            _parryList[0].SetImpact();
+            targetEnemy.SetImpact();
         }
     }
 
-    public int AddParryList(BaseCharacter target)
+    public void AddParryList(CollisionData targetCollision)
     {
-        if (_parryList.Exists(chara => chara == target)) return -1;
-        _parryList.Add(target);
-        return _parryList.Count - 1;
+        if (_parryList.Exists(collision => collision == targetCollision)) return;
+        _parryList.Add(targetCollision);
     }
 
-    public void RemoveParryList(int indexCount)
+    public void RemoveParryList(CollisionData targetCollision)
     {
-        if (indexCount >= _parryList.Count || indexCount < 0) return;
-        _parryList.RemoveAt(indexCount);
+        if (_parryList.Exists(collision => collision != targetCollision)) return;
+        _parryList.Remove(targetCollision);
     }
 
-    public int AddAvoidList(BaseCharacter target)
+    public void AddAvoidList(CollisionData targetCollision)
     {
-        if (_avoidList.Exists(chara => chara == target)) return -1;
-        _avoidList.Add(target);
-        return _avoidList.Count - 1;
+        if (_avoidList.Exists(chara => chara == targetCollision)) return;
+        _avoidList.Add(targetCollision);
     }
 
-    public void RemoveAvoidList(int indexCount)
+    public void RemoveAvoidList(CollisionData targetCollision)
     {
-        if (indexCount >= _avoidList.Count || indexCount < 0) return;
-        _avoidList.RemoveAt(indexCount);
+        if (_avoidList.Exists(collision => collision != targetCollision)) return;
+        _avoidList.Remove(targetCollision);
     }
 
     /// <summary>
