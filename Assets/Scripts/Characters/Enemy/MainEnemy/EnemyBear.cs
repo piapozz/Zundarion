@@ -25,16 +25,12 @@ public class EnemyBear : BaseEnemy
 
     private void Update()
     {
-        // Debug.Log(enemyState);
         position = transform.position;
-        Debug.Log(enemyState);
     }
 
-    public override void TakeDamage(float damageSize, float strength)
+    protected override void DamageReaction()
     {
-        base.TakeDamage(damageSize, strength);
         fury += _ENEMY_FURY_INCREASE;
-
     }
 
     public int GetFury() { return fury; }

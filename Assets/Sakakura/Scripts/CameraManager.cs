@@ -19,11 +19,12 @@ public class CameraManager : SystemObject
     [SerializeField]
     private CinemachineFreeLook _freeLookCam = null;
 
-    /// <summary>
-    /// ÕŒ‚‚ğ—^‚¦‚éŒ³
-    /// </summary>
+    /// <summary>ÕŒ‚‚ğ—^‚¦‚éŒ³</summary>
     [SerializeField]
     private CinemachineImpulseSource _impulseSource = null;
+
+    /// <summary>ƒJƒƒ‰‚Ì©“®ù‰ñÅ‘åŠp“x(0`1)</summary>
+    private const float _CAMERA_AUTO_ROTATE_MAX = 30.0f;
 
     public override void Initialize()
     {
@@ -43,7 +44,6 @@ public class CameraManager : SystemObject
         _stateCam.Follow = setTransform;
         _stateCam.LookAt = setTransform;
         _stateCam.m_AnimatedTarget = setAnimator;
-
     }
 
     /// <summary>
@@ -58,6 +58,8 @@ public class CameraManager : SystemObject
         float diffXAngle = setXAngle - _freeLookCam.m_XAxis.Value;
         if (diffXAngle > 180) diffXAngle -= 360;
         else if (diffXAngle <= -180) diffXAngle += 360;
+        diffXAngle = Mathf.Clamp(diffXAngle, -_CAMERA_AUTO_ROTATE_MAX, _CAMERA_AUTO_ROTATE_MAX);
+
         float diffYAngle = setYAngle - _freeLookCam.m_YAxis.Value;
 
         float xAxisLerp = diffXAngle / setFrame;

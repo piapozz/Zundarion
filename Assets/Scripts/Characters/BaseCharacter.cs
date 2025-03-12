@@ -51,6 +51,8 @@ public abstract class BaseCharacter : MonoBehaviour
     [SerializeField]
     private Transform _effectAnchor = null;
 
+    protected float impactValue = 0.0f;
+
     // キャラクターのステータス
     public float healthMax { get; protected set; } = -1;    // 最大体力
     public float health { get; protected set; } = -1;       // 現在の体力
@@ -92,14 +94,25 @@ public abstract class BaseCharacter : MonoBehaviour
     /// ダメージを受ける処理
     /// </summary>
     /// <param name="damageRatio"></param>
-    public virtual void TakeDamage(float damageRatio, float sourceStrength)
+    public void TakeDamage(float damageRatio, float sourceStrength)
     {
+        // 無敵かHPがないなら処理しない
+        if (isInvincible || isDead) return;
+
         // ダメージ処理
         int damage = GetDamage(sourceStrength, damageRatio);
         health = Mathf.Max(0, (health - damage));
 
-        _damageObserver.OnDamage(_effectAnchor, damage);
+        // 死亡処理か怯み処理
+        if (health <= 0)
+            OnDead();
+        else
+            TakeImpact(damage);
 
+        // ダメージを受けた反応
+        DamageReaction();
+
+        _damageObserver.OnDamage(_effectAnchor, damage);
         // カメラを揺らす
         CameraManager.instance.SetShake(CAMERA_SHAKE_TIME, CAMERA_SHAKE_GAIN);
     }
@@ -118,9 +131,35 @@ public abstract class BaseCharacter : MonoBehaviour
     }
 
     /// <summary>
+    /// 怯み値を加算してそれに応じてひるませる
+    /// </summary>
+    /// <param name="impact"></param>
+    protected virtual void TakeImpact(float impact)
+    {
+        impactValue += impact;
+    }
+
+    /// <summary>
+    /// 死亡時の処理
+    /// </summary>
+    protected virtual void OnDead()
+    {
+        isDead = true;
+        CharacterManager.instance.RemoveCharacterList(ID);
+    }
+
+    /// <summary>
     /// ひるむ
     /// </summary>
     public virtual void SetImpact()
+    {
+
+    }
+
+    /// <summary>
+    /// ダメージを受けたときのリアクション
+    /// </summary>
+    protected virtual void DamageReaction()
     {
 
     }
@@ -168,6 +207,7 @@ public abstract class BaseCharacter : MonoBehaviour
         // 接近する攻撃なら
         if (eventData.isApproach)
             length = GetMoveLength(eventData.minLength, eventData.maxLength);
+        if (length < 0) return;
 
         // directionをローカル座標系に変換
         Vector3 direction = transform.TransformDirection(eventData.dir.normalized);
@@ -194,6 +234,8 @@ public abstract class BaseCharacter : MonoBehaviour
     /// <returns></returns>
     private float GetMoveLength(float minLength, float maxLength)
     {
+        if (targetEnemy == null) return -1;
+
         Vector3 targetPosition = targetEnemy.transform.position;
         Vector3 selfPosition = transform.position;
         float distance = Vector3.Distance(targetPosition, selfPosition);
@@ -290,7 +332,7 @@ public abstract class BaseCharacter : MonoBehaviour
     /// </summary>
     /// <param name="dir"></param>
     /// <param name="speed"></param>
-    public virtual void Rotate(Vector3 dir, float speed = CHARACTER_ROTATE_SPEED)
+    public void Rotate(Vector3 dir)
     {
         // 移動ベクトルがゼロでない場合のみ処理を進める
         if (dir == Vector3.zero) return;

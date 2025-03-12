@@ -45,7 +45,7 @@ public class BearDecideState : BaseEnemyState
         _count += Time.deltaTime;
         float distance = GetDistance(playerTransform);
         Vector3 targetVec = enemy.GetTargetVec(playerTransform.position);
-        enemy.Rotate(targetVec, _ENEMY_ROTATE_SPEED);
+        enemy.Rotate(targetVec);
 
         if (distance <= _ENEMY_DISTANCE) { enemy.Move(speed, Vector3.right); }
         else { enemy.Move(speed, Vector3.forward); }
