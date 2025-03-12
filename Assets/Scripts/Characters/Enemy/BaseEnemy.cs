@@ -26,7 +26,7 @@ public class BaseEnemy : BaseCharacter
     [SerializeField] private GameObject eyeLeft = null, eyeRight = null;
     [SerializeField] public LightEffectController lightEffectController = null;
 
-    private const float _HIT_IMPACT_RATIO = 10;
+    private const float _IMPACT_HEALTH_RATIO = 0.5f;   // 最大怯み値の体力比率(0～1)
 
     public override void Initialize(int setID)
     {
@@ -45,23 +45,21 @@ public class BaseEnemy : BaseCharacter
 
     public override bool IsPlayer() { return false; }
 
-    public override void TakeDamage(float damageSize, float strength)
+    protected override void OnDead()
     {
-        // 無敵かHPがないなら処理しない
-        if (isInvincible || isDead) return;
+        base.OnDead();
 
-        base.TakeDamage(damageSize, strength);
+        selfAnimator.SetBool(_selfAnimationData.animationName[(int)EnemyAnimation.DYING], true);
+        StageManager.instance.CheckWaveFinish();
+    }
 
-        if (health <= 0)
+    protected override void TakeImpact(float impact)
+    {
+        base.TakeImpact(impact);
+
+        if (impactValue >= healthMax * _IMPACT_HEALTH_RATIO)
         {
-            selfAnimator.SetBool(_selfAnimationData.animationName[(int)EnemyAnimation.DYING], true);
-            CharacterManager.instance.RemoveCharacterList(ID);
-            StageManager.instance.CheckWaveFinish();
-            isDead = true;
-        }
-        else if (GetDamage(strength, damageSize) > (healthMax / _HIT_IMPACT_RATIO))
-        {
-            // 一定の割合のダメージを受けたらひるむ
+            impactValue = 0;
             SetImpact();
         }
     }

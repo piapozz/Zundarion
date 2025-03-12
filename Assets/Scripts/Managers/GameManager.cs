@@ -2,17 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public class GameManager : SystemObject
 {
-    // Start is called before the first frame update
-    void Start()
+    public static bool isGameOver { get; private set; } = false;
+
+    public override void Initialize()
     {
-        
+        isGameOver = false;
     }
 
-    // Update is called once per frame
-    void Update()
+    public static void SetGameOver()
     {
-        
+        isGameOver = true;
     }
 }

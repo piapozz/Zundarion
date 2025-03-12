@@ -8,10 +8,9 @@ public class GameResultUI : MonoBehaviour
     public TMP_Text resultText;
     public TMP_Text comboMaximumUI;
 
-
     void Start()
     {
-        if(BasePlayer.isPlayerDead == true)
+        if(GameManager.isGameOver == true)
         {
             resultText.text = string.Format("GameOver");
             resultText.color = Color.red;

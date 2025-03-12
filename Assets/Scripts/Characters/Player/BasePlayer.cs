@@ -22,8 +22,6 @@ public abstract class BasePlayer : BaseCharacter
     /// <summary>自身のゲームオブジェクト</summary>
     public GameObject selfGameObject { get; private set; }
 
-    public static bool isPlayerDead { get; private set; } = false;
-
     // protected //////////////////////////////////////////////////////////////////
 
     /// <summary>派生先による初期化</summary>
@@ -70,12 +68,13 @@ public abstract class BasePlayer : BaseCharacter
     private List<CollisionData> _avoidList = null;
 
     private const float _RUN_SPEED_RATE = 1.5f;         // 走る速度倍率
-    private const float _ATTACK_SENS_RANGE = 10.0f;     // 攻撃感知範囲
+    private const float _ATTACK_SENS_RANGE = 5.0f;     // 攻撃感知範囲
     private const int _PARRY_COOL_DOWN_STOCK = 2;       // パリィクールダウンストック
     private const float _PARRY_COOL_DOWN_SECOND = 2.0f; // パリィクールダウン秒数
     private const int _AVOID_COOL_DOWN_STOCK = 2;       // 回避クールダウンストック
     private const float _AVOID_COOL_DOWN_SECOND = 2.0f; // 回避クールダウン秒数
     private const int _ATTACK_CAMERA_FRAME = 20;        // 攻撃時のカメラ遷移フレーム
+    private const float _IMPACT_HEALTH_RATIO = 0.05f;   // 最大怯み値の体力比率(0～1)
 
     void Awake()
     {
@@ -229,6 +228,9 @@ public abstract class BasePlayer : BaseCharacter
         UniTask task = CameraManager.instance.SetFreeCam(transform.eulerAngles.y, 0.5f, _ATTACK_CAMERA_FRAME);
     }
 
+    /// <summary>
+    /// 近くの敵に旋回する
+    /// </summary>
     private void TurnNearEnemy()
     {
         // 近くの敵を取得し角度調整
@@ -276,8 +278,8 @@ public abstract class BasePlayer : BaseCharacter
 
     public void RemoveParryList(CollisionData targetCollision)
     {
-        if (_parryList.Exists(collision => collision != targetCollision)) return;
-        _parryList.Remove(targetCollision);
+        if (_parryList.Exists(collision => collision == targetCollision))
+            _parryList.Remove(targetCollision);
     }
 
     public void AddAvoidList(CollisionData targetCollision)
@@ -288,8 +290,8 @@ public abstract class BasePlayer : BaseCharacter
 
     public void RemoveAvoidList(CollisionData targetCollision)
     {
-        if (_avoidList.Exists(collision => collision != targetCollision)) return;
-        _avoidList.Remove(targetCollision);
+        if (_avoidList.Exists(collision => collision == targetCollision))
+            _avoidList.Remove(targetCollision);
     }
 
     /// <summary>
@@ -354,31 +356,28 @@ public abstract class BasePlayer : BaseCharacter
 
     public override bool IsPlayer() { return true; }
 
-    public override void TakeDamage(float damageSize, float strength)
+    protected override void OnDead()
     {
-        // 無敵かHPがないなら処理しない
-        if (isInvincible || isDead) return;
+        base.OnDead();
+        SetAnimationTrigger(_selfAnimationData.animationName[(int)PlayerAnimation.DIE]);
+        GameManager.SetGameOver();
+    }
 
-        base.TakeDamage(damageSize, strength);
+    protected override void TakeImpact(float impact)
+    {
+        base.TakeImpact(impact);
 
-        if (health <= 0)
+        if (impactValue >= healthMax * _IMPACT_HEALTH_RATIO)
         {
-            SetAnimationTrigger(_selfAnimationData.animationName[(int)PlayerAnimation.DIE]);
-            CharacterManager.instance.RemoveCharacterList(ID);
-            isDead = true;
-            isPlayerDead = true;
-        }
-        else
-        {
-            // 先行入力をキャンセル
-            _selfPreInput.ClearRecord();
-            // ひるむ
+            impactValue = 0;
             SetImpact();
         }
     }
 
     public override void SetImpact()
     {
+        // 先行入力をキャンセル
+        _selfPreInput.ClearRecord();
         SetAnimationTrigger(_selfAnimationData.animationName[(int)PlayerAnimation.IMPACT]);
     }
 
@@ -390,8 +389,6 @@ public abstract class BasePlayer : BaseCharacter
 
     private void SetAnimationTrigger(string triggerName)
     {
-        if (isDead) return;
-
         selfAnimator.SetTrigger(triggerName);
     }
 }
