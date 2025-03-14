@@ -52,6 +52,7 @@ public class BaseEnemy : BaseCharacter
         base.OnDead();
 
         selfAnimator.SetBool(_selfAnimationData.animationName[(int)EnemyAnimation.DYING], true);
+        isDead = true;
         StageManager.instance.CheckWaveFinish();
     }
 
