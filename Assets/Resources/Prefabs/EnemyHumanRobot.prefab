@@ -1524,6 +1524,7 @@ GameObject:
   - component: {fileID: 6948218669908080364}
   - component: {fileID: 6948218669908080367}
   - component: {fileID: 6937412052067213657}
+  - component: {fileID: 8296957648924698287}
   m_Layer: 0
   m_Name: EnemyHumanRobot
   m_TagString: Enemy
@@ -1558,7 +1559,7 @@ Animator:
   m_GameObject: {fileID: 8639166805974105287}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 320b1c2af77554f99a1658df4a6d3d5c, type: 3}
-  m_Controller: {fileID: 9100000, guid: eeeff48ed7dc47d4eb60c45e734440c0, type: 2}
+  m_Controller: {fileID: 22100000, guid: 45f0a03f4debd754da780e73a7b72817, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -1611,7 +1612,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20fdee1daffe0e04d91fa33d1282e4c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  crossMaterial: {fileID: 0}
+  _color: {r: 1, g: 1, b: 1, a: 1}
+  fadeInAlpha: 1
+  fadeOutAlpha: 0
 --- !u!114 &6937412052067213657
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1634,11 +1637,29 @@ MonoBehaviour:
   targetVec: {x: 0, y: 0, z: 0}
   eyeLeft: {fileID: 8841024090154704066}
   eyeRight: {fileID: 8841024090154704066}
-  lightEffectController: {fileID: 6948218669908080367}
+  highLightController: {fileID: 6948218669908080367}
   fury: -1
   enemyRenderer: {fileID: 7915461139994320812}
   barrierMaterial: {fileID: 2100000, guid: 1a50a9ace93fd614db63694d201e262b, type: 2}
   robotMaterial: {fileID: 2100000, guid: 62d74e691b6b7a44bb4cd8c75b1ec60e, type: 2}
+--- !u!114 &8296957648924698287
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8639166805974105287}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 1, g: 1, b: 1, a: 0}
+  outlineWidth: 2
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &8647258379955276294
 GameObject:
   m_ObjectHideFlags: 0

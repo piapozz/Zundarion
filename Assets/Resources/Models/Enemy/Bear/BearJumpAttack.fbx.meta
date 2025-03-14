@@ -86,9 +86,9 @@ ModelImporter:
         intParameter: 0
         messageOptions: 0
       - time: 0.27034187
-        functionName: EyeEffectEvent
+        functionName: AttackOmenEvent
         data: 
-        objectReferenceParameter: {fileID: 11400000, guid: 6ead55ea3b2215543a28bc66824d56df, type: 2}
+        objectReferenceParameter: {fileID: 11400000, guid: a06c55f7e00f77b46b0a2cdee5792725, type: 2}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0

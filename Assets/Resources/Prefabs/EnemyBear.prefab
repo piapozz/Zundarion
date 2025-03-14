@@ -1299,12 +1299,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4504693136749379044}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5317217903009727173}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &7300652484287975259
 SkinnedMeshRenderer:
@@ -1505,7 +1505,7 @@ Transform:
   - {fileID: 4548440529613084014}
   - {fileID: 140216978793697730}
   m_Father: {fileID: 5317217903009727173}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4792213932067412095
 GameObject:
@@ -1521,6 +1521,7 @@ GameObject:
   - component: {fileID: 6261632768579768156}
   - component: {fileID: -7582454076540647926}
   - component: {fileID: 8924379283247075946}
+  - component: {fileID: 3856543140816421984}
   m_Layer: 0
   m_Name: EnemyBear
   m_TagString: Enemy
@@ -1540,8 +1541,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
-  - {fileID: 403880644682211921}
   - {fileID: 4717531920338533791}
+  - {fileID: 403880644682211921}
   - {fileID: 7267925731095202761}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -1587,10 +1588,9 @@ MonoBehaviour:
   selfAnimator: {fileID: 2245784756199610559}
   position: {x: 0, y: 0, z: 0}
   targetVec: {x: 0, y: 0, z: 0}
-  effectManager: {fileID: 0}
   eyeLeft: {fileID: 7936962700944875299}
   eyeRight: {fileID: 217010219112045000}
-  lightEffectController: {fileID: 6261632768579768156}
+  highLightController: {fileID: 6261632768579768156}
   fury: -1
 --- !u!114 &6261632768579768156
 MonoBehaviour:
@@ -1604,8 +1604,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20fdee1daffe0e04d91fa33d1282e4c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  renderFeature: {fileID: 0}
-  enemyTransform: {fileID: 5708640556492675595}
+  _color: {r: 1, g: 1, b: 1, a: 1}
+  fadeInAlpha: 1
+  fadeOutAlpha: 0
 --- !u!136 &-7582454076540647926
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1636,6 +1637,24 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 3
+--- !u!114 &3856543140816421984
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4792213932067412095}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 1, g: 1, b: 1, a: 0}
+  outlineWidth: 10
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &5476105964476747022
 GameObject:
   m_ObjectHideFlags: 0
