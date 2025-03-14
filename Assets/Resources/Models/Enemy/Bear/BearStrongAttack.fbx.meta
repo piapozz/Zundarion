@@ -57,14 +57,7 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.19103336
-        functionName: EyeEffectEvent
-        data: 
-        objectReferenceParameter: {fileID: 11400000, guid: ed280db26ab2a234fb04552c4a0341a9, type: 2}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.19235075
+      - time: 0.19682837
         functionName: AttackOmenEvent
         data: 
         objectReferenceParameter: {fileID: 11400000, guid: 3f59718bc83091645bac8944f93e0a3d, type: 2}
