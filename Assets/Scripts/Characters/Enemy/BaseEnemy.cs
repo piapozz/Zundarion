@@ -5,6 +5,7 @@
  * @date 2025/1/17
  */
 
+using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.IO.LowLevel.Unsafe;
@@ -26,7 +27,7 @@ public class BaseEnemy : BaseCharacter
     protected Color enemyHealthColor = Color.green;
 
     [SerializeField] private GameObject eyeLeft = null, eyeRight = null;
-    [SerializeField] public LightEffectController lightEffectController = null;
+    [SerializeField] public HighLightController highLightController = null;
 
     private const float _IMPACT_HEALTH_RATIO = 0.5f;   // ç≈ëÂãØÇ›ílÇÃëÃóÕî‰ó¶(0Å`1)
 
@@ -97,6 +98,15 @@ public class BaseEnemy : BaseCharacter
         AudioManager audioManager = AudioManager.instance;
         
         audioManager.PlaySE(SE.ENEMY_OMEN);
+    }
+
+    public void AttackOmenEvent(HighLightData highLightData)
+    {
+        Color color = highLightData.highLightColor;
+        float sec = highLightData.highLightSecond;
+
+        highLightController.SetColor(color);
+        UniTask task = highLightController.HighLight(sec);
     }
 
     public void EnemyAction()
