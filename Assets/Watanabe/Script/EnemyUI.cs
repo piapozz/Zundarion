@@ -18,6 +18,7 @@ public class EnemyUI : MonoBehaviour
     private RectTransform rectTransform;                                    // オブジェクトの座標
     public BaseEnemy baseEnemy { get; private set; } = null;              // 敵のクラス（情報）
     public Vector3 enemyPosition { get; private set; } = Vector3.zero;    // 敵の座標を管理 
+    public Color healthColor { get; private set; }                          // 敵の体力UIの色
     public float health { get; protected set; } = -1;                       // 敵の現在体力
     public float healthMax { get; protected set; } = -1;                    // 敵の最大体力
 
@@ -64,6 +65,7 @@ public class EnemyUI : MonoBehaviour
         baseEnemy = null;
         health = -1;
         healthMax = -1;
+        healthColor = Color.green;
 
         SetActive(false);
     }
@@ -74,6 +76,7 @@ public class EnemyUI : MonoBehaviour
     public void UpdateImage()
     {
         imageHealth.fillAmount = health / healthMax;
+        imageHealth.color = healthColor;
     }
 
     /// <summary>
@@ -82,6 +85,7 @@ public class EnemyUI : MonoBehaviour
     private void UpdateStatus()
     {
         health = baseEnemy.health;
+        healthColor = baseEnemy.GetUIColor();
         // 敵の座標を取得
         enemyPosition = baseEnemy.GetEnemyPosition();
     }
