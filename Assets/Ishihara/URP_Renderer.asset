@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d1a0cf443f376b42b682ef5fae79938, type: 3}
   m_Name: ScreenLineRenderFeature
   m_EditorClassIdentifier: 
-  m_Active: 1
+  m_Active: 0
   lineMaterial: {fileID: 2100000, guid: 8a510b80f0d29014daeda2c5c59dda8f, type: 2}
 --- !u!114 &11400000
 MonoBehaviour:

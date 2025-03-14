@@ -74,10 +74,8 @@ public class ComboManager : SystemObject
         }
     }
 
-    private async UniTask BreakCombo()
+    public async UniTask BreakCombo()
     {
         _comboCount = 0;
-
-
     } 
 }

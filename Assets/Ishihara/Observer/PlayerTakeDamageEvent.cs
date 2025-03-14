@@ -14,6 +14,9 @@ public class PlayerTakeDamageEvent : DamageObserver
         // SE再生
         AudioManager.instance.PlaySE(SE.HIT);
 
+        // コンボを途切れさせる
+        ComboManager.instance.BreakCombo();
+
         // ダメージエフェクト生成
     }
 }
