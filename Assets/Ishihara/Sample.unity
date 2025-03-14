@@ -21589,6 +21589,9 @@ GameObject:
   - component: {fileID: 3514551997796016509}
   - component: {fileID: 8054980239923504562}
   - component: {fileID: 204205997025620434}
+  - component: {fileID: 8054980239923504563}
+  - component: {fileID: 8054980239923504565}
+  - component: {fileID: 8054980239923504564}
   m_Layer: 0
   m_Name: Bear
   m_TagString: Enemy
@@ -37687,6 +37690,52 @@ CapsuleCollider:
   m_Height: 2.4
   m_Direction: 1
   m_Center: {x: 0, y: 1.2, z: 0}
+--- !u!114 &8054980239923504563
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4291335365756009415}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 1, g: 0.02479886, b: 0, a: 0}
+  outlineWidth: 10
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
+--- !u!114 &8054980239923504564
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4291335365756009415}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20fdee1daffe0e04d91fa33d1282e4c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fadeInAlpha: 1
+  fadeOutAlpha: 0
+--- !u!114 &8054980239923504565
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4291335365756009415}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5dbd6022635cfe441b4820b8292a00cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  highLightController: {fileID: 8054980239923504564}
+  time: 1
 --- !u!1 &8096624144774247082
 GameObject:
   m_ObjectHideFlags: 0
