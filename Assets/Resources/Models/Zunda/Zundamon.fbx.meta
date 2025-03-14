@@ -516,11 +516,11 @@ ModelImporter:
         intParameter: 0
         messageOptions: 0
       - time: 0
-        functionName: ClearStiff
+        functionName: SetStiffEvent
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
-        intParameter: 0
+        intParameter: 90
         messageOptions: 0
       - time: 0
         functionName: InvincibleEvent
@@ -656,7 +656,7 @@ ModelImporter:
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
-        intParameter: 28
+        intParameter: 35
         messageOptions: 0
       - time: 0
         functionName: SetStiffEvent

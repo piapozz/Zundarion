@@ -38,12 +38,15 @@ public abstract class BasePlayer : BaseCharacter
     /// <summary>硬直中かどうか</summary>
     private bool _isStiff = false;
 
-    /// <summary>移動硬直中かどうか</summary>
-    private bool _isMoveStiff = false;
+    /// <summary>攻撃以外の硬直</summary>
+    private bool _isNonAttackStiff = false;
 
     /// <summary>プレイヤーの先行入力情報</summary>
     [SerializeField]
     private PreInput _selfPreInput = null;
+
+    /// <summary>硬直タスク</summary>
+    private int _stiffTaskCount = 0;
 
     /// <summary>パリィのストック</summary>
     private int _parryStock = 0;
@@ -115,7 +118,7 @@ public abstract class BasePlayer : BaseCharacter
         selfAnimator.SetBool("Move", false);
 
         // 移動できないなら処理を抜ける
-        if (_isStiff || _isMoveStiff) return;
+        if (_isStiff || _isNonAttackStiff) return;
 
         // 移動方向が入力されているなら
         if (_inputMoveDir.x != 0 || _inputMoveDir.y != 0)
@@ -164,7 +167,7 @@ public abstract class BasePlayer : BaseCharacter
     /// <returns></returns>
     private void AvoidExecute()
     {
-        if (_isStiff) return;
+        if (_isStiff || _isNonAttackStiff) return;
 
         // クールダウン中なら処理を抜ける
         if (CheckAvoidCoolDown()) return;
@@ -187,6 +190,10 @@ public abstract class BasePlayer : BaseCharacter
         }
     }
 
+    /// <summary>
+    /// 回避のクールダウンチェック
+    /// </summary>
+    /// <returns></returns>
     private bool CheckAvoidCoolDown()
     {
         if (_avoidStock <= 0) return true;
@@ -246,6 +253,8 @@ public abstract class BasePlayer : BaseCharacter
     /// </summary>
     private void ParryExecute()
     {
+        if (_isStiff || _isNonAttackStiff) return;
+
         // パリィクールダウン中なら処理を抜ける
         if (CheckParryCoolDown()) return;
 
@@ -319,7 +328,17 @@ public abstract class BasePlayer : BaseCharacter
     public void SetStiffEvent(int frame)
     {
         _isStiff = true;
-        UniTask task = WaitAction(frame, () => _isStiff = false);
+
+        UniTask task = WaitAction(frame, ClearStiff);
+        _stiffTaskCount++;
+    }
+
+    private void ClearStiff()
+    {
+        // 走っている処理が1つなら硬直解除
+        if (_stiffTaskCount <= 1) _isStiff = false;
+
+        _stiffTaskCount--;
     }
 
     /// <summary>
@@ -328,17 +347,17 @@ public abstract class BasePlayer : BaseCharacter
     /// <param name="frame"></param>
     public void SetMoveStiffEvent(int frame)
     {
-        _isMoveStiff = true;
-        UniTask task = WaitAction(frame, () => _isMoveStiff = false);
+        _isNonAttackStiff = true;
+        UniTask task = WaitAction(frame, () => _isNonAttackStiff = false);
     }
 
     /// <summary>
     /// 硬直解除
     /// </summary>
-    public void ClearStiff()
+    public void ClearStiffEvent()
     {
         _isStiff = false;
-        _isMoveStiff = false;
+        _isNonAttackStiff = false;
     }
 
     /// <summary>
@@ -360,6 +379,7 @@ public abstract class BasePlayer : BaseCharacter
     {
         base.OnDead();
         SetAnimationTrigger(_selfAnimationData.animationName[(int)PlayerAnimation.DIE]);
+        isDead = true;
         GameManager.SetGameOver();
     }
 
@@ -389,6 +409,7 @@ public abstract class BasePlayer : BaseCharacter
 
     private void SetAnimationTrigger(string triggerName)
     {
+        if (isDead) return;
         selfAnimator.SetTrigger(triggerName);
     }
 }

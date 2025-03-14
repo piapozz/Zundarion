@@ -181,6 +181,25 @@ public class CommonModule
     }
 
     /// <summary>
+    /// 指定したフレームに関数を実行する(キャンセル可能)
+    /// </summary>
+    /// <param name="frame"></param>
+    /// <param name="action"></param>
+    /// <param name="token"></param>
+    /// <returns></returns>
+    public static async UniTask WaitAction(int frame, System.Action action, CancellationToken token)
+    {
+        float elapsedFrame = 0;
+        while (action != null &&
+            elapsedFrame < frame)
+        {
+            elapsedFrame += Time.timeScale;
+            await UniTask.DelayFrame(1, cancellationToken: token);
+        }
+        action();
+    }
+
+    /// <summary>
     /// 指定したフレームに関数を実行する
     /// </summary>
     /// <param name="sec"></param>

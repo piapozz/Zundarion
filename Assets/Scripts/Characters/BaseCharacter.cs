@@ -144,7 +144,6 @@ public abstract class BaseCharacter : MonoBehaviour
     /// </summary>
     protected virtual void OnDead()
     {
-        isDead = true;
         CharacterManager.instance.RemoveCharacterList(ID);
     }
 
