@@ -1,7 +1,4 @@
 using Cysharp.Threading.Tasks;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -10,21 +7,32 @@ public class FadeManager : SystemObject
 {
     public static FadeManager instance = null;
 
-
     /// <summary>暗転用黒テクスチャ</summary>
-    [SerializeField]
     private GameObject _fadeImage;
     private Material _fadeMaterial;
+    private bool _isTransitioning = false; // 遷移中フラグ
+    private Canvas _canvas;
 
     public override void Initialize()
     {
-        instance = this;
-
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject); // シングルトンオブジェクトを保持
+        }
+        else
+        {
+            //Destroy(gameObject);
+            return;
+        }
         // フェードプレハブ取得
         _fadeImage = Resources.Load<GameObject>("Prefabs/Fade/FadeImage");
         GameObject fade = Instantiate(_fadeImage, transform);
+
+        _canvas = fade.GetComponent<Canvas>();
         _fadeMaterial = fade.GetComponentInChildren<Image>().material;
         _fadeMaterial.SetFloat("_Transition", 1);
+        _canvas.enabled = false; // キャンバスを非表示
     }
 
     /// <summary>
@@ -34,32 +42,39 @@ public class FadeManager : SystemObject
     /// <param name='interval'>暗転にかかる時間(秒)</param>
     public async UniTask TransScene(string scene, float interval)
     {
-        //だんだん暗く
-        float transition = 1;
+        if (_isTransitioning) return;
+
+        _isTransitioning = true; // 遷移中フラグを立てる
+        _canvas.enabled = true; // キャンバスを表示
+
+        // だんだん暗く
+        float transition = 0;
         float time = 0;
 
         while (time < interval)
         {
             time += Time.deltaTime;
-            transition = 1 - time / interval;
+            transition = Mathf.Lerp(1, 0, time / interval);
             _fadeMaterial.SetFloat("_Transition", transition);
-            await UniTask.DelayFrame(1);
+            await UniTask.Yield();
         }
 
-        //シーン切替
-        SceneManager.LoadScene(scene);
+        // シーン切替（非同期処理）
+        await SceneManager.LoadSceneAsync(scene);
 
-        //だんだん明るく
+        // だんだん明るく
         transition = 1;
         time = 0;
+
         while (time < interval)
         {
             time += Time.deltaTime;
-            transition = time / interval;
+            transition = Mathf.Lerp(0, 1, time / interval);
             _fadeMaterial.SetFloat("_Transition", transition);
-            await UniTask.DelayFrame(1);
+            await UniTask.Yield();
         }
 
-        await UniTask.DelayFrame(1);
+        _isTransitioning = false; // 遷移中フラグを解除
+        _canvas.enabled = false; // キャンバスを非表示
     }
 }
