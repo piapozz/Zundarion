@@ -23,6 +23,8 @@ public class BaseEnemy : BaseCharacter
 
     public IEnemyState enemyState = null;
 
+    protected Color enemyHealthColor = Color.green;
+
     [SerializeField] private GameObject eyeLeft = null, eyeRight = null;
     [SerializeField] public LightEffectController lightEffectController = null;
 
@@ -64,6 +66,8 @@ public class BaseEnemy : BaseCharacter
         }
     }
 
+    public Color GetUIColor() { return enemyHealthColor; }
+
     public override void SetImpact()
     {
         selfAnimator.SetTrigger(_selfAnimationData.animationName[(int)EnemyAnimation.HIT_BACK_HIGH]);
@@ -90,8 +94,6 @@ public class BaseEnemy : BaseCharacter
     public void EyeEffectEvent(float sec)
     {
         AudioManager audioManager = AudioManager.instance;
-
-        lightEffectController.SetTransform(sec);
         
         audioManager.PlaySE(SE.ENEMY_OMEN);
     }

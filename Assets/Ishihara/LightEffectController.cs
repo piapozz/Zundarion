@@ -14,21 +14,21 @@ public class LightEffectController : MonoBehaviour
 
     void Update()
     {
-        for (int i = 0; i < startPoints.Length; i++)
-        {
-            if (timeSinceStart[i] < 100f)
-                timeSinceStart[i] += Time.deltaTime;
-        }
+        //for (int i = 0; i < startPoints.Length; i++)
+        //{
+        //    if (timeSinceStart[i] < 100f)
+        //        timeSinceStart[i] += Time.deltaTime;
+        //}
 
-        crossMaterial.SetVectorArray("_StartPoints", startPoints);
-        crossMaterial.SetFloatArray("_TimeSinceStart", timeSinceStart);
+        //crossMaterial.SetVectorArray("_StartPoints", startPoints);
+        //crossMaterial.SetFloatArray("_TimeSinceStart", timeSinceStart);
 
-        // クリックしたら新しい十字光を追加
-        if (Input.GetMouseButtonDown(0))
-        {
-            Vector3 mousePos = Input.mousePosition;
-            AddCross(mousePos);
-        }
+        //// クリックしたら新しい十字光を追加
+        //if (Input.GetMouseButtonDown(0))
+        //{
+        //    Vector3 mousePos = Input.mousePosition;
+        //    AddCross(mousePos);
+        //}
     }
 
     public void AddCross(Vector3 screenPos)

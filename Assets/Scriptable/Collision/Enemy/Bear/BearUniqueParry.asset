@@ -17,4 +17,4 @@ MonoBehaviour:
   distance: 0
   scale: 7
   damage: 0
-  deleteFrame: 30
+  deleteFrame: 40

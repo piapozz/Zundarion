@@ -50,10 +50,7 @@ public class CharacterManager : SystemObject
     public void GenerateEnemy(GameObject genBase, Transform genTransform)
     {
         BaseCharacter genCharacter = GenerateCharacter(genBase, genTransform);
-
         BaseEnemy baseEnemy = genCharacter as BaseEnemy;
-        ScreenLineRenderFeature feature = EffectManager.instance.GetScreenLineRenderFeature();
-        baseEnemy.lightEffectController.SetFeature(feature);
 
         UIManager.instance.AddEnemyUI(baseEnemy);
     }
