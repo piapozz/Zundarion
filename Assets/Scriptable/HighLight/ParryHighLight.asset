@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: ParryHighLight
   m_EditorClassIdentifier: 
   highLightColor: {r: 0.94509804, g: 0.92763245, b: 0, a: 0.78431374}
-  highLightSecond: 1.5
+  highLightSecond: 0.7
