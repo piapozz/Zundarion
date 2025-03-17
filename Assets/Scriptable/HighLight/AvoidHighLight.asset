@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: AvoidHighLight
   m_EditorClassIdentifier: 
   highLightColor: {r: 1, g: 0, b: 0.10253048, a: 0.78431374}
-  highLightSecond: 1.5
+  highLightSecond: 0.7
