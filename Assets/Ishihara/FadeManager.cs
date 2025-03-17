@@ -10,7 +10,6 @@ public class FadeManager : SystemObject
     /// <summary>暗転用黒テクスチャ</summary>
     private GameObject _fadeImage;
     private Material _fadeMaterial;
-    private bool _isTransitioning = false; // 遷移中フラグ
     private Canvas _canvas;
 
     public override void Initialize()
@@ -18,12 +17,6 @@ public class FadeManager : SystemObject
         if (instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(gameObject); // シングルトンオブジェクトを保持
-        }
-        else
-        {
-            //Destroy(gameObject);
-            return;
         }
         // フェードプレハブ取得
         _fadeImage = Resources.Load<GameObject>("Prefabs/Fade/FadeImage");
@@ -42,9 +35,6 @@ public class FadeManager : SystemObject
     /// <param name='interval'>暗転にかかる時間(秒)</param>
     public async UniTask TransScene(string scene, float interval)
     {
-        if (_isTransitioning) return;
-
-        _isTransitioning = true; // 遷移中フラグを立てる
         _canvas.enabled = true; // キャンバスを表示
 
         // だんだん暗く
@@ -74,7 +64,6 @@ public class FadeManager : SystemObject
             await UniTask.Yield();
         }
 
-        _isTransitioning = false; // 遷移中フラグを解除
         _canvas.enabled = false; // キャンバスを非表示
     }
 }
