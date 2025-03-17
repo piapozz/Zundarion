@@ -38,8 +38,9 @@ public class ComboManager : SystemObject
         float size = Mathf.Min((_comboCount * 0.05f) + 1 , 2.5f);
         _comboEffect.FadeIn(size);
         _comboTime = 0;
+        _comboText.gameObject.SetActive(true);
 
-        if(_comboCount >= comboMaximum)comboMaximum = _comboCount;
+        if (_comboCount >= comboMaximum)comboMaximum = _comboCount;
     }
 
     private async UniTask ComboTimer()
@@ -53,10 +54,6 @@ public class ComboManager : SystemObject
                 await UniTask.DelayFrame(1);
                 continue;
             }
-            else
-            {
-                _comboText.gameObject.SetActive(true);
-            }
 
             _comboTime += Time.deltaTime;
 
@@ -65,10 +62,11 @@ public class ComboManager : SystemObject
                 await BreakCombo();
             }
 
-            if(_comboCount < 10) _comboText.color = Color.gray;
-            else if(_comboCount < 20) _comboText.color = Color.red;
-            else if(_comboCount < 30) _comboText.color = Color.blue;
-            else _comboText.color = Color.green;
+            if (_comboCount < 10) _comboText.color = Color.gray;
+            else if (_comboCount < 30) _comboText.color = Color.yellow;
+            else if (_comboCount < 50) _comboText.color = new Color(1, 0.6f, 0.01f, 1);
+            else if (_comboCount < 100) _comboText.color = Color.red;
+            else _comboText.color = Color.black;
 
             await UniTask.DelayFrame(1);
         }
@@ -77,5 +75,8 @@ public class ComboManager : SystemObject
     public async UniTask BreakCombo()
     {
         _comboCount = 0;
+        _comboText.text = " ";
+        _comboText.gameObject.SetActive(false);
+        await UniTask.DelayFrame(1);
     } 
 }
