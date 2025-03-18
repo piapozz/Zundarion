@@ -39,6 +39,7 @@ public class SystemManager : MonoBehaviour
             systemList.Add(createObj);
         }
 
+        GameManager.Initialize();
         AudioManager.instance.PlayBGM(BGM.MAIN);
     }
 

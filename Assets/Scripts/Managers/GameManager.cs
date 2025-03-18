@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : SystemObject
+public class GameManager
 {
     public static bool isGameOver { get; private set; } = false;
 
-    public override void Initialize()
+    public static void Initialize()
     {
         isGameOver = false;
     }
