@@ -12,34 +12,41 @@ public class HighLightController : MonoBehaviour
 
     private void Start()
     {
-        outline = gameObject.GetComponentsInChildren<Outline>(); //Outlineが適用された子を取得
+        outline = gameObject.GetComponentsInChildren<Outline>();
     }
 
-    private void FadeIn(float fadeInTime) //フェードイン
+    private void SetOutlineColor(Color color)
     {
-        foreach (var outline in outline)
+        Renderer[] renderers = GetComponentsInChildren<Renderer>(); // 子の Renderer も取得
+        foreach (var renderer in renderers)
         {
-            DOVirtual.Float(0f, fadeInAlpha, fadeInTime, fadeInAlpha =>
-            {
-                Color color = _color;
-                color.a = fadeInAlpha;
-                outline.OutlineColor = color;
-            });
+            if (renderer == null) continue;
+
+            MaterialPropertyBlock block = new MaterialPropertyBlock();
+            renderer.GetPropertyBlock(block);
+            block.SetColor("_OutlineColor", color); // QuickOutline のシェーダープロパティ
+            renderer.SetPropertyBlock(block);
         }
-        
     }
 
-    private void FadeOut(float fadeOutTime) //フェードアウト
+    private void FadeIn(float fadeInTime)
     {
-        foreach (var outline in outline)
+        DOVirtual.Float(0f, fadeInAlpha, fadeInTime, fadeInAlpha =>
         {
-            DOVirtual.Float(1f, fadeOutAlpha, fadeOutTime, fadeOutAlpha =>
-            {
-                Color color = _color;
-                color.a = fadeOutAlpha;
-                outline.OutlineColor = color;
-            });
-        }
+            Color color = _color;
+            color.a = fadeInAlpha;
+            SetOutlineColor(color); // すべての子オブジェクトの Renderer に適用
+        });
+    }
+
+    private void FadeOut(float fadeOutTime)
+    {
+        DOVirtual.Float(1f, fadeOutAlpha, fadeOutTime, fadeOutAlpha =>
+        {
+            Color color = _color;
+            color.a = fadeOutAlpha;
+            SetOutlineColor(color); // すべての子オブジェクトの Renderer に適用
+        });
     }
 
     public async UniTask HighLight(float sec)
