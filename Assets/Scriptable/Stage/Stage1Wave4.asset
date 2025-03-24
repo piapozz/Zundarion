@@ -19,9 +19,9 @@ MonoBehaviour:
     generateAnchorNum: 1
   - characterPrefab: {fileID: 4792213932067412095, guid: b081f34ba393707489de6fa5739088b1, type: 3}
     generateAnchorNum: 2
-  - characterPrefab: {fileID: 4792213932067412095, guid: b081f34ba393707489de6fa5739088b1, type: 3}
+  - characterPrefab: {fileID: 8639166805974105287, guid: 14983e3108f39324986abe18ec46de5b, type: 3}
     generateAnchorNum: 3
-  - characterPrefab: {fileID: 4792213932067412095, guid: b081f34ba393707489de6fa5739088b1, type: 3}
+  - characterPrefab: {fileID: 8639166805974105287, guid: 14983e3108f39324986abe18ec46de5b, type: 3}
     generateAnchorNum: 4
-  - characterPrefab: {fileID: 4792213932067412095, guid: b081f34ba393707489de6fa5739088b1, type: 3}
+  - characterPrefab: {fileID: 8639166805974105287, guid: 14983e3108f39324986abe18ec46de5b, type: 3}
     generateAnchorNum: 5
