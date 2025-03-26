@@ -187,6 +187,7 @@ public abstract class BasePlayer : BaseCharacter
             SetAnimationTrigger(_selfAnimationData.animationName[(int)PlayerAnimation.JUST_AVOID]);
             // スロー
             SlowManager.instance.SetSlow(AVOID_SLOW_SPEED, AVOID_SLOW_TIME);
+            AudioManager.instance.PlaySE(SE.SLOW);
         }
     }
 
@@ -276,6 +277,7 @@ public abstract class BasePlayer : BaseCharacter
             UniTask task = CameraManager.instance.SetFreeCam(transform.eulerAngles.y, 0.5f);
             // パリィ相手のアニメーションをひるみにする
             targetEnemy.SetImpact();
+            AudioManager.instance.PlaySE(SE.PARRY);
         }
     }
 

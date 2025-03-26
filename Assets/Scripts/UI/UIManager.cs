@@ -12,9 +12,9 @@ using System.Xml.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Cysharp.Threading.Tasks;
 
 using static CommonModule;
-using static UnityEngine.EventSystems.EventTrigger;
 
 // 出来れば敵の最大体力を見てUIを伸ばす
 // 体力が減るまでラグを作る
@@ -36,6 +36,8 @@ public class UIManager : SystemObject
     [SerializeField] private GameObject canvasWorldSpace;
     [SerializeField] private GameObject canvasOverlay;
     [SerializeField] private LayerMask obstacleLayer;
+    [SerializeField] private GameObject _waveUIObject = null;
+    [SerializeField] private GameObject _tutorialObject = null;
 
     public Camera mainCamera { get; private set; } = null;
     private Transform parent = null;
@@ -45,6 +47,8 @@ public class UIManager : SystemObject
     private List<GameObject> useObjectList = null;
     private Queue<GameObject> unuseObjectQueue = null;
     List<GameObject> _damageEffectList = null;
+    private GameObject _waveCanvas = null;
+    private WaveUI _waveUI = null;
 
     Vector3 viewportPos;
 
@@ -83,61 +87,13 @@ public class UIManager : SystemObject
             effect.SetActive(false);
             _damageEffectList.Add(effect);
         }
+
+        _waveCanvas = Instantiate(_waveUIObject, transform);
+        _waveUI = _waveCanvas.GetComponent<WaveUI>();
+        _waveCanvas.SetActive(false);
+
+        Instantiate(_tutorialObject, transform);
     }
-
-    /*
-    public override void Proc()
-    {
-        // 不必要なUIを非表示にする
-        for (int i = 0, max = enemyUIList.Count; i < max; i++)
-        {
-            if (enemyUIList[i] == null) break;
-
-            Vector3 enemyPosition = enemyUIList[i].enemyPosition;
-
-            viewportPos = mainCamera.WorldToViewportPoint(enemyPosition + Vector3.up * 2f);
-
-            // 画面に移ったら表示にする
-            if (viewportPos.z > 0 && viewportPos.x >= 0 && viewportPos.x <= 1 && viewportPos.y >= 0 && viewportPos.y <= 1)
-            {
-                enemyUIList[i].SetActive(true);
-            }
-            // 画面外に外れたら非表示にする
-            else
-            {
-                enemyUIList[i].SetActive(false);
-                continue;
-            }
-        }
-
-        // オブジェクトでUIが非表示になる
-        for (int i = 0, max = enemyUIList.Count; i < max; i++)
-        {
-
-            Vector3 enemyPosition = enemyUIList[i].enemyPosition + Vector3.up * 1f;
-
-            Vector3 direction = (enemyPosition - mainCamera.transform.position).normalized;
-            float distance = Vector3.Distance(mainCamera.transform.position, enemyPosition);
-
-            bool isObstructed = Physics.Raycast(mainCamera.transform.position, direction, distance, obstacleLayer);
-
-            // Debug.DrawRay(mainCamera.transform.position, direction * distance, isObstructed ? Color.red : Color.green, 0.1f);
-
-            enemyUIList[i].SetActive(!isObstructed);
-        }
-
-        for (int i = 0, max = enemyUIList.Count; i < max; i++)
-        {
-            if (IsEmpty(enemyUIList) != true)
-                
-            if (enemyUIList[i].health <= 0)
-            {
-                RemoveEnemyUI(i);
-                max -= 1;
-            }
-        }
-    }
-    */
 
     public override void Proc()
     {
@@ -216,13 +172,13 @@ public class UIManager : SystemObject
         if (activeNumber < 0) return;
 
         // 位置をずらす
-        float dir = UnityEngine.Random.Range(0,360);
-        float length = UnityEngine.Random.Range(100,150);
+        float dir = UnityEngine.Random.Range(0, 360);
+        float length = UnityEngine.Random.Range(100, 150);
 
         SetPosition(_damageEffectList[activeNumber], dir, length, position);
 
         // ダメージの値を設定する
-        var text =_damageEffectList[activeNumber].GetComponent<TextMeshProUGUI>();
+        var text = _damageEffectList[activeNumber].GetComponent<TextMeshProUGUI>();
         if (text == null) return;
 
         text.text = string.Format("{0}!!", damage);
@@ -290,5 +246,12 @@ public class UIManager : SystemObject
         // 使用中リストに追加
         useObjectList.Add(UIObject);
         enemyUIList.Add(enemyUI);
+    }
+
+    public void SetWaveUI(int waveCount, int enemyCount)
+    {
+        _waveUI.SetText(waveCount, enemyCount);
+        _waveCanvas.SetActive(true);
+        UniTask task = WaitAction(2.0f, () => _waveCanvas.SetActive(false));
     }
 }

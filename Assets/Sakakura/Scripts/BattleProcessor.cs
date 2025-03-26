@@ -67,6 +67,8 @@ public class BattleProcessor : MonoBehaviour
             Transform genTransform = _anchor[genAnchorNum];
             CharacterManager.instance.GenerateEnemy(genObject, genTransform);
         }
+        // UI
+        UIManager.instance.SetWaveUI(_waveCount + 1, charaCount);
     }
 
     /// <summary>

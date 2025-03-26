@@ -36,6 +36,8 @@ public class EnemyHumanRobot : BaseEnemy
 
     public override void SetImpact()
     {
+        base.SetImpact();
+
         isInvincible = false;
 
         if (isInvincible)
