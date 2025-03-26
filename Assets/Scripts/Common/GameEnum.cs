@@ -74,5 +74,7 @@ public enum SE
 {
     HIT = 0,
     ENEMY_OMEN,
+    PARRY,
+    SLOW,
     MAX
 }

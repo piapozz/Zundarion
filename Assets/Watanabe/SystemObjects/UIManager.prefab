@@ -52,3 +52,5 @@ MonoBehaviour:
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 64
+  _waveUIObject: {fileID: 5008307438108681724, guid: 1cdeaa216329aae4e90777166d866bd8, type: 3}
+  _tutorialObject: {fileID: 2496867122828333167, guid: 46ba6e5dedfcb6940941a9f8374c3e43, type: 3}
