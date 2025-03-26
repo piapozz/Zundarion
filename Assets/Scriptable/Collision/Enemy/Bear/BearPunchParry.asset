@@ -1,20 +1,3 @@
-%YAML 1.1
-%TAG !u! tag:unity3d.com,2011:
---- !u!114 &11400000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26598dd705daf2f409c55aeb49e8e735, type: 3}
-  m_Name: BearPunchParry
-  m_EditorClassIdentifier: 
-  isParry: 1
-  isAvoid: 0
-  distance: 1
-  scale: 4
-  damage: 0
-  deleteFrame: 45
+version https://git-lfs.github.com/spec/v1
+oid sha256:54beca400d2fb310591877dd1a940bdb4ca9d1343680933630f244ea389ad145
+size 484

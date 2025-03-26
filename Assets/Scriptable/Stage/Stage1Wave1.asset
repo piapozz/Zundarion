@@ -1,17 +1,3 @@
-%YAML 1.1
-%TAG !u! tag:unity3d.com,2011:
---- !u!114 &11400000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d4eaeb36f7dfd1f47be611666ef7fe71, type: 3}
-  m_Name: Stage1Wave1
-  m_EditorClassIdentifier: 
-  generateCharacterData:
-  - characterPrefab: {fileID: 4792213932067412095, guid: b081f34ba393707489de6fa5739088b1, type: 3}
-    generateAnchorNum: 1
+version https://git-lfs.github.com/spec/v1
+oid sha256:a491a5a602ead4b705659efc9a01972bd51acabe0f7463e38f8c4d6f04449f9e
+size 550
