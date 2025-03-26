@@ -1,17 +1,3 @@
-%YAML 1.1
-%TAG !u! tag:unity3d.com,2011:
---- !u!114 &11400000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bae44e58f416d174c8e01d718f7b9bfd, type: 3}
-  m_Name: ZundamonParryEffect
-  m_EditorClassIdentifier: 
-  ID: 3
-  dir: {x: 0, y: 0, z: 1}
-  length: 0.2
+version https://git-lfs.github.com/spec/v1
+oid sha256:a8bdc304ee64a7f38525fa8f34493b8bce5fa98d9cb62d81ca659e06529c77ff
+size 456

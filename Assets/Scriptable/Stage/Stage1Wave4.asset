@@ -1,27 +1,3 @@
-%YAML 1.1
-%TAG !u! tag:unity3d.com,2011:
---- !u!114 &11400000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d4eaeb36f7dfd1f47be611666ef7fe71, type: 3}
-  m_Name: Stage1Wave4
-  m_EditorClassIdentifier: 
-  generateCharacterData:
-  - characterPrefab: {fileID: 4792213932067412095, guid: b081f34ba393707489de6fa5739088b1, type: 3}
-    generateAnchorNum: 0
-  - characterPrefab: {fileID: 4792213932067412095, guid: b081f34ba393707489de6fa5739088b1, type: 3}
-    generateAnchorNum: 1
-  - characterPrefab: {fileID: 4792213932067412095, guid: b081f34ba393707489de6fa5739088b1, type: 3}
-    generateAnchorNum: 2
-  - characterPrefab: {fileID: 8639166805974105287, guid: 14983e3108f39324986abe18ec46de5b, type: 3}
-    generateAnchorNum: 3
-  - characterPrefab: {fileID: 8639166805974105287, guid: 14983e3108f39324986abe18ec46de5b, type: 3}
-    generateAnchorNum: 4
-  - characterPrefab: {fileID: 8639166805974105287, guid: 14983e3108f39324986abe18ec46de5b, type: 3}
-    generateAnchorNum: 5
+version https://git-lfs.github.com/spec/v1
+oid sha256:5e8c1400c539d5aa62028055c7fa3af6b8287db3cb02c3ab391054b7568aa76e
+size 1175

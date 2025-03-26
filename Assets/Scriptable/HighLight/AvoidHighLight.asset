@@ -1,16 +1,3 @@
-%YAML 1.1
-%TAG !u! tag:unity3d.com,2011:
---- !u!114 &11400000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e584dd7b7fc4c78498092745467eb602, type: 3}
-  m_Name: AvoidHighLight
-  m_EditorClassIdentifier: 
-  highLightColor: {r: 1, g: 0, b: 0.10253048, a: 0.78431374}
-  highLightSecond: 0.7
+version https://git-lfs.github.com/spec/v1
+oid sha256:6acce9edccc497d6dfd84eaa5659e0dfe342a7fa53331602fd471590c6c420f4
+size 487

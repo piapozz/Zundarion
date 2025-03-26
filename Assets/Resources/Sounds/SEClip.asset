@@ -1,17 +1,3 @@
-%YAML 1.1
-%TAG !u! tag:unity3d.com,2011:
---- !u!114 &11400000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36a4582b5c0cffa4bb0a63d6c6c9b9f8, type: 3}
-  m_Name: SEClip
-  m_EditorClassIdentifier: 
-  seClips:
-  - {fileID: 8300000, guid: 911e3f91958d8d34cbefd76f7f8aa431, type: 3}
-  - {fileID: 8300000, guid: 5c1cf293603adf44a9cf5058a588d031, type: 3}
+version https://git-lfs.github.com/spec/v1
+oid sha256:57e1ac9cd0dafb4cf7ad743227dd87b806d5fd11e8d90428c7aa6d67b9bb0786
+size 565
