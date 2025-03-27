@@ -76,5 +76,7 @@ public enum SE
     ENEMY_OMEN,
     PARRY,
     SLOW,
+    BARRIER_MISS,
+    BARRIER_BREAK,
     MAX
 }

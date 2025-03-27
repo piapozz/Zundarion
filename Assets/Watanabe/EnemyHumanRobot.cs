@@ -14,12 +14,14 @@ public class EnemyHumanRobot : BaseEnemy
     [SerializeField] private Material robotMaterial;
     private readonly int _ENEMY_FURY_INITIAL = 0;
     private readonly int _ENEMY_FURY_INCREASE = 6;
+    private bool oldInvincible = false;
 
     private void Start()
     {
         ChangeState(new BearIdleState());
         fury = _ENEMY_FURY_INITIAL;
         isInvincible = true;
+        oldInvincible = isInvincible;
         enemyHealthColor = Color.cyan;
     }
 
@@ -28,10 +30,15 @@ public class EnemyHumanRobot : BaseEnemy
         position = transform.position;
     }
 
+    public override void TakeDamage(float damageRatio, float sourceStrength)
+    {
+        base.TakeDamage(damageRatio, sourceStrength);
+        if (isInvincible == true) AudioManager.instance.PlaySE(SE.BARRIER_MISS);
+    }
+
     protected override void DamageReaction()
     {
         fury += _ENEMY_FURY_INCREASE;
-
     }
 
     public override void SetImpact()
@@ -50,6 +57,8 @@ public class EnemyHumanRobot : BaseEnemy
             enemyHealthColor = Color.green;
             enemyRenderer.material = robotMaterial;
         }
+        if (isInvincible != oldInvincible) AudioManager.instance.PlaySE(SE.BARRIER_BREAK);
+        oldInvincible = isInvincible;
     }
 
     public int GetFury() { return fury; }

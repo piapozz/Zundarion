@@ -94,7 +94,7 @@ public abstract class BaseCharacter : MonoBehaviour
     /// ƒ_ƒ[ƒW‚ğó‚¯‚éˆ—
     /// </summary>
     /// <param name="damageRatio"></param>
-    public void TakeDamage(float damageRatio, float sourceStrength)
+    public virtual void TakeDamage(float damageRatio, float sourceStrength)
     {
         // –³“G‚©HP‚ª‚È‚¢‚È‚çˆ—‚µ‚È‚¢
         if (isInvincible || isDead) return;
