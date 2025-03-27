@@ -80,3 +80,12 @@ public enum SE
     BARRIER_BREAK,
     MAX
 }
+
+public enum PopupText
+{
+    INVALID = -1,
+    INFO_PARRY,
+    INFO_BARRIER,
+
+    MAX
+}
