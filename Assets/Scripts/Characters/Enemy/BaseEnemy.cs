@@ -102,6 +102,7 @@ public class BaseEnemy : BaseCharacter
 
     public void AttackOmenEvent(HighLightData highLightData)
     {
+        AudioManager.instance.PlaySE(SE.ENEMY_OMEN);
         Color color = highLightData.highLightColor;
         float sec = highLightData.highLightSecond;
 
