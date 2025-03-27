@@ -52,12 +52,12 @@ public class TutorialUI : MonoBehaviour
     {
         if (isController)
         {
-            string setText = "シールドはパリィで破壊！\n移動：Lスティック\n攻撃：Bボタン\n回避：Rボタン\nパリィ：Lボタン";
+            string setText = "移動：Lスティック\n攻撃：Bボタン\n回避：Rボタン\nパリィ：Lボタン";
             _tutorialText.text = setText;
         }
         else
         {
-            string setText = "シールドはパリィで破壊！\n移動：WASD\n攻撃：左クリック\n回避：Shift\nパリィ：E";
+            string setText = "移動：WASD\n攻撃：左クリック\n回避：Shift\nパリィ：E";
             _tutorialText.text = setText;
         }
     }

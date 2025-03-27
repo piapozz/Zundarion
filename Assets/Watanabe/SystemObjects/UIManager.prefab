@@ -53,4 +53,5 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   _waveUIObject: {fileID: 5008307438108681724, guid: 1cdeaa216329aae4e90777166d866bd8, type: 3}
+  _popupUIObject: {fileID: 3106407573740718968, guid: e7a4be9b0a623a649976304d95401e6c, type: 3}
   _tutorialObject: {fileID: 2496867122828333167, guid: 46ba6e5dedfcb6940941a9f8374c3e43, type: 3}

@@ -69,6 +69,7 @@ public class BattleProcessor : MonoBehaviour
         }
         // UI
         UIManager.instance.SetWaveUI(_waveCount + 1, charaCount);
+        if (_waveCount == 2) UIManager.instance.EnemyPopup(PopupText.INFO_BARRIER);
     }
 
     /// <summary>
@@ -80,6 +81,7 @@ public class BattleProcessor : MonoBehaviour
         _closeObject.SetActive(true);
         NextWave();
         StageManager.instance.NextBattle();
+        UIManager.instance.EnemyPopup(PopupText.INFO_PARRY);
     }
 
     /// <summary>

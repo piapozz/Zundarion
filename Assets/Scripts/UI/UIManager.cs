@@ -37,6 +37,7 @@ public class UIManager : SystemObject
     [SerializeField] private GameObject canvasOverlay;
     [SerializeField] private LayerMask obstacleLayer;
     [SerializeField] private GameObject _waveUIObject = null;
+    [SerializeField] private GameObject _popupUIObject = null;
     [SerializeField] private GameObject _tutorialObject = null;
 
     public Camera mainCamera { get; private set; } = null;
@@ -48,7 +49,12 @@ public class UIManager : SystemObject
     private Queue<GameObject> unuseObjectQueue = null;
     List<GameObject> _damageEffectList = null;
     private GameObject _waveCanvas = null;
+    private GameObject _popupCanvas = null;
     private WaveUI _waveUI = null;
+    private AlertUI _popupUI = null;
+
+    private const float _WAVE_DISPLAY_SECOND = 2.0f;
+    private const float _POPUP_DISPLAY_SECOND = 4.0f;
 
     Vector3 viewportPos;
 
@@ -91,6 +97,10 @@ public class UIManager : SystemObject
         _waveCanvas = Instantiate(_waveUIObject, transform);
         _waveUI = _waveCanvas.GetComponent<WaveUI>();
         _waveCanvas.SetActive(false);
+
+        _popupCanvas = Instantiate(_popupUIObject, transform);
+        _popupUI = _popupCanvas.GetComponent<AlertUI>();
+        _popupCanvas.SetActive(false);
 
         Instantiate(_tutorialObject, transform);
     }
@@ -252,6 +262,21 @@ public class UIManager : SystemObject
     {
         _waveUI.SetText(waveCount, enemyCount);
         _waveCanvas.SetActive(true);
-        UniTask task = WaitAction(2.0f, () => _waveCanvas.SetActive(false));
+        UniTask task = WaitAction(_WAVE_DISPLAY_SECOND / 2, () => _waveCanvas.SetActive(false));
+    }
+
+    public void EnemyPopup(PopupText popupText)
+    {
+        _popupCanvas.SetActive(true);
+        switch (popupText)
+        {
+            case PopupText.INFO_PARRY:
+                _popupUI.SetText("赤いハイライトは回避で反撃、\n黄色いハイライトはパリィで反撃できる！");
+                break;
+            case PopupText.INFO_BARRIER:
+                _popupUI.SetText("バリアはパリィすることで破ることができる！");
+                break;
+        }
+        UniTask task = WaitAction(_POPUP_DISPLAY_SECOND, () => _popupCanvas.SetActive(false));
     }
 }
