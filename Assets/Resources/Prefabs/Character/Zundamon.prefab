@@ -2330,7 +2330,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2953669559327693947}
   - component: {fileID: 9087602159865906689}
-  - component: {fileID: 3372619454647401876}
+  - component: {fileID: 29354224260975927}
   - component: {fileID: 4987976259458873354}
   - component: {fileID: 8291126890484967174}
   - component: {fileID: 4235519568728557811}
@@ -2381,7 +2381,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &3372619454647401876
+--- !u!114 &29354224260975927
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2390,7 +2390,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2573343726670497473}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec5093543b35da84cb277f180bb73504, type: 3}
+  m_Script: {fileID: 11500000, guid: c3825738bec2e454dabf5ab95890c785, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   charaData: {fileID: 11400000, guid: 2682e0f7083dedc4ea653e2f1463900e, type: 2}
@@ -2475,8 +2475,8 @@ MonoBehaviour:
     m_ActionName: Player/Look[/Mouse/delta]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3372619454647401876}
-        m_TargetAssemblyTypeName: BasePlayer, Assembly-CSharp
+      - m_Target: {fileID: 29354224260975927}
+        m_TargetAssemblyTypeName: PlayerCharacter, Assembly-CSharp
         m_MethodName: OnMove
         m_Mode: 0
         m_Arguments:

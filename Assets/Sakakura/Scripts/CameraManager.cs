@@ -31,7 +31,7 @@ public class CameraManager : SystemObject
         instance = this;
         selfCamera = Camera.main;
 
-        BasePlayer player = CharacterManager.instance.player;
+        PlayerCharacter player = CharacterManager.instance.player;
         Transform setTransform = player.transform;
         Animator setAnimator = player.selfAnimator;
         SetTransform(setTransform, setAnimator);

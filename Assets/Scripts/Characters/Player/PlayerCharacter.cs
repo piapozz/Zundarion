@@ -9,7 +9,7 @@ using System.Threading;
 using static CommonModule;
 using static GameConst;
 
-public abstract class BasePlayer : BaseCharacter
+public class PlayerCharacter : BaseCharacter
 {
     // public //////////////////////////////////////////////////////////////////
 
@@ -21,11 +21,6 @@ public abstract class BasePlayer : BaseCharacter
 
     /// <summary>自身のゲームオブジェクト</summary>
     public GameObject selfGameObject { get; private set; }
-
-    // protected //////////////////////////////////////////////////////////////////
-
-    /// <summary>派生先による初期化</summary>
-    protected abstract void Init();
 
     // private //////////////////////////////////////////////////////////////////
 
@@ -88,8 +83,6 @@ public abstract class BasePlayer : BaseCharacter
 
         _parryList = new List<CollisionData>(5);
         _avoidList = new List<CollisionData>(5);
-
-        Init();
     }
 
     private void Update()

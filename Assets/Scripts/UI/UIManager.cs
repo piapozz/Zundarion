@@ -53,8 +53,8 @@ public class UIManager : SystemObject
     private WaveUI _waveUI = null;
     private AlertUI _popupUI = null;
 
-    private const float _WAVE_DISPLAY_SECOND = 2.0f;
-    private const float _POPUP_DISPLAY_SECOND = 4.0f;
+    private const float _WAVE_DISPLAY_SECOND = 3.0f;
+    private const float _POPUP_DISPLAY_SECOND = 6.0f;
 
     Vector3 viewportPos;
 
@@ -151,7 +151,7 @@ public class UIManager : SystemObject
         GenerateEnemyUI(baseEnemy);
     }
 
-    public void AddPlayerUI(BasePlayer basePlayer)
+    public void AddPlayerUI(PlayerCharacter basePlayer)
     {
         GeneratePlayerUI(basePlayer);
     }
@@ -212,7 +212,7 @@ public class UIManager : SystemObject
 
         effect.transform.position = offset + position;
     }
-    private void GeneratePlayerUI(BasePlayer basePlayer)
+    private void GeneratePlayerUI(PlayerCharacter basePlayer)
     {
         PlayerUI playerUI = null;
         GameObject UIObject = Instantiate(playerUIObject, new Vector3(-150.0f, 80.0f, 0.0f), Quaternion.identity, parentOverlay);

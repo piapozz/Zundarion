@@ -18,7 +18,7 @@ public class CharacterManager : SystemObject
     [SerializeField]
     private GameObject playerOrigin = null;
 
-    public BasePlayer player { get; private set; } = null;
+    public PlayerCharacter player { get; private set; } = null;
 
     private List<BaseCharacter> characterList = null;
 
@@ -40,7 +40,7 @@ public class CharacterManager : SystemObject
     public void GeneratePlayer(GameObject genBase, Transform genTransform)
     {
         BaseCharacter genCharacter = GenerateCharacter(genBase, genTransform);
-        player = genCharacter as BasePlayer;
+        player = genCharacter as PlayerCharacter;
     }
 
     /// <summary>
