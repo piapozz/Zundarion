@@ -9,7 +9,7 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] private Image imageHealth = null;
     public float health { get; protected set; } = -1;                       // “G‚ÌŒ»İ‘Ì—Í
     public float healthMax { get; protected set; } = -1;                    // “G‚ÌÅ‘å‘Ì—Í
-    public BasePlayer basePlayer { get; protected set; }
+    public PlayerCharacter basePlayer { get; protected set; }
 
     private void Update()
     {
@@ -22,7 +22,7 @@ public class PlayerUI : MonoBehaviour
     /// </summary>
     /// <param name="_baseEnemy"></param>
     /// <param name="_enemyUI"></param>
-    public void Setup(BasePlayer _basePlayer)
+    public void Setup(PlayerCharacter _basePlayer)
     {
         basePlayer = _basePlayer;
         health = _basePlayer.GetComponent<BaseCharacter>().health;

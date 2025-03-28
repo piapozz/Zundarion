@@ -15,7 +15,7 @@ using UnityEngine;
 
 public class BaseEnemy : BaseCharacter
 {
-    public BasePlayer player { get; protected set; } = null;    // プレイヤー
+    public PlayerCharacter player { get; protected set; } = null;    // プレイヤー
     public float breakPoint { get; protected set; } = -1;       // ブレイク値
 
     public Vector3 position;
