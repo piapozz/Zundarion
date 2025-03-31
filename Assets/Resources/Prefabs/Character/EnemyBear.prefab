@@ -1604,7 +1604,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20fdee1daffe0e04d91fa33d1282e4c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _color: {r: 1, g: 1, b: 1, a: 1}
   fadeInAlpha: 1
   fadeOutAlpha: 0
 --- !u!136 &-7582454076540647926
@@ -1655,6 +1654,7 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+  needsUpdate: 1
 --- !u!1 &5476105964476747022
 GameObject:
   m_ObjectHideFlags: 0
